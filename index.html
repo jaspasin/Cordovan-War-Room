@@ -207,7 +207,6 @@
       font-weight: 600;
     }
 
-    /* 2-Line Tab Navigation Grid */
     .nav-tabs-wrapper { margin-bottom: 24px; }
     .nav-tabs-grid {
       display: grid;
@@ -902,11 +901,10 @@
         </div>
       </div>
 
-      <!-- Decision Edit Form -->
       <div id="decision-edit-fields" style="display:none;">
         <div class="field-group">
           <label>Date (YYYY-MM-DD)</label>
-          <input type="date" id="modal-dec-date">
+          <input type="text" id="modal-dec-date">
         </div>
         <div class="field-group">
           <label>Decision Summary</label>
@@ -918,7 +916,6 @@
         </div>
       </div>
 
-      <!-- Registration Edit Fields -->
       <div id="reg-edit-fields" style="display:none;">
         <div class="modal-grid-2">
           <div class="field-group">
@@ -980,7 +977,6 @@
         </div>
       </div>
 
-      <!-- School Outreach Edit Fields -->
       <div id="school-edit-fields" style="display:none;">
         <div class="modal-grid-2">
           <div class="field-group">
@@ -1232,6 +1228,830 @@
   </div>
 
   <script>
+    const TEAM_PASSCODE = "Cordovan2026";
+    const FIREBASE_DB_URL = "FIREBASE_DATABASE_URL_HERE";
+
+    const MASTER_SEED_DATA = {
+      openingDate: "2026-10-31",
+      actions: [
+        {"id":"ACT-01","cat":"Facilities & FF&E","desc":"Order 'Level Up' Board immediately from local sign vendor (2–4 week lead-time buffer).","owner":"Santiago","due":"2026-09-05","status":"Open","notes":"","callPin":true},
+        {"id":"ACT-02","cat":"Exterior Signage","desc":"Obtain 2+ quotes for exterior illuminated channel-letter sign & send spec sheet to John Howell for corporate approval before ordering.","owner":"Santiago / Jaspal","due":"2026-08-08","status":"In Progress","notes":"","callPin":true},
+        {"id":"ACT-03","cat":"Marketing","desc":"Onboard with Creative Tricycle for mandatory Google & Facebook digital ad campaigns.","owner":"Santiago / Jaspal","due":"2026-08-10","status":"Open","notes":"","callPin":true},
+        {"id":"ACT-04","cat":"Marketing","desc":"Provide admin email to Matt Fowers for Facebook & Instagram local page admin access.","owner":"Santiago / Jaspal","due":"2026-07-31","status":"Done","notes":"Includes FB/IG admin confirmation."},
+        {"id":"ACT-05","cat":"Marketing","desc":"Research local schools within a 5-mile radius and populate Google Contacts sheet for outreach.","owner":"Santiago / Jaspal","due":"2026-08-22","status":"Open","notes":""},
+        {"id":"ACT-06","cat":"Hiring & Training","desc":"Schedule & complete mid-August Jackrabbit software training with Shelly Wickerd & Nancy.","owner":"Jaspal / Santiago","due":"2026-08-15","status":"Open","notes":"","callPin":true},
+        {"id":"ACT-07","cat":"Business & Finance","desc":"Finalize bookkeeping, sales tax & payroll scope with Geoff Suval @ Xceleran for QBO integration.","owner":"Jaspal","due":"2026-08-07","status":"Done","notes":""},
+        {"id":"ACT-08","cat":"Marketing","desc":"Order interior posters, flyers, name-tag pallets & pins via ASB Portal.","owner":"Santiago / Jaspal","due":"2026-08-15","status":"Open","notes":""},
+        {"id":"ACT-09","cat":"Construction & Permitting","desc":"Complete studio build-out at 24527 Gosling Rd, Suite H2 — floor plan, kiln install, utility sinks, WPC flooring, lighting.","owner":"Santiago / Jaspal","due":"2026-09-12","status":"In Progress","notes":"Critical path to opening.","callPin":true},
+        {"id":"ACT-10","cat":"Construction & Permitting","desc":"Submit Harris County permit response package — materials list, HMIS statement & Skutt kiln classification letters.","owner":"Jaspal","due":"2026-08-05","status":"Done","notes":"Drafts prepared (July); confirm submission & response."},
+        {"id":"ACT-11","cat":"Facilities & FF&E","desc":"Get licensed electrician to confirm in writing: incoming amps, 240V vs 208V, single vs 3-phase, panel location & distance — before finalizing kiln order.","owner":"Jaspal","due":"2026-08-11","status":"Done","notes":"Kiln model depends on this."},
+        {"id":"ACT-12","cat":"Facilities & FF&E","desc":"Order Skutt KMT-1022 kiln + EnviroVent 2 once electrical spec is confirmed.","owner":"Jaspal","due":"2026-08-20","status":"Open","notes":"","callPin":true},
+        {"id":"ACT-13","cat":"Business & Finance","desc":"Bind business insurance (general liability + property) before opening — PHLY via Texan Insurance as lead; Markel / McDade as parallel quotes.","owner":"Jaspal","due":"2026-09-05","status":"Open","notes":"List Cordovan Arts Franchising LLC as additional insured."},
+        {"id":"ACT-14","cat":"Construction & Permitting","desc":"Obtain Certificate of Occupancy from Harris County after final inspection.","owner":"Jaspal","due":"2026-09-22","status":"Open","notes":"Gate to legally open.","callPin":true},
+        {"id":"ACT-15","cat":"Grand Opening & Ops","desc":"Plan & schedule the Grand Opening event — date, ribbon-cutting, community invites, trial classes.","owner":"Preeti / Silvana","due":"2026-09-15","status":"Open","notes":"","callPin":true},
+        {"id":"ACT-18","cat":"Exterior Signage","desc":"Obtain Signage permit from local jurisdiction.","owner":"Signage company","due":"2026-08-21","status":"Open","notes":""},
+        {"id":"ACT-19","cat":"Business & Finance","desc":"Introductions to Finance Partners","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-20","cat":"Business & Finance","desc":"Create a Business Plan","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-21","cat":"Business & Finance","desc":"Set up legal structure of business: Consult with Legal Counsel (Articles of Org, FEIN, Operating Agreement)","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-24","cat":"Business & Finance","desc":"Open commercial bank account: Signature cards, debit cards, order checks, stamp.","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-26","cat":"Business & Finance","desc":"Sales Tax Certificate (PYOP only)","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-27","cat":"Business & Finance","desc":"Business License (if needed)","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
+        {"id":"ACT-28","cat":"Grand Opening & Ops","desc":"Post Health & Safety Posters in studio","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
+        {"id":"ACT-29","cat":"Site Selection & Lease","desc":"Introductions to real estate partners","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-30","cat":"Site Selection & Lease","desc":"Analyzing Demographic reports","owner":"Matt / John","due":"","status":"Done","notes":"CAS help: Matt/ John"},
+        {"id":"ACT-31","cat":"Site Selection & Lease","desc":"Site Approval","owner":"Matt / John","due":"","status":"Done","notes":"CAS help: Matt/ John"},
+        {"id":"ACT-32","cat":"Site Selection & Lease","desc":"Coaching call: Lease negotiation tips","owner":"Matt / John","due":"","status":"Done","notes":"CAS help: Matt/ John"},
+        {"id":"ACT-33","cat":"Site Selection & Lease","desc":"Negotiations/ legal review/ revisions/ sign lease","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-35","cat":"Site Selection & Lease","desc":"Deliver 1st month rent / security deposit","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-36","cat":"Site Selection & Lease","desc":"Turn in TI reimbursement request to landlord after construction is complete","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-37","cat":"Site Selection & Lease","desc":"Record Keeping: Keep lease & landlord info in organized folder","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
+        {"id":"ACT-40","cat":"Systems & Tech","desc":"Corporate Email / web hosting setup","owner":"Jamee","due":"","status":"Done","notes":"CAS help: Jamee"},
+        {"id":"ACT-41","cat":"Systems & Tech","desc":"Jackrabbit Class configuration & tuition setup","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-42","cat":"Systems & Tech","desc":"Credit card processing gateway for Jackrabbit Class","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
+        {"id":"ACT-43","cat":"Systems & Tech","desc":"Input Classes, Camps, Workshops, Events into Jackrabbit","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-44","cat":"Systems & Tech","desc":"Clover POS setup","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-45","cat":"Systems & Tech","desc":"Input PYOP inventory into POS software","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-46","cat":"Systems & Tech","desc":"Credit card processing merchant account for Clover","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
+        {"id":"ACT-47","cat":"Systems & Tech","desc":"Custom Music & Entertainment Channels setup","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-49","cat":"Systems & Tech","desc":"Tech Stack alignment & hardware check","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-52","cat":"Systems & Tech","desc":"Google Shared Drive setup for studio team files","owner":"Jessica","due":"","status":"Open","notes":"CAS help: Jessica"},
+        {"id":"ACT-53","cat":"Systems & Tech","desc":"Amazon Business Account setup","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-54","cat":"Marketing","desc":"Artist rendering of new studio for website","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-55","cat":"Marketing","desc":"Upload new studio to website: CordovanArtSchool.com","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-56","cat":"Marketing","desc":"SEO for all new webpages at CordovanArtSchool.com","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-57","cat":"Marketing","desc":"Link website inquiry forms to franchisee email","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-58","cat":"Exterior Signage","desc":"Facia Sign: Obtain landlord approval per lease criteria","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-59","cat":"Exterior Signage","desc":"Pylon Sign: Obtain landlord approval per lease criteria","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-60","cat":"Exterior Signage","desc":"Order Coming Soon Banner","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-61","cat":"Exterior Signage","desc":"Order Bandit Signs","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-62","cat":"Exterior Signage","desc":"Order Window Photo Decals","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-63","cat":"Exterior Signage","desc":"Order Now Open Banner","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-64","cat":"Exterior Signage","desc":"Billboards & other exterior signage (Franchisor approval)","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-65","cat":"Construction & Permitting","desc":"Coaching call: Construction tips","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-66","cat":"Construction & Permitting","desc":"Hire Architect / Designer","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-67","cat":"Construction & Permitting","desc":"Provide architectural design to landlord for written approval","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-68","cat":"Construction & Permitting","desc":"Hire General Contractor (recommended 3 bids)","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-70","cat":"Construction & Permitting","desc":"Final walk-thru with GC; Change building locks & keys","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-71","cat":"Construction & Permitting","desc":"Receive Lien releases from General Contractor","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-73","cat":"Grand Opening & Ops","desc":"Install lockbox / hide-away key outside building for emergencies","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-74","cat":"Grand Opening & Ops","desc":"Get mail key from post office (bring lease copy)","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-75","cat":"Construction & Permitting","desc":"Classroom flow & maximized space layout approval","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-76","cat":"Construction & Permitting","desc":"Coaching Call: Licenses & Permits","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-78","cat":"Utilities","desc":"Phone & Commercial High-Speed Internet setup","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-79","cat":"Utilities","desc":"Establish Water utility account","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-80","cat":"Utilities","desc":"Establish Electricity account","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-81","cat":"Utilities","desc":"Establish Trash collection service","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-82","cat":"Utilities","desc":"HVAC service contract execution","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-83","cat":"Utilities","desc":"Pest / rodent control contract execution","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-84","cat":"Utilities","desc":"Set up studio phone voicemail greeting","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-85","cat":"Utilities","desc":"Property Taxes appraisal district registration","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-89","cat":"Facilities & FF&E","desc":"FFE Worksheet: Fill out quantities & place furniture/supplies orders","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
+        {"id":"ACT-90","cat":"Facilities & FF&E","desc":"Introduction to art vendors (Jerry's Artarama, Gare, Bailey's)","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
+        {"id":"ACT-91","cat":"Facilities & FF&E","desc":"Order Aprons, Pins & Palettes for Level Up program","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
+        {"id":"ACT-92","cat":"Facilities & FF&E","desc":"Order large classroom easels for teachers","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
+        {"id":"ACT-93","cat":"Facilities & FF&E","desc":"Install Ring Security Camera system","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
+        {"id":"ACT-94","cat":"Décor & Staging","desc":"Coaching Call: Ordering decorations, signage & staging","owner":"David / Nancy / Robb","due":"","status":"Open","notes":"CAS help: David, Nancy, Robb"},
+        {"id":"ACT-95","cat":"Décor & Staging","desc":"Curate clay hand-build student project samples","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-96","cat":"Décor & Staging","desc":"Original Classroom Artwork Package (non-framed)","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-97","cat":"Décor & Staging","desc":"Order seasonal lobby décor","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-98","cat":"Décor & Staging","desc":"Mount framed Cordovan T-shirts","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-99","cat":"Décor & Staging","desc":"'Before / After' Display Plate (PYOP only)","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-100","cat":"Décor & Staging","desc":"Paint Bar color sample tiles (PYOP only)","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-101","cat":"Décor & Staging","desc":"Painted finished samples of PYOP pottery","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-102","cat":"Décor & Staging","desc":"Install Digital Board display","owner":"David / Robb","due":"","status":"Open","notes":"CAS help: David/ Robb"},
+        {"id":"ACT-103","cat":"Décor & Staging","desc":"Order High-res canvas prints of artwork package","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-105","cat":"Décor & Staging","desc":"Install vinyl room signage: STUDIO 1, STUDIO 2, STUDIO 3","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-106","cat":"Décor & Staging","desc":"Install front door vinyl signage: logos & business hours","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-107","cat":"Décor & Staging","desc":"Install Pottery Parlor lobby logo","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-108","cat":"Décor & Staging","desc":"Install 'Paint Bar' sign","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-109","cat":"Décor & Staging","desc":"Install Chalk Board for schedules & events","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-110","cat":"Décor & Staging","desc":"Labels A–Z to organize PYOP customer pickup shelves","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-111","cat":"Décor & Staging","desc":"Shelf location signs (before/after firing)","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-112","cat":"Décor & Staging","desc":"A-frame easel for sidewalk promotions","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-113","cat":"Décor & Staging","desc":"'$6 studio fee' shelf signage","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-114","cat":"Décor & Staging","desc":"Hang approved original artwork in studio","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-115","cat":"Marketing","desc":"Training Call: ASB + Marketing manual review","owner":"John","due":"","status":"Open","notes":"CAS help: John"},
+        {"id":"ACT-116","cat":"Hiring & Training","desc":"Staff login creation on Online Training System","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-117","cat":"Marketing","desc":"Marketing Assets Google Folder review","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-120","cat":"Marketing","desc":"ASB Portal 1st collateral order (cards, promos, coupons)","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-121","cat":"Marketing","desc":"Submit custom Graphic Design requests","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-122","cat":"Marketing","desc":"Google Business Profile setup & verification","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-123","cat":"Marketing","desc":"Launch targeted Google Ads campaigns","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-124","cat":"Marketing","desc":"Apple Maps business listing verification","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-125","cat":"Marketing","desc":"Yelp for Business profile setup","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-126","cat":"Marketing","desc":"Outreach to local mom blogs & community influencers","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
+        {"id":"ACT-127","cat":"Marketing","desc":"Book ads in local school & education guides","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
+        {"id":"ACT-128","cat":"Marketing","desc":"Submit press release to local newspaper 'New Business' section","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
+        {"id":"ACT-129","cat":"Marketing","desc":"Book local print & community magazine ads","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
+        {"id":"ACT-130","cat":"Marketing","desc":"Publish localized Facebook & Instagram pages","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-132","cat":"Hiring & Training","desc":"Management operations training via portal","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-133","cat":"Hiring & Training","desc":"Recruit & hire Studio Manager","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-134","cat":"Grand Opening & Ops","desc":"Finalize weekly studio operating hours","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-135","cat":"Hiring & Training","desc":"Recruit & hire art teachers / instructors","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-136","cat":"Hiring & Training","desc":"Schedule & conduct in-person staff training","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-137","cat":"Hiring & Training","desc":"Attend weekly corporate Zoom training calls","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"}
+      ],
+      risks: [
+        {"id":"RSK-01","desc":"Exterior sign manufacturing/installation delay impacts grand-opening visibility.","impact":"High","likelihood":"Medium","mitigation":"Submit specs to corporate immediately upon receiving vendor quotes; ensure local sign vendor guarantees delivery schedule.","owner":"Santiago / Jaspal","status":"Open","callPin":true},
+        {"id":"RSK-02","desc":"Delayed digital ad onboarding leads to lower initial enrollment volume at launch.","impact":"High","likelihood":"Low","mitigation":"Connect with Creative Tricycle promptly; complete ad setup at least 3–4 weeks prior to opening.","owner":"Jaspal","status":"Open","callPin":true},
+        {"id":"RSK-03","desc":"\"Level Up\" interior board delivery exceeds the 4-week window.","impact":"Medium","likelihood":"Medium","mitigation":"Place order immediately with recommended local printer.","owner":"Santiago","status":"Open"},
+        {"id":"RSK-04","desc":"Build-out, permit review or Certificate of Occupancy delay pushes opening.","impact":"High","likelihood":"Medium","mitigation":"Submit permit package early; track inspection dates; keep GC on firm schedule.","owner":"Jaspal","status":"Open","callPin":true},
+        {"id":"RSK-05","desc":"Suite turns out single-phase only — forces a different kiln model and rewiring.","impact":"Medium","likelihood":"Medium","mitigation":"Obtain electrician's written confirmation of phase & amperage before placing kiln order.","owner":"Jaspal","status":"Closed"}
+      ],
+      register: [
+        {"id":"ASM-01","k":"assumption","desc":"Landlord permits flexible illuminated exterior signage design based on budget.","basis":"Confirmed by corporate review; no restrictive criteria.","status":"Validated"},
+        {"id":"ASM-02","k":"assumption","desc":"Existing pre-registrations convert to active enrollments once Jackrabbit is live.","basis":"Early market interest demonstrated.","status":"Pending"},
+        {"id":"ASM-03","k":"assumption","desc":"Corporate Marketing Assets folder is the single source of truth for brand compliance.","basis":"Confirmed with John Howell & Robb Costello.","status":"Validated"},
+        {"id":"ISS-01","k":"issue","desc":"Accounting & payroll package structure pending finalization with Xceleran.","severity":"Medium","resolution":"Schedule call with Geoff Suval to align payroll options.","owner":"Jaspal","status":"Open"},
+        {"id":"DEP-01","k":"dependency","desc":"Exterior sign ordering depends on corporate approval from John Howell.","dependsOn":"John Howell / Corporate Review","impact":"Delay in placing order.","status":"Open"},
+        {"id":"DEP-02","k":"dependency","desc":"FB & IG local management depends on admin-email provision to Matt Fowers.","dependsOn":"Matt Fowers / Robb Costello","impact":"Delay publishing localized social content.","status":"Open"},
+        {"id":"DEP-03","k":"dependency","desc":"Student class registration relies on Jackrabbit account configuration.","dependsOn":"Jackrabbit / Shelly / Nancy","impact":"Unable to collect online tuition.","status":"Open"},
+        {"id":"ASM-04","k":"assumption","desc":"Suite has 240V 3-phase electrical service.","basis":"Pending written confirmation from electrician.","status":"Pending"},
+        {"id":"ASM-05","k":"assumption","desc":"Studio materials stay in consumer quantities (no standalone fire permit).","basis":"Harris County HMIS review validated.","status":"Validated"},
+        {"id":"ISS-02","k":"issue","desc":"Kiln EnviroVent duct route not finalized; roof penetration needs approved roofer.","severity":"Medium","resolution":"Decide duct route with GC; coordinate roofer per lease.","owner":"Santiago","status":"Open"},
+        {"id":"DEP-04","k":"dependency","desc":"Kiln order & model selection depend on electrician confirming specs.","dependsOn":"Licensed electrician","impact":"Wrong kiln model ordered.","status":"Open"},
+        {"id":"DEP-05","k":"dependency","desc":"Certificate of Occupancy depends on Harris County inspection sign-off.","dependsOn":"Harris County Engineering","impact":"Cannot legally open.","status":"Open"},
+        {"id":"DEP-06","k":"dependency","desc":"Kiln roof-vent penetration depends on landlord-approved roofer.","dependsOn":"Landlord / approved roofer","impact":"Kiln unusable until vented.","status":"Open"}
+      ],
+      decisions: [
+        {"id":"DEC-01","summary":"Mandatory adoption of Google & Facebook Ads via Creative Tricycle as primary acquisition channels.","date":"2026-07-29","stakeholders":"Jaspal, Santiago, John Howell"},
+        {"id":"DEC-02","summary":"Use Signal for encrypted, multi-person daily bookkeeping communication with the Xceleran team.","date":"2026-07-15","stakeholders":"Jaspal, Santiago, Xceleran"},
+        {"id":"DEC-03","summary":"Establish Woodlands-Gosling Rd as the primary franchise facility location.","date":"2026-07-15","stakeholders":"Prospera Experience Group LLC, Cordovan HQ"},
+        {"id":"DEC-04","summary":"Target Grand Opening set to October 31, 2026.","date":"2026-07-31","stakeholders":"Jaspal, Santiago, Preeti, Silvana"},
+        {"id":"DEC-05","summary":"Install one Skutt KMT-1022 electric kiln with EnviroVent 2 downdraft venting ducted to exterior.","date":"2026-07-20","stakeholders":"Jaspal, Santiago, Cordovan HQ"}
+      ],
+      registrations: [
+        {"id":"REG-01","date":"2026-07-07","type":"Trial","source":"Website","student":"Olivia","email":"tahaniweichlein@gmail.com","dob":"02/26/2015","age":11,"parent":"Tahani A Weichlein","phone":"(832) 620-0218","days":"","prob":"xx%","notes":"Responded on 07/24"},
+        {"id":"REG-02","date":"2026-07-13","type":"Trial","source":"Website","student":"Maria Vidal","email":"cathystevenson@aol.com","dob":"11/18/2008","age":17,"parent":"Jaime Vidal","phone":"(556) 190-4087","days":"","prob":"xx%","notes":"Responded on 07/20"},
+        {"id":"REG-03","date":"2026-07-18","type":"Trial","source":"Website","student":"Lucienne Camors","email":"l.camors29@gmail.com","dob":"11/29/1986","age":39,"parent":"Lucienne Camors","phone":"(346) 268-9548","days":"","prob":"xx%","notes":"Responded on 07/20"},
+        {"id":"REG-04","date":"2026-07-19","type":"Wheel Party","source":"Website","student":"Kae Shakir","email":"mctxgm1908@gmail.com","dob":"","age":"","parent":"Kae Shakir","phone":"(713) 398-4868","days":"","prob":"xx%","notes":"Responded on 07/20"},
+        {"id":"REG-05","date":"2026-07-22","type":"Trial","source":"Website","student":"Kylie Looney","email":"brooke.looney1@gmail.com","dob":"01/28/2019","age":7,"parent":"cathystevenson@aol.com","phone":"NA","days":"Right now, evenir","prob":"50%","notes":"Responded on 07/24"},
+        {"id":"REG-06","date":"2026-07-23","type":"Trial","source":"Website","student":"Cat & Vik","email":"vusshay@gmail.com","dob":"02/01/2013","age":13,"parent":"Vusala","phone":"(832) 832-1019","days":"","prob":"xx%","notes":"Responded on 07/24"},
+        {"id":"REG-07","date":"2026-07-24","type":"Trial","source":"Website","student":"Penelope Lizalde","email":"jgarcia0515@yahoo.com","dob":"02/20/2015","age":11,"parent":"Jacquelin Lizalde","phone":"(281) 770-1740","days":"","prob":"xx%","notes":"Responded on 07/24"},
+        {"id":"REG-08","date":"2026-07-30","type":"Trial","source":"Website","student":"Polina Skorovorova","email":"doveorsk@gmail.com","dob":"11/29/2015","age":10,"parent":"Svetlana Skorovorova","phone":"(936) 330-4719","days":"","prob":"xx%","notes":"Responded on 07/31"},
+        {"id":"REG-09","date":"2026-08-05","type":"Trial","source":"Website","student":"Xiomara Baltateanu","email":"calinandmara@yahoo.com","dob":"03/29/2015","age":11,"parent":"Xiomara Baltateanu","phone":"(714) 488-3510","days":"","prob":"xx%","notes":"Responded on 08/05"},
+        {"id":"REG-10","date":"2026-08-03","type":"Trial","source":"Website","student":"Deborah Jones","email":"deborah7067@att.net","dob":"07/24/2026","age":0,"parent":"Deborah","phone":"(346) 837-4664","days":"","prob":"xx%","notes":"Responded on 08/05"},
+        {"id":"REG-11","date":"2026-07-31","type":"Trial","source":"Website","student":"Valentina Gonzalez-M","email":"jayme.leigh.meyer@gmail.com","dob":"06/18/2013","age":13,"parent":"Jayme Meyer","phone":"(512) 653-0241","days":"We could potenti","prob":"50%","notes":"Responded on 08/05"},
+        {"id":"REG-12","date":"2026-08-08","type":"Call","source":"call","student":"Beyza Daglioglu","email":"kdaglioglu@gmail.com","dob":"","age":13,"parent":"Kemal DAGLIOGLU","phone":"832 610 5347","days":"","prob":"100%","notes":"Emailed on 08/08"},
+        {"id":"REG-13","date":"2026-08-08","type":"Trial","source":"Website","student":"Amelia Huang","email":"s.guan0056@gmail.com","dob":"05/03/2021","age":5,"parent":"SUJUN GUAN","phone":"(832) 575-1564","days":"","prob":"xx%","notes":"Responded on 08/08"},
+        {"id":"REG-14","date":"2026-08-08","type":"Trial","source":"Website","student":"Olivia Neve","email":"smartinez2989@gmail.com","dob":"05/07/2020","age":6,"parent":"Samantha Neve","phone":"(956) 279-6475","days":"","prob":"xx%","notes":"Responded on 08/08"},
+        {"id":"REG-15","date":"2026-08-09","type":"Trial","source":"Website","student":"Charlotte Wiggand","email":"ekaterina.wiggand@gmail.com","dob":"04/20/2018","age":8,"parent":"Katia Wiggand","phone":"(518) 390-6142","days":"","prob":"xx%","notes":"Responded on 08/10"},
+        {"id":"REG-16","date":"2026-08-09","type":"Trial","source":"Website","student":"Shiloh Brazda","email":"cathystevenson@aol.com","dob":"06/15/2021","age":5,"parent":"Jessica Brazda","phone":"(832) 918-2211","days":"homeschooling, i","prob":"100%","notes":"Responded on 08/10"},
+        {"id":"REG-17","date":"2026-08-11","type":"Trial","source":"Website","student":"Marcus Chen","email":"cathystevenson@aol.com","dob":"09/02/2018","age":7,"parent":"Candy Jiang","phone":"(713) 517-8883","days":"","prob":"xx%","notes":"Responded on 08/11"},
+        {"id":"REG-18","date":"2026-08-14","type":"Trial","source":"Website","student":"Catherine Stevenson","email":"cathystevenson@aol.com","dob":"","age":"","parent":"Catherine Stevenson","phone":"(602) 739-6389","days":"","prob":"xx%","notes":"Responded on 08/14"},
+        {"id":"REG-19","date":"2026-08-15","type":"Trial","source":"Website","student":"Zakariya Chohan","email":"razanakhan5@gmail.com","dob":"08/25/2019","age":6,"parent":"Razana Khan","phone":"(917) 774-4214","days":"","prob":"xx%","notes":"Responded on 08/18"},
+        {"id":"REG-20","date":"2026-08-16","type":"Trial","source":"Website","student":"Carson Moore","email":"moorelm2021@gmail.com","dob":"10/17/2013","age":12,"parent":"Leah Moore","phone":"(443) 775-9271","days":"Weeknights or w","prob":"xx%","notes":"Responded on 08/18"},
+        {"id":"REG-21","date":"2026-08-18","type":"Trial","source":"Website","student":"Sophia Viesca","email":"bgarciadealba@gmail.com","dob":"10/16/2017","age":8,"parent":"Bernadette","phone":"(305) 781-7298","days":"","prob":"xx%","notes":"Responded on 08/18"},
+        {"id":"REG-22","date":"2026-08-19","type":"Trial","source":"Website","student":"Gabriela Van der Ree","email":"randyvdr@gmail.com","dob":"10/05/2015","age":10,"parent":"Randy Van Der Ree","phone":"(346) 273-9674","days":"","prob":"xx%","notes":"Responded on 08/20"},
+        {"id":"REG-23","date":"2026-08-20","type":"Trial","source":"Website","student":"New Student Lead","email":"contact@cordovan.com","dob":"","age":"","parent":"Guardian Name","phone":"(832) 000-0000","days":"","prob":"xx%","notes":"Responded on 08/20"}
+      ],
+      schools: [
+        {
+          "id": "SCH-01",
+          "org": "Southwater Elementary School",
+          "poc": "John Doe",
+          "phone": "(444) 444-4444",
+          "email": "johndoe@gmail.com",
+          "actionType": "1 Free Month of Classes",
+          "amountPaid": "n/a",
+          "details": "We donated 1 month free classes for silent auction. The school will list us on their website between 3/1/26-5/31/26, and let us have flyer distribution in their school",
+          "eventDate": "2/25/2028",
+          "eventTime": "n/a",
+          "verifiedDate": "2/2/2026",
+          "notes": "On 2/2/26 800 flyers were delivered and sent in the student's take home folders. We are listed on the schools website"
+        },
+        {
+          "id": "SCH-02",
+          "org": "Sommerville Women Painters",
+          "poc": "Jane Doe",
+          "phone": "(444) 444-4444",
+          "email": "janedoe@gmail.com",
+          "actionType": "Fundraiser/Spirit Event",
+          "amountPaid": "30% of proceeds from fundraiser",
+          "details": "Sip and paint. 30% of proceeds to back to their organization",
+          "eventDate": "2/25/2028",
+          "eventTime": "6:00:00 PM",
+          "verifiedDate": "2/25/2028",
+          "notes": "Great experience. do again next year. A check for 30% was sent to the organiztion for the fundraiser by Payroll."
+        },
+        {
+          "id": "SCH-03",
+          "org": "Gattis Elementary School PTA",
+          "poc": "Jane Doe",
+          "phone": "(444) 444-4444",
+          "email": "janedoe@gmail.com",
+          "actionType": "Paid Sponsorship",
+          "amountPaid": "$500.00",
+          "details": "Banner at school, listing in school newsletter, 1,000 summer camp flyers in school distribution to kids",
+          "eventDate": "2/25/2028",
+          "eventTime": "n/a",
+          "verifiedDate": "2/1/2028",
+          "notes": "Great experience. do again next year. I drove by and saw the banner. I delivered 1,000 flyers on 3/1/26 and verified they got sent home with the students on 3/7/26. I saw the email go out that listed Cordovan Art School as a sponsor on 3/15/26"
+        }
+      ]
+    };
+
+    let appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+    let editingTarget = null;
+    let editingCategory = '';
+    let activeActionFilter = 'open';
+    let activeRiskFilter = 'high';
+    let activeRegisterFilter = 'open';
+
+    const categoryColors = {
+      "Facilities & FF&E": "#b45309",
+      "Exterior Signage": "#701a75",
+      "Marketing": "#f97316",
+      "Hiring & Training": "#4338ca",
+      "Business & Finance": "#0284c7",
+      "Construction & Permitting": "#65a30d",
+      "Grand Opening & Ops": "#0d9488",
+      "Site Selection & Lease": "#3b82f6",
+      "Systems & Tech": "#059669",
+      "Utilities": "#881337",
+      "Décor & Staging": "#d97706"
+    };
+
+    function checkAuth() {
+      const entered = document.getElementById('passcode').value.trim();
+      if (entered === TEAM_PASSCODE) {
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        initApp();
+      } else {
+        document.getElementById('auth-err').style.display = 'block';
+      }
+    }
+
+    async function initApp() {
+      await loadPersistedData();
+      startHeroClock();
+      populateCategoryAndOwnerDropdowns();
+      renderAllViews();
+      if (!FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
+        setInterval(loadPersistedData, 10000);
+      }
+    }
+
+    async function loadPersistedData() {
+      const storageKey = 'cordovan_master_store_final_v14';
+      if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
+        const local = localStorage.getItem(storageKey);
+        if (local) {
+          try {
+            const parsed = JSON.parse(local);
+            if (parsed && parsed.actions && parsed.actions.length > 50) {
+              appData = parsed;
+            } else {
+              appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+            }
+          } catch(e) {
+            appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+          }
+        } else {
+          appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+          localStorage.setItem(storageKey, JSON.stringify(appData));
+        }
+      } else {
+        try {
+          const res = await fetch(FIREBASE_DB_URL);
+          const remote = await res.json();
+          if (remote && remote.actions && remote.actions.length > 50) {
+            appData = remote;
+          } else {
+            await syncPersistedData(MASTER_SEED_DATA);
+            appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+          }
+        } catch (e) {
+          appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+        }
+      }
+      
+      if (!appData.actions || appData.actions.length === 0) appData.actions = JSON.parse(JSON.stringify(MASTER_SEED_DATA.actions));
+      if (!appData.risks || appData.risks.length === 0) appData.risks = JSON.parse(JSON.stringify(MASTER_SEED_DATA.risks));
+      if (!appData.register || appData.register.length === 0) appData.register = JSON.parse(JSON.stringify(MASTER_SEED_DATA.register));
+      if (!appData.decisions || appData.decisions.length === 0) appData.decisions = JSON.parse(JSON.stringify(MASTER_SEED_DATA.decisions));
+      if (!appData.registrations || appData.registrations.length === 0) appData.registrations = JSON.parse(JSON.stringify(MASTER_SEED_DATA.registrations));
+      if (!appData.schools || appData.schools.length === 0) appData.schools = JSON.parse(JSON.stringify(MASTER_SEED_DATA.schools));
+      
+      renderAllViews();
+    }
+
+    async function syncPersistedData(data) {
+      const storageKey = 'cordovan_master_store_final_v14';
+      if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
+        localStorage.setItem(storageKey, JSON.stringify(data));
+      } else {
+        try {
+          await fetch(FIREBASE_DB_URL, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+    }
+
+    function forceRestoreDefaults() {
+      if (confirm("Reset all project checklists, risks, decisions, and outreach back to master template?")) {
+        appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+        syncPersistedData(appData);
+        populateCategoryAndOwnerDropdowns();
+        renderAllViews();
+        alert("Master data restored successfully!");
+      }
+    }
+
+    function startHeroClock() {
+      function tick() {
+        const target = new Date(appData.openingDate || "2026-10-31T00:00:00");
+        const now = new Date();
+        const diff = target - now;
+
+        if (diff > 0) {
+          const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+          const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+          const mins = Math.floor((diff / 1000 / 60) % 60);
+          const secs = Math.floor((diff / 1000) % 60);
+
+          document.getElementById('days-to-go').innerText = days;
+          document.getElementById('live-time-left').innerText = 
+            `${String(hours).padStart(2,'0')}:${String(mins).padStart(2,'0')}:${String(secs).padStart(2,'0')} left today`;
+        }
+      }
+      tick();
+      setInterval(tick, 1000);
+    }
+
+    function promptChangeDate() {
+      const oldDateStr = appData.openingDate || "2026-10-31";
+      const newDateStr = prompt("Set Grand Opening Date (YYYY-MM-DD):", oldDateStr);
+      if (newDateStr && !isNaN(Date.parse(newDateStr))) {
+        const oldD = new Date(oldDateStr);
+        const newD = new Date(newDateStr);
+        const deltaDays = Math.round((newD - oldD) / (1000 * 60 * 60 * 24));
+
+        appData.openingDate = newDateStr;
+        document.getElementById('hero-date-display').innerText = newDateStr;
+
+        if (deltaDays !== 0) {
+          if (confirm(`The opening date changed by ${deltaDays > 0 ? '+' + deltaDays : deltaDays} days. Would you like to shift all open item due dates by ${deltaDays} days automatically?`)) {
+            shiftDatesByDays(deltaDays);
+          }
+        }
+        syncPersistedData(appData);
+        renderAllViews();
+      }
+    }
+
+    function openShiftModal() {
+      document.getElementById('shift-modal').style.display = 'flex';
+    }
+
+    function executeDateShift() {
+      const days = parseInt(document.getElementById('shift-days-count').value, 10);
+      if (isNaN(days) || days === 0) {
+        alert("Please enter a valid non-zero number of days.");
+        return;
+      }
+      shiftDatesByDays(days);
+      closeModal('shift-modal');
+      renderAllViews();
+      syncPersistedData(appData);
+      alert(`Shifted open action items by ${days} days.`);
+    }
+
+    function shiftDatesByDays(numDays) {
+      (appData.actions || []).forEach(a => {
+        if (a.status !== 'Done' && a.due) {
+          const d = new Date(a.due);
+          d.setDate(d.getDate() + numDays);
+          a.due = d.toISOString().split('T')[0];
+        }
+      });
+    }
+
+    function switchNav(tabName) {
+      document.querySelectorAll('.page-view').forEach(p => p.style.display = 'none');
+      document.querySelectorAll('.tab-pill').forEach(b => b.classList.remove('active'));
+      document.getElementById('view-' + tabName).style.display = 'block';
+      const btn = document.getElementById('tab-btn-' + tabName);
+      if (btn) btn.classList.add('active');
+    }
+
+    function filterAndNavigateActions(type, value) {
+      switchNav('actions');
+      activeActionFilter = type;
+      document.getElementById('filter-action-search').value = '';
+      document.getElementById('filter-action-category').value = '';
+      document.getElementById('filter-action-owner').value = '';
+
+      const banner = document.getElementById('action-filter-banner');
+      const bannerText = document.getElementById('action-filter-text');
+
+      if (type === 'Done') {
+        document.getElementById('filter-action-status').value = 'Done';
+        banner.style.display = 'flex';
+        bannerText.innerText = "Showing: Completed Actions Only";
+      } else if (type === 'open') {
+        document.getElementById('filter-action-status').value = 'Open';
+        banner.style.display = 'flex';
+        bannerText.innerText = "Showing: Open & In Progress Actions";
+      } else if (type === 'overdue') {
+        document.getElementById('filter-action-status').value = '';
+        banner.style.display = 'flex';
+        bannerText.innerText = "Showing: Overdue Action Items";
+      } else if (type === 'duesoon') {
+        document.getElementById('filter-action-status').value = '';
+        banner.style.display = 'flex';
+        bannerText.innerText = "Showing: Items Due Within 7 Days";
+      } else if (type === 'category') {
+        document.getElementById('filter-action-status').value = '';
+        document.getElementById('filter-action-category').value = value;
+        banner.style.display = 'flex';
+        bannerText.innerText = `Showing Category: ${value}`;
+      } else {
+        document.getElementById('filter-action-status').value = '';
+        banner.style.display = 'none';
+        activeActionFilter = null;
+      }
+      renderActionsTable();
+    }
+
+    function filterAndNavigateRisks(type) {
+      switchNav('risks');
+      activeRiskFilter = type;
+      document.getElementById('filter-risk-status').value = type;
+      const banner = document.getElementById('risk-filter-banner');
+      const bannerText = document.getElementById('risk-filter-text');
+      
+      if (type === 'high') {
+        banner.style.display = 'flex';
+        bannerText.innerText = "Showing: High Impact Open Risks";
+      } else if (type === 'open') {
+        banner.style.display = 'flex';
+        bannerText.innerText = "Showing: All Open Risks";
+      } else {
+        banner.style.display = 'none';
+      }
+      renderRisksTable();
+    }
+
+    function filterAndNavigateRegister(type) {
+      switchNav('register');
+      activeRegisterFilter = type;
+      document.getElementById('filter-register-status').value = type;
+      const banner = document.getElementById('register-filter-banner');
+      const bannerText = document.getElementById('register-filter-text');
+      
+      if (type === 'open') {
+        banner.style.display = 'flex';
+        bannerText.innerText = "Showing: Open & Pending Register Items";
+      } else {
+        banner.style.display = 'none';
+      }
+      renderRegisterTable();
+    }
+
+    function clearActionFilters() {
+      activeActionFilter = null;
+      document.getElementById('action-filter-banner').style.display = 'none';
+      document.getElementById('filter-action-status').value = '';
+      document.getElementById('filter-action-category').value = '';
+      document.getElementById('filter-action-owner').value = '';
+      document.getElementById('filter-action-search').value = '';
+      renderActionsTable();
+    }
+
+    function clearRiskFilters() {
+      activeRiskFilter = '';
+      document.getElementById('filter-risk-status').value = '';
+      document.getElementById('risk-filter-banner').style.display = 'none';
+      renderRisksTable();
+    }
+
+    function clearRegisterFilters() {
+      activeRegisterFilter = '';
+      document.getElementById('filter-register-status').value = '';
+      document.getElementById('register-filter-banner').style.display = 'none';
+      renderRegisterTable();
+    }
+
+    function renderAllViews() {
+      const actions = appData.actions || [];
+      const risks = appData.risks || [];
+      const register = appData.register || [];
+      const decisions = appData.decisions || [];
+      const registrations = appData.registrations || [];
+      const schools = appData.schools || [];
+
+      const doneCnt = actions.filter(a => a.status === 'Done').length;
+      const openCnt = actions.filter(a => a.status === 'Open').length;
+      const progCnt = actions.filter(a => a.status === 'In Progress').length;
+      const totalActions = actions.length || 1;
+      
+      const pct = Math.round((doneCnt / totalActions) * 100);
+
+      const baseline = new Date("2026-08-21T00:00:00");
+      let overdueCnt = 0;
+      let dueSoonCnt = 0;
+
+      actions.forEach(a => {
+        if (a.due && a.status !== 'Done') {
+          const diff = Math.ceil((new Date(a.due) - baseline) / (1000 * 60 * 60 * 24));
+          if (diff < 0) overdueCnt++;
+          else if (diff <= 7) dueSoonCnt++;
+        }
+      });
+
+      const highRisksCnt = risks.filter(r => r.status === 'Open' && r.impact === 'High').length;
+      const openRegCnt = register.filter(r => r.status === 'Open' || r.status === 'Pending').length;
+      
+      const pinnedActions = actions.filter(a => a.callPin);
+      const pinnedRisks = risks.filter(r => r.callPin);
+      const totalCallPinned = pinnedActions.length + pinnedRisks.length;
+
+      document.getElementById('hero-open-actions').innerText = openCnt + progCnt;
+      document.getElementById('hero-overdue-actions').innerText = overdueCnt;
+      document.getElementById('hero-high-risks').innerText = highRisksCnt;
+      document.getElementById('hero-decisions-count').innerText = decisions.length;
+      document.getElementById('hero-reg-count').innerText = registrations.length;
+      document.getElementById('hero-school-count').innerText = schools.length;
+      document.getElementById('hero-call-count').innerText = totalCallPinned;
+
+      document.getElementById('readiness-pct-text').innerText = pct + '%';
+      document.getElementById('radial-gauge').style.setProperty('--pct', pct + '%');
+
+      document.getElementById('card-done-ratio').innerText = `${doneCnt}/${totalActions}`;
+      document.getElementById('card-due-soon').innerText = dueSoonCnt;
+      document.getElementById('card-overdue').innerText = overdueCnt;
+      document.getElementById('card-open-risks').innerText = risks.filter(r => r.status === 'Open').length;
+      document.getElementById('card-open-reg').innerText = openRegCnt;
+      document.getElementById('card-trial-count').innerText = registrations.length;
+      document.getElementById('card-school-count').innerText = schools.length;
+      document.getElementById('card-call-count').innerText = `${totalCallPinned}/10`;
+
+      document.getElementById('tab-cnt-actions').innerText = openCnt + progCnt;
+      document.getElementById('tab-cnt-risks').innerText = highRisksCnt;
+      document.getElementById('tab-cnt-reg').innerText = openRegCnt;
+      document.getElementById('tab-cnt-dec').innerText = decisions.length;
+      document.getElementById('tab-cnt-trial').innerText = registrations.length;
+      document.getElementById('tab-cnt-schools').innerText = schools.length;
+      document.getElementById('tab-cnt-call').innerText = totalCallPinned;
+
+      renderCategoryBars();
+      renderUrgentItems();
+      renderActionsTable();
+      renderFridayCallTable();
+      renderRisksTable();
+      renderRegisterTable();
+      renderDecisionsTable();
+      renderRegistrationsTable();
+      renderSchoolsTable();
+    }
+
+    function renderCategoryBars() {
+      const counts = {};
+      (appData.actions || []).forEach(a => {
+        const cat = a.cat || 'Other';
+        counts[cat] = (counts[cat] || 0) + 1;
+      });
+
+      const max = Math.max(...Object.values(counts), 1);
+      const target = document.getElementById('category-bars-list');
+      target.innerHTML = Object.entries(counts)
+        .sort((a,b) => b[1] - a[1])
+        .slice(0, 8)
+        .map(([cat, num]) => {
+          const color = categoryColors[cat] || '#888888';
+          return `
+            <div class="cat-bar-item" onclick="filterAndNavigateActions('category', '${cat}')">
+              <div class="cat-dot" style="background-color: ${color};"></div>
+              <div class="cat-name">${cat}</div>
+              <div class="cat-track">
+                <div class="cat-fill" style="width: ${(num/max)*100}%; background-color: ${color};"></div>
+              </div>
+              <div class="cat-num">${num}</div>
+            </div>
+          `;
+        }).join('');
+    }
+
+    function renderUrgentItems() {
+      const baseline = new Date("2026-08-21T00:00:00");
+      const urgent = (appData.actions || [])
+        .filter(a => a.due && a.status !== 'Done')
+        .map(a => {
+          const diff = Math.ceil((new Date(a.due) - baseline) / (1000 * 60 * 60 * 24));
+          return { ...a, diff };
+        })
+        .sort((a, b) => a.diff - b.diff)
+        .slice(0, 5);
+
+      const target = document.getElementById('urgent-items-list');
+      if (urgent.length === 0) {
+        target.innerHTML = `<div style="color:#888; padding:12px;">No overdue or imminent tasks. Everything is on schedule!</div>`;
+        return;
+      }
+      target.innerHTML = urgent.map(u => `
+        <div class="urgent-row" onclick="openInspector('${u.id}', 'actions')">
+          <div class="late-badge">${u.diff < 0 ? Math.abs(u.diff) + 'd late' : u.diff + 'd left'}</div>
+          <div class="urgent-text">
+            <h5>${u.desc}</h5>
+            <p>${u.id} • ${u.owner || 'Unassigned'}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderActionsTable() {
+      const query = (document.getElementById('filter-action-search').value || '').toLowerCase();
+      const statusFilter = document.getElementById('filter-action-status').value;
+      const categoryFilter = document.getElementById('filter-action-category').value;
+      const ownerFilter = document.getElementById('filter-action-owner').value;
+      const baseline = new Date("2026-08-21T00:00:00");
+
+      const filtered = (appData.actions || []).filter(a => {
+        const matchQ = (a.desc + " " + a.cat + " " + a.owner + " " + a.id + " " + (a.notes||'')).toLowerCase().includes(query);
+        const matchC = categoryFilter ? a.cat === categoryFilter : true;
+        const matchO = ownerFilter ? a.owner === ownerFilter : true;
+        let matchS = statusFilter ? a.status === statusFilter : true;
+
+        let matchSpecial = true;
+        if (activeActionFilter === 'open') {
+          matchSpecial = (a.status === 'Open' || a.status === 'In Progress');
+        } else if (activeActionFilter === 'overdue') {
+          if (!a.due || a.status === 'Done') matchSpecial = false;
+          else matchSpecial = (new Date(a.due) - baseline) < 0;
+        } else if (activeActionFilter === 'duesoon') {
+          if (!a.due || a.status === 'Done') matchSpecial = false;
+          else {
+            const d = (new Date(a.due) - baseline) / (1000 * 60 * 60 * 24);
+            matchSpecial = d >= 0 && d <= 7;
+          }
+        }
+
+        return matchQ && matchS && matchC && matchO && matchSpecial;
+      });
+
+      document.getElementById('actions-table-body').innerHTML = filtered.map(a => `
+        <tr class="clickable" onclick="openInspector('${a.id}', 'actions')">
+          <td onclick="event.stopPropagation()">
+            <button class="pin-checkbox-btn ${a.callPin ? 'pinned' : ''}" onclick="toggleCallPin('${a.id}', 'actions')" title="Toggle Friday Call Agenda Pin">
+              ${a.callPin ? '📌' : '⚪'}
+            </button>
+          </td>
+          <td><strong>${a.id}</strong></td>
+          <td>${a.cat || '-'}</td>
+          <td>
+            <div>${a.desc}</div>
+            ${a.notes ? `<small style="color:#777; font-style:italic;">Note: ${a.notes}</small>` : ''}
+          </td>
+          <td>${a.owner || '-'}</td>
+          <td>${a.due || '-'}</td>
+          <td onclick="event.stopPropagation()">
+            <div class="table-actions-cell">
+              <select class="status-pill-select ${a.status === 'Done' ? 'pill-done' : a.status === 'In Progress' ? 'pill-prog' : 'pill-open'}"
+                onchange="changeActionStatus('${a.id}', this.value)">
+                <option value="Open" ${a.status === 'Open' ? 'selected':''}>Open</option>
+                <option value="In Progress" ${a.status === 'In Progress' ? 'selected':''}>In Progress</option>
+                <option value="Done" ${a.status === 'Done' ? 'selected':''}>Done</option>
+              </select>
+              <button class="del-btn" onclick="directDeleteItem('${a.id}', 'actions')" title="Delete Task">×</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderFridayCallTable() {
+      const pinnedActions = (appData.actions || []).filter(a => a.callPin);
+      const pinnedRisks = (appData.risks || []).filter(r => r.callPin);
+      const combined = [...pinnedActions, ...pinnedRisks];
+
+      const tbody = document.getElementById('friday-call-table-body');
+      if (combined.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:#888;">No items pinned for the Friday Call yet. Click the 📌 icon next to any Action or Risk to add it here (up to 10 items).</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = combined.map(item => {
+        const isRisk = item.id.startsWith('RSK');
+        return `
+          <tr class="clickable" onclick="openInspector('${item.id}', '${isRisk ? 'risks' : 'actions'}')">
+            <td onclick="event.stopPropagation()">
+              <button class="pin-checkbox-btn pinned" onclick="toggleCallPin('${item.id}', '${isRisk ? 'risks' : 'actions'}')" title="Remove from Friday Call">📌</button>
+            </td>
+            <td><strong>${item.id}</strong></td>
+            <td><span style="font-weight:600; color: ${isRisk ? '#b91c1c' : '#1e40af'}">${isRisk ? 'Risk Item' : (item.cat || '-')}</span></td>
+            <td>
+              <div><strong>${item.desc}</strong></div>
+              ${item.notes || item.mitigation ? `<small style="color:#666;">${item.notes || item.mitigation}</small>` : ''}
+            </td>
+            <td>${item.owner || '-'}</td>
+            <td>${item.due || 'High Risk'}</td>
+            <td>
+              <span class="action-type-pill ${item.status === 'Done' || item.status === 'Closed' ? 'type-classes' : item.status === 'In Progress' ? 'type-fundraiser' : 'type-sponsorship'}">
+                ${item.status}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function toggleCallPin(id, category) {
+      const list = appData[category] || [];
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+
+      const currentPinnedCount = (appData.actions || []).filter(a => a.callPin).length + (appData.risks || []).filter(r => r.callPin).length;
+
+      if (!item.callPin && currentPinnedCount >= 10) {
+        alert("You have reached the maximum limit of 10 items for the Friday Call agenda. Please unpin an item first.");
+        return;
+      }
+
+      item.callPin = !item.callPin;
+      renderAllViews();
+      await syncPersistedData(appData);
+    }
+
+    function renderRisksTable() {
+      const statusFilter = document.getElementById('filter-risk-status').value;
+      const filtered = (appData.risks || []).filter(r => {
+        if (statusFilter === 'high') {
+          return r.status === 'Open' && r.impact === 'High';
+        } else if (statusFilter === 'open') {
+          return r.status === 'Open';
+        } else if (statusFilter === 'Closed') {
+          return r.status === 'Closed';
+        }
+        return true;
+      });
+
+      document.getElementById('risks-table-body').innerHTML = filtered.map(r => `
+        <tr class="clickable" onclick="openInspector('${r.id}', 'risks')">
+          <td onclick="event.stopPropagation()">
+            <button class="pin-checkbox-btn ${r.callPin ? 'pinned' : ''}" onclick="toggleCallPin('${r.id}', 'risks')" title="Toggle Friday Call Agenda Pin">
+              ${r.callPin ? '📌' : '⚪'}
+            </button>
+          </td>
+          <td><strong>${r.id}</strong></td>
+          <td>${r.desc}</td>
+          <td><span style="font-weight:700; color:${r.impact === 'High' ? '#dc2626' : '#d97706'}">${r.impact}</span></td>
+          <td>${r.likelihood}</td>
+          <td><small>${r.mitigation}</small></td>
+          <td>${r.owner || '-'}</td>
+          <td onclick="event.stopPropagation()">
+            <div class="table-actions-cell">
+              <select class="status-pill-select ${r.status === 'Closed' ? 'pill-done' : 'pill-open'}" 
+                onchange="changeRiskStatus('${r.id}', this.value)">
+                <option value="Open" ${r.status === 'Open' ? 'selected':''}>Open</option>
+                <option value="Closed" ${r.status === 'Closed' ? 'selected':''}>Closed</option>
+              </select>
+              <button class="del-btn" onclick="directDeleteItem('${r.id}', 'risks')" title="Delete Risk">×</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function renderRegisterTable() {
+      const statusFilter = document.getElementById('filter-register-status').value;
+      const filtered = (appData.register || []).filter(reg => {
+        if (statusFilter === 'open') {
+          return reg.status === 'Open' || reg.status === 'Pending';
+        } else if (statusFilter === 'validated') {
+          return reg.status === 'Validated' || reg.status === 'Closed';
+        }
+        return true;
+      });
+
+      document.getElementById('register-table-body').innerHTML = filtered.map(reg => `
+        <tr class="clickable" onclick="openInspector('${reg.id}', 'register')">
+          <td><strong>${reg.id}</strong></td>
+          <td><strong>${(reg.k || '').toUpperCase()}</strong></td>
+          <td>${reg.desc}</td>
+          <td><small>${reg.basis || reg.resolution || reg.impact || '-'}</small></td>
+          <td onclick="event.stopPropagation()">
+            <div class="table-actions-cell">
+              <select class="status-pill-select ${reg.status === 'Validated' || reg.status === 'Closed' ? 'pill-done' : 'pill-prog'}" 
+                onchange="changeRegisterStatus('${reg.id}', this.value)">
+                <option value="Open" ${reg.status === 'Open' ? 'selected':''}>Open</option>
+                <option value="Pending" ${reg.status === 'Pending' ? 'selected':''}>Pending</option>
+                <option value="Validated" ${reg.status === 'Validated' ? 'selected':''}>Validated</option>
+                <option value="Closed" ${reg.status === 'Closed' ? 'selected':''}>Closed</option>
+              </select>
+              <button class="del-btn" onclick="directDeleteItem('${reg.id}', 'register')" title="Delete Item">×</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
     function renderDecisionsTable() {
       const tbody = document.getElementById('decisions-table-body');
       const list = appData.decisions || [];
@@ -1253,6 +2073,327 @@
           </td>
         </tr>
       `).join('');
+    }
+
+    function renderRegistrationsTable() {
+      const q = (document.getElementById('filter-reg-search').value || '').toLowerCase();
+      const typeFilter = document.getElementById('filter-reg-type').value;
+
+      const filtered = (appData.registrations || []).filter(r => {
+        const matchQ = (r.student + " " + r.parent + " " + r.email + " " + r.phone + " " + (r.notes || '') + " " + (r.days || '')).toLowerCase().includes(q);
+        const matchT = typeFilter ? r.type === typeFilter : true;
+        return matchQ && matchT;
+      });
+
+      document.getElementById('registrations-table-body').innerHTML = filtered.map(r => `
+        <tr class="clickable" onclick="openInspector('${r.id}', 'registrations')">
+          <td>${r.date || '-'}</td>
+          <td><strong style="color: ${r.type === 'Trial' ? '#0d9488' : r.type === 'Wheel Party' ? '#b45309' : '#4338ca'};">${r.type}</strong></td>
+          <td>${r.source || 'Website'}</td>
+          <td><strong>${r.student}</strong></td>
+          <td><small>${r.email}</small></td>
+          <td>${r.dob || '-'}</td>
+          <td>${r.age || '-'}</td>
+          <td>${r.parent || '-'}</td>
+          <td>${r.phone || '-'}</td>
+          <td><small>${r.days || '-'}</small></td>
+          <td><strong>${r.prob || 'xx%'}</strong></td>
+          <td><small style="color:#666;">${r.notes || '-'}</small></td>
+        </tr>
+      `).join('');
+    }
+
+    function renderSchoolsTable() {
+      const q = (document.getElementById('filter-school-search').value || '').toLowerCase();
+      const actionFilter = document.getElementById('filter-school-action').value;
+
+      const filtered = (appData.schools || []).filter(s => {
+        const matchQ = (s.org + " " + s.poc + " " + s.phone + " " + s.email + " " + (s.details || '') + " " + (s.notes || '')).toLowerCase().includes(q);
+        const matchA = actionFilter ? s.actionType === actionFilter : true;
+        return matchQ && matchA;
+      });
+
+      document.getElementById('schools-table-body').innerHTML = filtered.map(s => {
+        let badgeClass = "type-classes";
+        if (s.actionType === "Fundraiser/Spirit Event") badgeClass = "type-fundraiser";
+        if (s.actionType === "Paid Sponsorship") badgeClass = "type-sponsorship";
+
+        return `
+          <tr class="clickable" onclick="openInspector('${s.id}', 'schools')">
+            <td><strong>${s.org}</strong></td>
+            <td>${s.poc || '-'}</td>
+            <td>${s.phone || '-'}</td>
+            <td><small>${s.email || '-'}</small></td>
+            <td><span class="action-type-pill ${badgeClass}">${s.actionType}</span></td>
+            <td><strong>${s.amountPaid || 'n/a'}</strong></td>
+            <td><small>${s.details}</small></td>
+            <td>${s.eventDate || '-'}</td>
+            <td>${s.eventTime || '-'}</td>
+            <td>${s.verifiedDate || '-'}</td>
+            <td><small style="color:#666;">${s.notes || '-'}</small></td>
+            <td onclick="event.stopPropagation()">
+              <button class="del-btn" onclick="directDeleteItem('${s.id}', 'schools')" title="Delete Outreach Record">×</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function changeActionStatus(id, st) {
+      const target = (appData.actions || []).find(a => a.id === id);
+      if (target) { target.status = st; renderAllViews(); await syncPersistedData(appData); }
+    }
+    async function changeRiskStatus(id, st) {
+      const target = (appData.risks || []).find(r => r.id === id);
+      if (target) { target.status = st; renderAllViews(); await syncPersistedData(appData); }
+    }
+    async function changeRegisterStatus(id, st) {
+      const target = (appData.register || []).find(r => r.id === id);
+      if (target) { target.status = st; renderAllViews(); await syncPersistedData(appData); }
+    }
+
+    function openInspector(id, category) {
+      editingCategory = category;
+      const list = appData[category] || [];
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+
+      editingTarget = item;
+      document.getElementById('modal-heading').innerText = `${item.id || item.org || 'Lead'}: Details`;
+
+      document.getElementById('standard-edit-fields').style.display = 'none';
+      document.getElementById('decision-edit-fields').style.display = 'none';
+      document.getElementById('reg-edit-fields').style.display = 'none';
+      document.getElementById('school-edit-fields').style.display = 'none';
+
+      const delBtn = document.getElementById('modal-del-btn');
+      delBtn.style.display = (category === 'registrations') ? 'none' : 'block';
+
+      if (category === 'decisions') {
+        document.getElementById('decision-edit-fields').style.display = 'block';
+        document.getElementById('modal-dec-date').value = item.date || '';
+        document.getElementById('modal-dec-summary').value = item.summary || '';
+        document.getElementById('modal-dec-stakeholders').value = item.stakeholders || '';
+      } else if (category === 'registrations') {
+        document.getElementById('reg-edit-fields').style.display = 'block';
+        document.getElementById('modal-reg-date').value = item.date || '';
+        document.getElementById('modal-reg-type').value = item.type || 'Trial';
+        document.getElementById('modal-reg-student').value = item.student || '';
+        document.getElementById('modal-reg-parent').value = item.parent || '';
+        document.getElementById('modal-reg-email').value = item.email || '';
+        document.getElementById('modal-reg-phone').value = item.phone || '';
+        document.getElementById('modal-reg-dob').value = item.dob || '';
+        document.getElementById('modal-reg-age').value = item.age || '';
+        document.getElementById('modal-reg-days').value = item.days || '';
+        document.getElementById('modal-reg-prob').value = item.prob || '';
+        document.getElementById('modal-reg-notes').value = item.notes || '';
+      } else if (category === 'schools') {
+        document.getElementById('school-edit-fields').style.display = 'block';
+        document.getElementById('modal-school-org').value = item.org || '';
+        document.getElementById('modal-school-poc').value = item.poc || '';
+        document.getElementById('modal-school-phone').value = item.phone || '';
+        document.getElementById('modal-school-email').value = item.email || '';
+        document.getElementById('modal-school-action').value = item.actionType || '1 Free Month of Classes';
+        document.getElementById('modal-school-paid').value = item.amountPaid || '';
+        document.getElementById('modal-school-details').value = item.details || '';
+        document.getElementById('modal-school-evdate').value = item.eventDate || '';
+        document.getElementById('modal-school-evtime').value = item.eventTime || '';
+        document.getElementById('modal-school-verdate').value = item.verifiedDate || '';
+        document.getElementById('modal-school-notes').value = item.notes || '';
+      } else {
+        document.getElementById('standard-edit-fields').style.display = 'block';
+        document.getElementById('modal-input-desc').value = item.desc || item.summary || '';
+        document.getElementById('modal-input-owner').value = item.owner || item.stakeholders || '';
+        document.getElementById('modal-input-due').value = item.due || item.date || '';
+        document.getElementById('modal-input-notes').value = item.notes || item.mitigation || item.resolution || item.basis || '';
+      }
+
+      document.getElementById('edit-modal').style.display = 'flex';
+    }
+
+    function openCreateModal() {
+      document.getElementById('add-modal').style.display = 'flex';
+      toggleAddFields();
+    }
+
+    function toggleAddFields() {
+      const type = document.getElementById('new-item-type').value;
+      document.getElementById('tracker-add-fields').style.display = (type !== 'registrations' && type !== 'schools') ? 'block' : 'none';
+      document.getElementById('registration-add-fields').style.display = (type === 'registrations') ? 'block' : 'none';
+      document.getElementById('school-add-fields').style.display = (type === 'schools') ? 'block' : 'none';
+
+      if (type !== 'registrations' && type !== 'schools') {
+        document.getElementById('group-cat').style.display = (type === 'actions') ? 'block' : 'none';
+        document.getElementById('group-due').style.display = (type === 'actions' || type === 'decisions') ? 'block' : 'none';
+      }
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    async function saveModalChanges() {
+      if (!editingTarget) return;
+
+      if (editingCategory === 'decisions') {
+        editingTarget.date = document.getElementById('modal-dec-date').value;
+        editingTarget.summary = document.getElementById('modal-dec-summary').value;
+        editingTarget.stakeholders = document.getElementById('modal-dec-stakeholders').value;
+      } else if (editingCategory === 'registrations') {
+        editingTarget.date = document.getElementById('modal-reg-date').value;
+        editingTarget.type = document.getElementById('modal-reg-type').value;
+        editingTarget.student = document.getElementById('modal-reg-student').value;
+        editingTarget.parent = document.getElementById('modal-reg-parent').value;
+        editingTarget.email = document.getElementById('modal-reg-email').value;
+        editingTarget.phone = document.getElementById('modal-reg-phone').value;
+        editingTarget.dob = document.getElementById('modal-reg-dob').value;
+        editingTarget.age = document.getElementById('modal-reg-age').value;
+        editingTarget.days = document.getElementById('modal-reg-days').value;
+        editingTarget.prob = document.getElementById('modal-reg-prob').value;
+        editingTarget.notes = document.getElementById('modal-reg-notes').value;
+      } else if (editingCategory === 'schools') {
+        editingTarget.org = document.getElementById('modal-school-org').value;
+        editingTarget.poc = document.getElementById('modal-school-poc').value;
+        editingTarget.phone = document.getElementById('modal-school-phone').value;
+        editingTarget.email = document.getElementById('modal-school-email').value;
+        editingTarget.actionType = document.getElementById('modal-school-action').value;
+        editingTarget.amountPaid = document.getElementById('modal-school-paid').value;
+        editingTarget.details = document.getElementById('modal-school-details').value;
+        editingTarget.eventDate = document.getElementById('modal-school-evdate').value;
+        editingTarget.eventTime = document.getElementById('modal-school-evtime').value;
+        editingTarget.verifiedDate = document.getElementById('modal-school-verdate').value;
+        editingTarget.notes = document.getElementById('modal-school-notes').value;
+      } else {
+        editingTarget.desc = document.getElementById('modal-input-desc').value;
+        if (editingTarget.owner !== undefined) editingTarget.owner = document.getElementById('modal-input-owner').value;
+        if (editingTarget.due !== undefined) editingTarget.due = document.getElementById('modal-input-due').value;
+        if (editingTarget.notes !== undefined) editingTarget.notes = document.getElementById('modal-input-notes').value;
+        if (editingTarget.mitigation !== undefined) editingTarget.mitigation = document.getElementById('modal-input-notes').value;
+        if (editingTarget.resolution !== undefined) editingTarget.resolution = document.getElementById('modal-input-notes').value;
+      }
+
+      closeModal('edit-modal');
+      renderAllViews();
+      await syncPersistedData(appData);
+    }
+
+    async function directDeleteItem(id, category) {
+      if (category === 'registrations') return;
+      if (confirm(`Are you sure you want to delete ${id}?`)) {
+        appData[category] = (appData[category] || []).filter(item => item.id !== id);
+        renderAllViews();
+        populateCategoryAndOwnerDropdowns();
+        await syncPersistedData(appData);
+      }
+    }
+
+    async function deleteFromModal() {
+      if (!editingTarget || !editingCategory || editingCategory === 'registrations') return;
+      if (confirm(`Are you sure you want to delete this record (${editingTarget.id || editingTarget.org})?`)) {
+        appData[editingCategory] = (appData[editingCategory] || []).filter(item => item.id !== editingTarget.id);
+        closeModal('edit-modal');
+        renderAllViews();
+        populateCategoryAndOwnerDropdowns();
+        await syncPersistedData(appData);
+      }
+    }
+
+    async function createNewItem() {
+      const type = document.getElementById('new-item-type').value;
+      const list = appData[type] || [];
+
+      if (type === 'registrations') {
+        const student = document.getElementById('new-reg-student').value.trim();
+        if (!student) { alert("Please provide student name."); return; }
+
+        const newId = `REG-${list.length + 1 < 10 ? '0' : ''}${list.length + 1}`;
+        const newLead = {
+          id: newId,
+          date: document.getElementById('new-reg-date').value || new Date().toISOString().split('T')[0],
+          type: document.getElementById('new-reg-type').value,
+          source: "Website",
+          student: student,
+          parent: document.getElementById('new-reg-parent').value.trim(),
+          email: document.getElementById('new-reg-email').value.trim(),
+          phone: document.getElementById('new-reg-phone').value.trim(),
+          dob: document.getElementById('new-reg-dob').value.trim(),
+          age: document.getElementById('new-reg-age').value.trim(),
+          days: document.getElementById('new-reg-days').value.trim(),
+          prob: document.getElementById('new-reg-prob').value.trim() || 'xx%',
+          notes: document.getElementById('new-reg-notes').value.trim()
+        };
+        list.push(newLead);
+        appData.registrations = list;
+      } else if (type === 'schools') {
+        const org = document.getElementById('new-school-org').value.trim();
+        if (!org) { alert("Please provide the organization name."); return; }
+
+        const newId = `SCH-${list.length + 1 < 10 ? '0' : ''}${list.length + 1}`;
+        const newSchool = {
+          id: newId,
+          org: org,
+          poc: document.getElementById('new-school-poc').value.trim(),
+          phone: document.getElementById('new-school-phone').value.trim(),
+          email: document.getElementById('new-school-email').value.trim(),
+          actionType: document.getElementById('new-school-action').value,
+          amountPaid: document.getElementById('new-school-paid').value.trim() || 'n/a',
+          details: document.getElementById('new-school-details').value.trim(),
+          eventDate: document.getElementById('new-school-evdate').value.trim(),
+          eventTime: document.getElementById('new-school-evtime').value.trim(),
+          verifiedDate: document.getElementById('new-school-verdate').value.trim(),
+          notes: document.getElementById('new-school-notes').value.trim()
+        };
+        list.push(newSchool);
+        appData.schools = list;
+      } else {
+        const desc = document.getElementById('new-item-desc').value.trim();
+        if (!desc) { alert("Please provide a description."); return; }
+
+        const prefix = type === 'actions' ? 'ACT' : type === 'risks' ? 'RSK' : type === 'decisions' ? 'DEC' : 'REG';
+        const newId = `${prefix}-${list.length + 1 < 10 ? '0' : ''}${list.length + 1}`;
+
+        const newItem = { id: newId, desc: desc, status: "Open" };
+
+        if (type === 'actions') {
+          newItem.cat = document.getElementById('new-item-cat').value.trim() || 'General';
+          newItem.owner = document.getElementById('new-item-owner').value.trim();
+          newItem.due = document.getElementById('new-item-due').value;
+          newItem.notes = document.getElementById('new-item-notes').value.trim();
+        } else if (type === 'risks') {
+          newItem.impact = "Medium";
+          newItem.likelihood = "Medium";
+          newItem.mitigation = document.getElementById('new-item-notes').value.trim();
+          newItem.owner = document.getElementById('new-item-owner').value.trim();
+        } else if (type === 'register') {
+          newItem.k = "assumption";
+          newItem.basis = document.getElementById('new-item-notes').value.trim();
+        } else if (type === 'decisions') {
+          newItem.summary = desc;
+          newItem.date = document.getElementById('new-item-due').value;
+          newItem.stakeholders = document.getElementById('new-item-owner').value.trim();
+        }
+        list.push(newItem);
+        appData[type] = list;
+      }
+
+      closeModal('add-modal');
+      populateCategoryAndOwnerDropdowns();
+      renderAllViews();
+      await syncPersistedData(appData);
+    }
+
+    function populateCategoryAndOwnerDropdowns() {
+      const actions = appData.actions || [];
+      const categories = [...new Set(actions.map(a => a.cat).filter(Boolean))];
+      const owners = [...new Set(actions.map(a => a.owner).filter(Boolean))];
+
+      const catSelect = document.getElementById('filter-action-category');
+      catSelect.innerHTML = '<option value="">All Categories</option>' + 
+        categories.map(c => `<option value="${c}">${c}</option>`).join('');
+
+      const ownerSelect = document.getElementById('filter-action-owner');
+      ownerSelect.innerHTML = '<option value="">All Owners</option>' + 
+        owners.map(o => `<option value="${o}">${o}</option>`).join('');
     }
   </script>
 </body>
