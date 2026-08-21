@@ -207,22 +207,25 @@
       font-weight: 600;
     }
 
-    .nav-tabs {
-      display: flex;
-      align-items: center;
-      gap: 8px;
+    /* 2-Line Tab Navigation Grid (No Scrollbars) */
+    .nav-tabs-wrapper {
       margin-bottom: 24px;
-      overflow-x: auto;
-      padding-bottom: 4px;
+    }
+    .nav-tabs-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 12px;
     }
     .tab-pill {
       display: flex;
       align-items: center;
-      gap: 6px;
+      justify-content: center;
+      gap: 8px;
       background: transparent;
-      border: 1px solid transparent;
-      padding: 8px 12px;
-      border-radius: 20px;
+      border: 1px solid var(--border-subtle);
+      padding: 10px 14px;
+      border-radius: 12px;
       font-size: 13px;
       font-weight: 600;
       color: #6e655f;
@@ -234,13 +237,13 @@
       background: #ffffff;
       color: #1a1a1a;
       box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      border-color: var(--border-subtle);
+      border-color: var(--hero-bg);
     }
     .tab-badge {
       background: #e9e4d8;
       color: #554f49;
       font-size: 11px;
-      padding: 1px 7px;
+      padding: 2px 8px;
       border-radius: 10px;
       font-weight: 700;
     }
@@ -249,10 +252,11 @@
       color: var(--hero-bg);
     }
 
-    .top-actions-right {
-      margin-left: auto;
+    .top-controls-bar {
       display: flex;
-      gap: 8px;
+      justify-content: flex-end;
+      gap: 10px;
+      margin-bottom: 16px;
     }
     .shift-btn {
       background: #ffffff;
@@ -387,7 +391,7 @@
     }
     .cat-bar-item:hover { background: #faf7f0; }
     .cat-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
-    .cat-name { width: 150px; font-weight: 500; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cat-name { width: 160px; font-weight: 500; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .cat-track { flex: 1; height: 6px; background: #f0ece1; border-radius: 4px; overflow: hidden; }
     .cat-fill { height: 100%; border-radius: 4px; }
     .cat-num { width: 24px; text-align: right; font-weight: 700; color: #666; font-size: 12px; }
@@ -486,7 +490,6 @@
     }
     .del-btn:hover { background: #fca5a5; }
 
-    /* Friday Call Pin Checkbox */
     .pin-checkbox-btn {
       background: none;
       border: none;
@@ -501,7 +504,6 @@
       transform: scale(1.15);
     }
 
-    /* Action Type Badges for School Outreach */
     .action-type-pill {
       padding: 3px 8px;
       border-radius: 12px;
@@ -543,7 +545,8 @@
     }
     .btn-danger:hover { background: var(--danger-hover); }
 
-    @media (max-width: 820px) {
+    @media (max-width: 900px) {
+      .nav-tabs-grid { grid-template-columns: repeat(2, 1fr); }
       .hero-top-grid { grid-template-columns: 1fr; }
       .gauge-box { justify-self: start; }
       .dashboard-split { grid-template-columns: 1fr; }
@@ -621,16 +624,19 @@
       </div>
     </div>
 
-    <div class="nav-tabs">
-      <button class="tab-pill active" id="tab-btn-dashboard" onclick="switchNav('dashboard')">📊 Dashboard</button>
-      <button class="tab-pill" id="tab-btn-actions" onclick="filterAndNavigateActions('open')">✅ Actions <span class="tab-badge" id="tab-cnt-actions">0</span></button>
-      <button class="tab-pill" id="tab-btn-fridaycall" onclick="switchNav('fridaycall')">📞 Friday Call Top 10 <span class="tab-badge" id="tab-cnt-call" style="background:#dbeafe; color:#1e40af;">0</span></button>
-      <button class="tab-pill" id="tab-btn-risks" onclick="filterAndNavigateRisks('high')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">0</span></button>
-      <button class="tab-pill" id="tab-btn-register" onclick="filterAndNavigateRegister('open')">📎 Register <span class="tab-badge" id="tab-cnt-reg">0</span></button>
-      <button class="tab-pill" id="tab-btn-decisions" onclick="switchNav('decisions')">🤝 Decisions <span class="tab-badge" id="tab-cnt-dec">0</span></button>
-      <button class="tab-pill" id="tab-btn-registrations" onclick="switchNav('registrations')">🎨 Trial Registrations <span class="tab-badge" id="tab-cnt-trial">23</span></button>
-      <button class="tab-pill" id="tab-btn-schools" onclick="switchNav('schools')">🏫 School Outreach <span class="tab-badge" id="tab-cnt-schools">3</span></button>
-      <div class="top-actions-right">
+    <!-- 2-Line Tab Navigation Grid (Equal 4 per line) -->
+    <div class="nav-tabs-wrapper">
+      <div class="nav-tabs-grid">
+        <button class="tab-pill active" id="tab-btn-dashboard" onclick="switchNav('dashboard')">📊 Dashboard</button>
+        <button class="tab-pill" id="tab-btn-actions" onclick="filterAndNavigateActions('open')">✅ Actions <span class="tab-badge" id="tab-cnt-actions">0</span></button>
+        <button class="tab-pill" id="tab-btn-fridaycall" onclick="switchNav('fridaycall')">📞 Friday Call Top 10 <span class="tab-badge" id="tab-cnt-call" style="background:#dbeafe; color:#1e40af;">0</span></button>
+        <button class="tab-pill" id="tab-btn-risks" onclick="filterAndNavigateRisks('high')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">0</span></button>
+        <button class="tab-pill" id="tab-btn-register" onclick="filterAndNavigateRegister('open')">📎 Register <span class="tab-badge" id="tab-cnt-reg">0</span></button>
+        <button class="tab-pill" id="tab-btn-decisions" onclick="switchNav('decisions')">🤝 Decisions <span class="tab-badge" id="tab-cnt-dec">0</span></button>
+        <button class="tab-pill" id="tab-btn-registrations" onclick="switchNav('registrations')">🎨 Trial Registrations <span class="tab-badge" id="tab-cnt-trial">23</span></button>
+        <button class="tab-pill" id="tab-btn-schools" onclick="switchNav('schools')">🏫 School Outreach <span class="tab-badge" id="tab-cnt-schools">3</span></button>
+      </div>
+      <div class="top-controls-bar">
         <button class="shift-btn" onclick="openShiftModal()">🗓 Shift Open Dates</button>
         <button class="add-btn" onclick="openCreateModal()">+ Add Item</button>
       </div>
@@ -870,7 +876,7 @@
       </div>
     </div>
 
-    <!-- Tab 8: School Information & Marketing Outreach Layer (New Layer) -->
+    <!-- Tab 8: School Information & Marketing Outreach Layer -->
     <div id="view-schools" class="page-view" style="display: none;">
       <div class="filter-bar-row">
         <input type="text" id="filter-school-search" placeholder="Search school/org, contact person, agreement details, or notes..." oninput="renderSchoolsTable()" style="flex:1;">
@@ -906,7 +912,7 @@
 
   </div>
 
-  <!-- Detail Edit Modal (Universal) -->
+  <!-- Detail Edit Modal -->
   <div id="edit-modal" class="modal-backdrop">
     <div class="modal-sheet">
       <h3 id="modal-heading">Edit Item</h3>
@@ -931,7 +937,7 @@
         </div>
       </div>
 
-      <!-- Registration Edit Fields (Deletion button intentionally disabled for leads) -->
+      <!-- Registration Edit Fields -->
       <div id="reg-edit-fields" style="display:none;">
         <div class="modal-grid-2">
           <div class="field-group">
@@ -1251,6 +1257,7 @@
     const TEAM_PASSCODE = "Cordovan2026";
     const FIREBASE_DB_URL = "FIREBASE_DATABASE_URL_HERE";
 
+    // Master Uncorrupted Dataset including all 120+ checklists, risks, decisions, registrations, and schools
     const SEED_DATA = {
       openingDate: "2026-10-31",
       actions: [
@@ -1515,13 +1522,28 @@
 
     async function loadPersistedData() {
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        const local = localStorage.getItem('cordovan_grand_opening_store_clean_v10');
-        appData = local ? JSON.parse(local) : JSON.parse(JSON.stringify(SEED_DATA));
+        // Safe key migration ensures that old corrupt/empty localStorage states are bypassed cleanly
+        const local = localStorage.getItem('cordovan_grand_opening_store_stable_v11');
+        if (local) {
+          try {
+            const parsed = JSON.parse(local);
+            if (parsed && parsed.actions && parsed.actions.length > 0) {
+              appData = parsed;
+            } else {
+              appData = JSON.parse(JSON.stringify(SEED_DATA));
+            }
+          } catch(e) {
+            appData = JSON.parse(JSON.stringify(SEED_DATA));
+          }
+        } else {
+          appData = JSON.parse(JSON.stringify(SEED_DATA));
+          localStorage.setItem('cordovan_grand_opening_store_stable_v11', JSON.stringify(appData));
+        }
       } else {
         try {
           const res = await fetch(FIREBASE_DB_URL);
           const remote = await res.json();
-          if (remote && remote.actions) {
+          if (remote && remote.actions && remote.actions.length > 0) {
             appData = remote;
           } else {
             await syncPersistedData(SEED_DATA);
@@ -1529,16 +1551,24 @@
           }
         } catch (e) {
           console.error(e);
+          appData = JSON.parse(JSON.stringify(SEED_DATA));
         }
       }
-      if (!appData.registrations) appData.registrations = JSON.parse(JSON.stringify(SEED_DATA.registrations));
-      if (!appData.schools) appData.schools = JSON.parse(JSON.stringify(SEED_DATA.schools));
+      
+      // Verification safeguard to guarantee datasets exist
+      if (!appData.actions || appData.actions.length === 0) appData.actions = JSON.parse(JSON.stringify(SEED_DATA.actions));
+      if (!appData.risks || appData.risks.length === 0) appData.risks = JSON.parse(JSON.stringify(SEED_DATA.risks));
+      if (!appData.register || appData.register.length === 0) appData.register = JSON.parse(JSON.stringify(SEED_DATA.register));
+      if (!appData.decisions || appData.decisions.length === 0) appData.decisions = JSON.parse(JSON.stringify(SEED_DATA.decisions));
+      if (!appData.registrations || appData.registrations.length === 0) appData.registrations = JSON.parse(JSON.stringify(SEED_DATA.registrations));
+      if (!appData.schools || appData.schools.length === 0) appData.schools = JSON.parse(JSON.stringify(SEED_DATA.schools));
+      
       renderAllViews();
     }
 
     async function syncPersistedData(data) {
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        localStorage.setItem('cordovan_grand_opening_store_clean_v10', JSON.stringify(data));
+        localStorage.setItem('cordovan_grand_opening_store_stable_v11', JSON.stringify(data));
       } else {
         try {
           await fetch(FIREBASE_DB_URL, {
@@ -1677,10 +1707,10 @@
       
       if (type === 'high') {
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: High Impact Open Risks (3)";
+        bannerText.innerText = "Showing: High Impact Open Risks";
       } else if (type === 'open') {
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: All Open Risks (4)";
+        bannerText.innerText = "Showing: All Open Risks";
       } else {
         banner.style.display = 'none';
       }
@@ -1696,7 +1726,7 @@
       
       if (type === 'open') {
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: Open & Pending Register Items (10)";
+        bannerText.innerText = "Showing: Open & Pending Register Items";
       } else {
         banner.style.display = 'none';
       }
@@ -1757,7 +1787,6 @@
       const highRisksCnt = risks.filter(r => r.status === 'Open' && r.impact === 'High').length;
       const openRegCnt = register.filter(r => r.status === 'Open' || r.status === 'Pending').length;
       
-      // Count Friday Call Pinned Items
       const pinnedActions = actions.filter(a => a.callPin);
       const pinnedRisks = risks.filter(r => r.callPin);
       const totalCallPinned = pinnedActions.length + pinnedRisks.length;
@@ -1911,7 +1940,6 @@
       `).join('');
     }
 
-    /* Friday Call Focus Top 10 View */
     function renderFridayCallTable() {
       const pinnedActions = (appData.actions || []).filter(a => a.callPin);
       const pinnedRisks = (appData.risks || []).filter(r => r.callPin);
@@ -2052,7 +2080,6 @@
       `).join('');
     }
 
-    /* Trial Registrations Table (Deletion removed) */
     function renderRegistrationsTable() {
       const q = (document.getElementById('filter-reg-search').value || '').toLowerCase();
       const typeFilter = document.getElementById('filter-reg-type').value;
@@ -2081,7 +2108,6 @@
       `).join('');
     }
 
-    /* School Information & Marketing Outreach Table */
     function renderSchoolsTable() {
       const q = (document.getElementById('filter-school-search').value || '').toLowerCase();
       const actionFilter = document.getElementById('filter-school-action').value;
@@ -2140,12 +2166,10 @@
       editingTarget = item;
       document.getElementById('modal-heading').innerText = `${item.id || item.org || 'Lead'}: Details`;
 
-      // Hide all specific sub-forms first
       document.getElementById('standard-edit-fields').style.display = 'none';
       document.getElementById('reg-edit-fields').style.display = 'none';
       document.getElementById('school-edit-fields').style.display = 'none';
 
-      // Hide delete button if editing a registration lead
       const delBtn = document.getElementById('modal-del-btn');
       delBtn.style.display = (category === 'registrations') ? 'none' : 'block';
 
@@ -2249,7 +2273,7 @@
     }
 
     async function directDeleteItem(id, category) {
-      if (category === 'registrations') return; // Enforce no deletion for leads
+      if (category === 'registrations') return;
       if (confirm(`Are you sure you want to delete ${id}?`)) {
         appData[category] = (appData[category] || []).filter(item => item.id !== id);
         renderAllViews();
