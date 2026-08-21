@@ -22,8 +22,6 @@
       --gold-prog: #f59e0b;
       --danger-red: #dc2626;
       --danger-hover: #b91c1c;
-      --call-blue: #1e40af;
-      --call-badge: #dbeafe;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,7 +52,7 @@
       border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px;
     }
 
-    .container { max-width: 1240px; margin: 0 auto; display: none; }
+    .container { max-width: 1200px; margin: 0 auto; display: none; }
 
     .brand-headline { margin-bottom: 18px; }
     .brand-headline h1 {
@@ -145,7 +143,7 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: conic-gradient(var(--gold-prog) var(--pct, 37%), rgba(255,255,255,0.12) 0);
+      background: conic-gradient(var(--gold-prog) var(--pct, 0%), rgba(255,255,255,0.12) 0);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -180,7 +178,7 @@
 
     .hero-kpis {
       display: flex;
-      gap: 28px;
+      gap: 32px;
       border-top: 1px solid rgba(255,255,255,0.14);
       padding-top: 18px;
       flex-wrap: wrap;
@@ -207,22 +205,22 @@
       font-weight: 600;
     }
 
-    .nav-tabs-wrapper { margin-bottom: 24px; }
-    .nav-tabs-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+    .nav-tabs {
+      display: flex;
+      align-items: center;
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 24px;
+      overflow-x: auto;
+      padding-bottom: 4px;
     }
     .tab-pill {
       display: flex;
       align-items: center;
-      justify-content: center;
       gap: 8px;
       background: transparent;
-      border: 1px solid var(--border-subtle);
-      padding: 10px 14px;
-      border-radius: 12px;
+      border: 1px solid transparent;
+      padding: 8px 14px;
+      border-radius: 20px;
       font-size: 13px;
       font-weight: 600;
       color: #6e655f;
@@ -234,13 +232,13 @@
       background: #ffffff;
       color: #1a1a1a;
       box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      border-color: var(--hero-bg);
+      border-color: var(--border-subtle);
     }
     .tab-badge {
       background: #e9e4d8;
       color: #554f49;
       font-size: 11px;
-      padding: 2px 8px;
+      padding: 1px 7px;
       border-radius: 10px;
       font-weight: 700;
     }
@@ -249,13 +247,12 @@
       color: var(--hero-bg);
     }
 
-    .top-controls-bar {
+    .top-actions-right {
+      margin-left: auto;
       display: flex;
-      justify-content: flex-end;
-      gap: 10px;
-      margin-bottom: 16px;
+      gap: 8px;
     }
-    .ctrl-btn {
+    .shift-btn {
       background: #ffffff;
       color: var(--hero-bg);
       border: 1px solid var(--border-subtle);
@@ -268,7 +265,7 @@
       align-items: center;
       gap: 4px;
     }
-    .ctrl-btn:hover { background: #faf7f0; }
+    .shift-btn:hover { background: #faf7f0; }
     .add-btn {
       background: var(--hero-bg);
       color: white;
@@ -302,15 +299,15 @@
 
     .kpi-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 14px;
       margin-bottom: 24px;
     }
     .kpi-card {
       background: var(--card-bg);
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
-      padding: 16px 14px;
+      padding: 18px 16px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.02);
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -332,7 +329,7 @@
     }
     .kpi-card-val {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 30px;
+      font-size: 32px;
       font-weight: 700;
       line-height: 1;
       color: #1a1a1a;
@@ -388,7 +385,7 @@
     }
     .cat-bar-item:hover { background: #faf7f0; }
     .cat-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
-    .cat-name { width: 160px; font-weight: 500; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cat-name { width: 140px; font-weight: 500; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .cat-track { flex: 1; height: 6px; background: #f0ece1; border-radius: 4px; overflow: hidden; }
     .cat-fill { height: 100%; border-radius: 4px; }
     .cat-num { width: 24px; text-align: right; font-weight: 700; color: #666; font-size: 12px; }
@@ -465,37 +462,39 @@
     .pill-prog { background: #fef3c7; color: #92400e; }
     .pill-open { background: #fee2e2; color: #991b1b; }
 
-    .table-actions-cell { display: flex; align-items: center; gap: 8px; }
+    .table-actions-cell {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
     .del-btn {
-      background: #fee2e2; color: #991b1b; border: none; width: 24px; height: 24px;
-      border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
-      cursor: pointer; font-weight: bold; font-size: 13px;
+      background: #fee2e2;
+      color: #991b1b;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      transition: background 0.15s;
     }
     .del-btn:hover { background: #fca5a5; }
-
-    .pin-checkbox-btn {
-      background: none; border: none; cursor: pointer; font-size: 16px; padding: 2px 6px;
-      opacity: 0.35; transition: all 0.15s ease;
-    }
-    .pin-checkbox-btn.pinned { opacity: 1; transform: scale(1.15); }
-
-    .action-type-pill {
-      padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; display: inline-block;
-    }
-    .type-classes { background: #dcfce7; color: #15803d; }
-    .type-fundraiser { background: #f3e8ff; color: #7e22ce; }
-    .type-sponsorship { background: #fee2e2; color: #b91c1c; }
 
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(0,0,0,0.45);
       display: none; align-items: center; justify-content: center; z-index: 10000;
     }
     .modal-sheet {
-      background: #fff; border-radius: 14px; width: 92%; max-width: 620px;
+      background: #fff; border-radius: 14px; width: 92%; max-width: 580px;
       padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto;
     }
     .modal-sheet h3 {
-      font-family: 'Playfair Display', Georgia, serif; color: var(--hero-bg); font-size: 20px; margin-bottom: 14px; font-weight: 700;
+      font-family: 'Playfair Display', Georgia, serif;
+      color: var(--hero-bg); font-size: 20px; margin-bottom: 14px; font-weight: 700;
     }
     .field-group { margin-bottom: 12px; }
     .field-group label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #666; margin-bottom: 4px; }
@@ -505,12 +504,17 @@
     .modal-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .modal-btn-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
     .btn-danger {
-      background: var(--danger-red); color: #fff; border: none; padding: 7px 14px; border-radius: 6px; font-weight: bold; cursor: pointer;
+      background: var(--danger-red);
+      color: #fff;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
     }
     .btn-danger:hover { background: var(--danger-hover); }
 
-    @media (max-width: 900px) {
-      .nav-tabs-grid { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 820px) {
       .hero-top-grid { grid-template-columns: 1fr; }
       .gauge-box { justify-self: start; }
       .dashboard-split { grid-template-columns: 1fr; }
@@ -553,7 +557,7 @@
         <div class="gauge-box" onclick="filterAndNavigateActions('Done')" title="Click to view Completed Actions">
           <div class="gauge-circle" id="radial-gauge">
             <div class="gauge-inner-text">
-              <h3 id="readiness-pct-text">37%</h3>
+              <h3 id="readiness-pct-text">0%</h3>
               <p>Launch Ready</p>
             </div>
           </div>
@@ -562,47 +566,37 @@
 
       <div class="hero-kpis">
         <div class="hero-kpi-item" onclick="filterAndNavigateActions('open')">
-          <h4 id="hero-open-actions">79</h4>
+          <h4 id="hero-open-actions">0</h4>
           <span>Actions Open</span>
         </div>
         <div class="hero-kpi-item" onclick="filterAndNavigateActions('overdue')">
-          <h4 id="hero-overdue-actions">5</h4>
+          <h4 id="hero-overdue-actions">0</h4>
           <span>Overdue</span>
         </div>
         <div class="hero-kpi-item" onclick="filterAndNavigateRisks('high')">
-          <h4 id="hero-high-risks">3</h4>
+          <h4 id="hero-high-risks">0</h4>
           <span>High Risks</span>
         </div>
-        <div class="hero-kpi-item" onclick="switchNav('fridaycall')">
-          <h4 id="hero-call-count">10</h4>
-          <span>Friday Call Top 10</span>
+        <div class="hero-kpi-item" onclick="switchNav('decisions')">
+          <h4 id="hero-decisions-count">0</h4>
+          <span>Decisions</span>
         </div>
         <div class="hero-kpi-item" onclick="switchNav('registrations')">
           <h4 id="hero-reg-count">23</h4>
           <span>Trial Registrations</span>
         </div>
-        <div class="hero-kpi-item" onclick="switchNav('schools')">
-          <h4 id="hero-school-count">3</h4>
-          <span>School Outreach</span>
-        </div>
       </div>
     </div>
 
-    <!-- 2-Line Tab Navigation Grid -->
-    <div class="nav-tabs-wrapper">
-      <div class="nav-tabs-grid">
-        <button class="tab-pill active" id="tab-btn-dashboard" onclick="switchNav('dashboard')">📊 Dashboard</button>
-        <button class="tab-pill" id="tab-btn-actions" onclick="filterAndNavigateActions('open')">✅ Actions <span class="tab-badge" id="tab-cnt-actions">79</span></button>
-        <button class="tab-pill" id="tab-btn-fridaycall" onclick="switchNav('fridaycall')">📞 Friday Call Top 10 <span class="tab-badge" id="tab-cnt-call" style="background:#dbeafe; color:#1e40af;">10</span></button>
-        <button class="tab-pill" id="tab-btn-risks" onclick="filterAndNavigateRisks('high')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">3</span></button>
-        <button class="tab-pill" id="tab-btn-register" onclick="filterAndNavigateRegister('open')">📎 Register <span class="tab-badge" id="tab-cnt-reg">10</span></button>
-        <button class="tab-pill" id="tab-btn-decisions" onclick="switchNav('decisions')">🤝 Decisions <span class="tab-badge" id="tab-cnt-dec">5</span></button>
-        <button class="tab-pill" id="tab-btn-registrations" onclick="switchNav('registrations')">🎨 Trial Registrations <span class="tab-badge" id="tab-cnt-trial">23</span></button>
-        <button class="tab-pill" id="tab-btn-schools" onclick="switchNav('schools')">🏫 School Outreach <span class="tab-badge" id="tab-cnt-schools">3</span></button>
-      </div>
-      <div class="top-controls-bar">
-        <button class="ctrl-btn" onclick="forceRestoreDefaults()">🔄 Reload Master Data</button>
-        <button class="ctrl-btn" onclick="openShiftModal()">🗓 Shift Open Dates</button>
+    <div class="nav-tabs">
+      <button class="tab-pill active" id="tab-btn-dashboard" onclick="switchNav('dashboard')">📊 Dashboard</button>
+      <button class="tab-pill" id="tab-btn-actions" onclick="filterAndNavigateActions('open')">✅ Actions <span class="tab-badge" id="tab-cnt-actions">0</span></button>
+      <button class="tab-pill" id="tab-btn-risks" onclick="filterAndNavigateRisks('high')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">0</span></button>
+      <button class="tab-pill" id="tab-btn-register" onclick="filterAndNavigateRegister('open')">📎 Register <span class="tab-badge" id="tab-cnt-reg">0</span></button>
+      <button class="tab-pill" id="tab-btn-decisions" onclick="switchNav('decisions')">🤝 Decisions <span class="tab-badge" id="tab-cnt-dec">0</span></button>
+      <button class="tab-pill" id="tab-btn-registrations" onclick="switchNav('registrations')">🎨 Trial Registrations <span class="tab-badge" id="tab-cnt-trial">23</span></button>
+      <div class="top-actions-right">
+        <button class="shift-btn" onclick="openShiftModal()">🗓 Shift Open Dates</button>
         <button class="add-btn" onclick="openCreateModal()">+ Add Item</button>
       </div>
     </div>
@@ -617,38 +611,33 @@
       <div class="kpi-row">
         <div class="kpi-card" onclick="filterAndNavigateActions('Done')">
           <div class="kpi-card-header">✅ Actions Done</div>
-          <div class="kpi-card-val" id="card-done-ratio">46/125</div>
+          <div class="kpi-card-val" id="card-done-ratio">0/0</div>
           <div class="kpi-card-sub">launch checklist</div>
         </div>
         <div class="kpi-card" onclick="filterAndNavigateActions('duesoon')">
           <div class="kpi-card-header">⏳ Due Within 7 Days</div>
-          <div class="kpi-card-val" id="card-due-soon">2</div>
+          <div class="kpi-card-val" id="card-due-soon">0</div>
           <div class="kpi-card-sub">keep the pace</div>
         </div>
         <div class="kpi-card overdue-card" onclick="filterAndNavigateActions('overdue')">
           <div class="kpi-card-header">🔴 Overdue</div>
-          <div class="kpi-card-val" id="card-overdue">5</div>
+          <div class="kpi-card-val" id="card-overdue">0</div>
           <div class="kpi-card-sub">needs attention now</div>
-        </div>
-        <div class="kpi-card" onclick="switchNav('fridaycall')">
-          <div class="kpi-card-header">📞 Friday Call Focus</div>
-          <div class="kpi-card-val" id="card-call-count">10/10</div>
-          <div class="kpi-card-sub">agenda items pinned</div>
         </div>
         <div class="kpi-card" onclick="filterAndNavigateRisks('open')">
           <div class="kpi-card-header">⚠️ Open Risks</div>
-          <div class="kpi-card-val" id="card-open-risks">4</div>
+          <div class="kpi-card-val" id="card-open-risks">0</div>
           <div class="kpi-card-sub">actively tracked</div>
+        </div>
+        <div class="kpi-card" onclick="filterAndNavigateRegister('open')">
+          <div class="kpi-card-header">📎 Open Register Items</div>
+          <div class="kpi-card-val" id="card-open-reg">0</div>
+          <div class="kpi-card-sub">assumptions/issues/deps</div>
         </div>
         <div class="kpi-card" onclick="switchNav('registrations')">
           <div class="kpi-card-header">🎨 Trial Registrations</div>
           <div class="kpi-card-val" id="card-trial-count">23</div>
           <div class="kpi-card-sub">leads enrolled</div>
-        </div>
-        <div class="kpi-card" onclick="switchNav('schools')">
-          <div class="kpi-card-header">🏫 School Partners</div>
-          <div class="kpi-card-val" id="card-school-count">3</div>
-          <div class="kpi-card-sub">outreach logged</div>
         </div>
       </div>
 
@@ -668,7 +657,7 @@
     <div id="view-actions" class="page-view" style="display: none;">
       <div id="action-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="action-filter-text">Filtered View Active</span>
-        <button onclick="clearActionFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All Actions</button>
+        <button onclick="clearActionFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All</button>
       </div>
       <div class="filter-bar-row">
         <input type="text" id="filter-action-search" placeholder="Search actions..." oninput="renderActionsTable()" style="flex:1;">
@@ -689,7 +678,6 @@
         <table>
           <thead>
             <tr>
-              <th width="45" title="Pin to Weekly Friday Call Agenda">Call</th>
               <th width="80">ID</th>
               <th width="140">Category</th>
               <th>Description & Notes</th>
@@ -703,31 +691,7 @@
       </div>
     </div>
 
-    <!-- Tab 3: Friday Call Top 10 Focus View -->
-    <div id="view-fridaycall" class="page-view" style="display: none;">
-      <div class="section-head">
-        <h2>📞 Weekly Friday Call — Top Focus Items</h2>
-        <p>Top critical items: Overdue milestones, imminent decisions, critical build-out gates, and key items closed in the last 10 days.</p>
-      </div>
-      <div class="data-table-card">
-        <table>
-          <thead>
-            <tr>
-              <th width="50">Pin</th>
-              <th width="80">ID</th>
-              <th width="140">Category</th>
-              <th>Key Discussion Point & Description</th>
-              <th width="150">Owner</th>
-              <th width="110">Due Date</th>
-              <th width="140">Status</th>
-            </tr>
-          </thead>
-          <tbody id="friday-call-table-body"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Tab 4: Risks Table -->
+    <!-- Tab 3: Risks Table -->
     <div id="view-risks" class="page-view" style="display: none;">
       <div id="risk-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="risk-filter-text">Filtered View Active</span>
@@ -745,7 +709,6 @@
         <table>
           <thead>
             <tr>
-              <th width="45" title="Pin to Weekly Friday Call Agenda">Call</th>
               <th width="90">ID</th>
               <th>Risk Description</th>
               <th width="90">Impact</th>
@@ -760,7 +723,7 @@
       </div>
     </div>
 
-    <!-- Tab 5: Register Table -->
+    <!-- Tab 4: Register Table -->
     <div id="view-register" class="page-view" style="display: none;">
       <div id="register-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="register-filter-text">Filtered View Active</span>
@@ -789,7 +752,7 @@
       </div>
     </div>
 
-    <!-- Tab 6: Decisions Table -->
+    <!-- Tab 5: Decisions Table -->
     <div id="view-decisions" class="page-view" style="display: none;">
       <div class="data-table-card">
         <table>
@@ -807,7 +770,7 @@
       </div>
     </div>
 
-    <!-- Tab 7: Trial Registrations Table -->
+    <!-- Tab 6: Trial Registrations Table (New Layer) -->
     <div id="view-registrations" class="page-view" style="display: none;">
       <div class="filter-bar-row">
         <input type="text" id="filter-reg-search" placeholder="Search students, parents, email, phone, or notes..." oninput="renderRegistrationsTable()" style="flex:1;">
@@ -831,9 +794,10 @@
               <th width="50">Age</th>
               <th>Parent Name</th>
               <th width="120">Phone</th>
-              <th width="110">Preferred Days</th>
+              <th width="100">Preferred Days</th>
               <th width="70">Prob.</th>
-              <th>Notes / Updates</th>
+              <th>Notes</th>
+              <th width="60">Action</th>
             </tr>
           </thead>
           <tbody id="registrations-table-body"></tbody>
@@ -841,47 +805,14 @@
       </div>
     </div>
 
-    <!-- Tab 8: School Information & Marketing Outreach Layer -->
-    <div id="view-schools" class="page-view" style="display: none;">
-      <div class="filter-bar-row">
-        <input type="text" id="filter-school-search" placeholder="Search school/org, contact person, agreement details, or notes..." oninput="renderSchoolsTable()" style="flex:1;">
-        <select id="filter-school-action" onchange="renderSchoolsTable()">
-          <option value="">All Action Types</option>
-          <option value="1 Free Month of Classes">1 Free Month of Classes</option>
-          <option value="Fundraiser/Spirit Event">Fundraiser/Spirit Event</option>
-          <option value="Paid Sponsorship">Paid Sponsorship</option>
-        </select>
-      </div>
-      <div class="data-table-card">
-        <table>
-          <thead>
-            <tr>
-              <th>Name of Organization</th>
-              <th width="130">Point of Contact</th>
-              <th width="120">Phone</th>
-              <th>Email</th>
-              <th width="170">Type of Action</th>
-              <th width="100">Amount Paid</th>
-              <th>Details of Agreement</th>
-              <th width="95">Date of Event</th>
-              <th width="90">Time</th>
-              <th width="95">Verified Date</th>
-              <th>Notes / Debrief</th>
-              <th width="60">Action</th>
-            </tr>
-          </thead>
-          <tbody id="schools-table-body"></tbody>
-        </table>
-      </div>
-    </div>
-
   </div>
 
-  <!-- Detail Edit Modal -->
+  <!-- Detail Edit Modal (Universal) -->
   <div id="edit-modal" class="modal-backdrop">
     <div class="modal-sheet">
       <h3 id="modal-heading">Edit Item</h3>
       
+      <!-- Standard Tracker Fields -->
       <div id="standard-edit-fields">
         <div class="field-group">
           <label>Description</label>
@@ -901,21 +832,7 @@
         </div>
       </div>
 
-      <div id="decision-edit-fields" style="display:none;">
-        <div class="field-group">
-          <label>Date (YYYY-MM-DD)</label>
-          <input type="text" id="modal-dec-date">
-        </div>
-        <div class="field-group">
-          <label>Decision Summary</label>
-          <textarea id="modal-dec-summary" rows="3"></textarea>
-        </div>
-        <div class="field-group">
-          <label>Key Stakeholders</label>
-          <input type="text" id="modal-dec-stakeholders">
-        </div>
-      </div>
-
+      <!-- Registration Edit Fields -->
       <div id="reg-edit-fields" style="display:none;">
         <div class="modal-grid-2">
           <div class="field-group">
@@ -968,76 +885,17 @@
           </div>
           <div class="field-group">
             <label>Probability</label>
-            <input type="text" id="modal-reg-prob">
+            <input type="text" id="modal-reg-prob" placeholder="e.g. 50%, 100%, xx%">
           </div>
         </div>
         <div class="field-group">
-          <label>Notes / Follow-Up</label>
+          <label>Notes / Status</label>
           <textarea id="modal-reg-notes" rows="2"></textarea>
         </div>
       </div>
 
-      <div id="school-edit-fields" style="display:none;">
-        <div class="modal-grid-2">
-          <div class="field-group">
-            <label>Name of Organization</label>
-            <input type="text" id="modal-school-org">
-          </div>
-          <div class="field-group">
-            <label>Point of Contact</label>
-            <input type="text" id="modal-school-poc">
-          </div>
-        </div>
-        <div class="modal-grid-2">
-          <div class="field-group">
-            <label>Phone</label>
-            <input type="text" id="modal-school-phone">
-          </div>
-          <div class="field-group">
-            <label>Email</label>
-            <input type="email" id="modal-school-email">
-          </div>
-        </div>
-        <div class="modal-grid-2">
-          <div class="field-group">
-            <label>Type of Action</label>
-            <select id="modal-school-action">
-              <option value="1 Free Month of Classes">1 Free Month of Classes</option>
-              <option value="Fundraiser/Spirit Event">Fundraiser/Spirit Event</option>
-              <option value="Paid Sponsorship">Paid Sponsorship</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>Amount Paid</label>
-            <input type="text" id="modal-school-paid" placeholder="e.g. n/a, $500.00, 30% of proceeds">
-          </div>
-        </div>
-        <div class="field-group">
-          <label>Details of Agreement</label>
-          <textarea id="modal-school-details" rows="2"></textarea>
-        </div>
-        <div class="modal-grid-2">
-          <div class="field-group">
-            <label>Date of Event</label>
-            <input type="text" id="modal-school-evdate" placeholder="e.g. 2/25/2028 or YYYY-MM-DD">
-          </div>
-          <div class="field-group">
-            <label>Time of Event</label>
-            <input type="text" id="modal-school-evtime" placeholder="e.g. 6:00 PM or n/a">
-          </div>
-        </div>
-        <div class="field-group">
-          <label>Verified Date</label>
-          <input type="text" id="modal-school-verdate" placeholder="e.g. 2/2/2026">
-        </div>
-        <div class="field-group">
-          <label>Notes / Debrief</label>
-          <textarea id="modal-school-notes" rows="3"></textarea>
-        </div>
-      </div>
-
       <div class="modal-btn-row" style="justify-content: space-between;">
-        <button id="modal-del-btn" class="btn-danger" onclick="deleteFromModal()">Delete Item</button>
+        <button class="btn-danger" onclick="deleteFromModal()">Delete Item</button>
         <div style="display: flex; gap: 8px;">
           <button onclick="closeModal('edit-modal')" style="padding: 7px 12px; border: 1px solid var(--border-subtle); background:#fff; border-radius:6px; cursor:pointer;">Cancel</button>
           <button onclick="saveModalChanges()" style="padding: 7px 14px; background:var(--hero-bg); color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Save</button>
@@ -1054,7 +912,6 @@
         <label>Type</label>
         <select id="new-item-type" onchange="toggleAddFields()">
           <option value="actions">Action Item</option>
-          <option value="schools">School Outreach & Marketing</option>
           <option value="registrations">Trial Registration</option>
           <option value="risks">Risk</option>
           <option value="register">Register (Assumption/Issue/Dep)</option>
@@ -1062,6 +919,7 @@
         </select>
       </div>
 
+      <!-- Tracker Form -->
       <div id="tracker-add-fields">
         <div class="field-group" id="group-cat">
           <label>Category</label>
@@ -1085,6 +943,7 @@
         </div>
       </div>
 
+      <!-- Registration Form -->
       <div id="registration-add-fields" style="display:none;">
         <div class="modal-grid-2">
           <div class="field-group">
@@ -1146,65 +1005,6 @@
         </div>
       </div>
 
-      <div id="school-add-fields" style="display:none;">
-        <div class="modal-grid-2">
-          <div class="field-group">
-            <label>Name of Organization</label>
-            <input type="text" id="new-school-org" placeholder="e.g. Southwater Elementary School">
-          </div>
-          <div class="field-group">
-            <label>Point of Contact</label>
-            <input type="text" id="new-school-poc" placeholder="Contact name">
-          </div>
-        </div>
-        <div class="modal-grid-2">
-          <div class="field-group">
-            <label>Phone</label>
-            <input type="text" id="new-school-phone" placeholder="(444) 444-4444">
-          </div>
-          <div class="field-group">
-            <label>Email</label>
-            <input type="email" id="new-school-email" placeholder="contact@email.com">
-          </div>
-        </div>
-        <div class="modal-grid-2">
-          <div class="field-group">
-            <label>Type of Action</label>
-            <select id="new-school-action">
-              <option value="1 Free Month of Classes">1 Free Month of Classes</option>
-              <option value="Fundraiser/Spirit Event">Fundraiser/Spirit Event</option>
-              <option value="Paid Sponsorship">Paid Sponsorship</option>
-            </select>
-          </div>
-          <div class="field-group">
-            <label>Amount Paid</label>
-            <input type="text" id="new-school-paid" placeholder="e.g. n/a, $500.00, 30% of proceeds">
-          </div>
-        </div>
-        <div class="field-group">
-          <label>Details of Agreement</label>
-          <textarea id="new-school-details" rows="2" placeholder="What was provided & return benefits..."></textarea>
-        </div>
-        <div class="modal-grid-2">
-          <div class="field-group">
-            <label>Date of Event</label>
-            <input type="text" id="new-school-evdate" placeholder="e.g. 2/25/2028 or YYYY-MM-DD">
-          </div>
-          <div class="field-group">
-            <label>Time of Event</label>
-            <input type="text" id="new-school-evtime" placeholder="e.g. 6:00 PM or n/a">
-          </div>
-        </div>
-        <div class="field-group">
-          <label>Verified Date</label>
-          <input type="text" id="new-school-verdate" placeholder="e.g. 2/2/2026">
-        </div>
-        <div class="field-group">
-          <label>Notes / Debrief</label>
-          <textarea id="new-school-notes" rows="2" placeholder="Flyer distribution verification, outcomes..."></textarea>
-        </div>
-      </div>
-
       <div class="modal-btn-row">
         <button onclick="closeModal('add-modal')" style="padding: 7px 12px; border: 1px solid var(--border-subtle); background:#fff; border-radius:6px; cursor:pointer;">Cancel</button>
         <button onclick="createNewItem()" style="padding: 7px 14px; background:var(--hero-bg); color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Add Item</button>
@@ -1231,24 +1031,24 @@
     const TEAM_PASSCODE = "Cordovan2026";
     const FIREBASE_DB_URL = "FIREBASE_DATABASE_URL_HERE";
 
-    const MASTER_SEED_DATA = {
+    const SEED_DATA = {
       openingDate: "2026-10-31",
       actions: [
-        {"id":"ACT-01","cat":"Facilities & FF&E","desc":"Order 'Level Up' Board immediately from local sign vendor (2–4 week lead-time buffer).","owner":"Santiago","due":"2026-09-05","status":"Open","notes":"","callPin":true},
-        {"id":"ACT-02","cat":"Exterior Signage","desc":"Obtain 2+ quotes for exterior illuminated channel-letter sign & send spec sheet to John Howell for corporate approval before ordering.","owner":"Santiago / Jaspal","due":"2026-08-08","status":"In Progress","notes":"","callPin":true},
-        {"id":"ACT-03","cat":"Marketing","desc":"Onboard with Creative Tricycle for mandatory Google & Facebook digital ad campaigns.","owner":"Santiago / Jaspal","due":"2026-08-10","status":"Open","notes":"","callPin":true},
+        {"id":"ACT-01","cat":"Facilities & FF&E","desc":"Order 'Level Up' Board immediately from local sign vendor (2–4 week lead-time buffer).","owner":"Santiago","due":"2026-09-05","status":"Open","notes":""},
+        {"id":"ACT-02","cat":"Exterior Signage","desc":"Obtain 2+ quotes for exterior illuminated channel-letter sign & send spec sheet to John Howell for corporate approval before ordering.","owner":"Santiago / Jaspal","due":"2026-08-08","status":"In Progress","notes":""},
+        {"id":"ACT-03","cat":"Marketing","desc":"Onboard with Creative Tricycle for mandatory Google & Facebook digital ad campaigns.","owner":"Santiago / Jaspal","due":"2026-08-10","status":"Open","notes":""},
         {"id":"ACT-04","cat":"Marketing","desc":"Provide admin email to Matt Fowers for Facebook & Instagram local page admin access.","owner":"Santiago / Jaspal","due":"2026-07-31","status":"Done","notes":"Includes FB/IG admin confirmation."},
         {"id":"ACT-05","cat":"Marketing","desc":"Research local schools within a 5-mile radius and populate Google Contacts sheet for outreach.","owner":"Santiago / Jaspal","due":"2026-08-22","status":"Open","notes":""},
-        {"id":"ACT-06","cat":"Hiring & Training","desc":"Schedule & complete mid-August Jackrabbit software training with Shelly Wickerd & Nancy.","owner":"Jaspal / Santiago","due":"2026-08-15","status":"Open","notes":"","callPin":true},
+        {"id":"ACT-06","cat":"Hiring & Training","desc":"Schedule & complete mid-August Jackrabbit software training with Shelly Wickerd & Nancy.","owner":"Jaspal / Santiago","due":"2026-08-15","status":"Open","notes":""},
         {"id":"ACT-07","cat":"Business & Finance","desc":"Finalize bookkeeping, sales tax & payroll scope with Geoff Suval @ Xceleran for QBO integration.","owner":"Jaspal","due":"2026-08-07","status":"Done","notes":""},
         {"id":"ACT-08","cat":"Marketing","desc":"Order interior posters, flyers, name-tag pallets & pins via ASB Portal.","owner":"Santiago / Jaspal","due":"2026-08-15","status":"Open","notes":""},
-        {"id":"ACT-09","cat":"Construction & Permitting","desc":"Complete studio build-out at 24527 Gosling Rd, Suite H2 — floor plan, kiln install, utility sinks, WPC flooring, lighting.","owner":"Santiago / Jaspal","due":"2026-09-12","status":"In Progress","notes":"Critical path to opening.","callPin":true},
+        {"id":"ACT-09","cat":"Construction & Permitting","desc":"Complete studio build-out at 24527 Gosling Rd, Suite H2 — floor plan, kiln install, utility sinks, WPC flooring, lighting.","owner":"Santiago / Jaspal","due":"2026-09-12","status":"In Progress","notes":"Critical path to opening."},
         {"id":"ACT-10","cat":"Construction & Permitting","desc":"Submit Harris County permit response package — materials list, HMIS statement & Skutt kiln classification letters.","owner":"Jaspal","due":"2026-08-05","status":"Done","notes":"Drafts prepared (July); confirm submission & response."},
         {"id":"ACT-11","cat":"Facilities & FF&E","desc":"Get licensed electrician to confirm in writing: incoming amps, 240V vs 208V, single vs 3-phase, panel location & distance — before finalizing kiln order.","owner":"Jaspal","due":"2026-08-11","status":"Done","notes":"Kiln model depends on this."},
-        {"id":"ACT-12","cat":"Facilities & FF&E","desc":"Order Skutt KMT-1022 kiln + EnviroVent 2 once electrical spec is confirmed.","owner":"Jaspal","due":"2026-08-20","status":"Open","notes":"","callPin":true},
+        {"id":"ACT-12","cat":"Facilities & FF&E","desc":"Order Skutt KMT-1022 kiln + EnviroVent 2 once electrical spec is confirmed.","owner":"Jaspal","due":"2026-08-20","status":"Open","notes":""},
         {"id":"ACT-13","cat":"Business & Finance","desc":"Bind business insurance (general liability + property) before opening — PHLY via Texan Insurance as lead; Markel / McDade as parallel quotes.","owner":"Jaspal","due":"2026-09-05","status":"Open","notes":"List Cordovan Arts Franchising LLC as additional insured."},
-        {"id":"ACT-14","cat":"Construction & Permitting","desc":"Obtain Certificate of Occupancy from Harris County after final inspection.","owner":"Jaspal","due":"2026-09-22","status":"Open","notes":"Gate to legally open.","callPin":true},
-        {"id":"ACT-15","cat":"Grand Opening & Ops","desc":"Plan & schedule the Grand Opening event — date, ribbon-cutting, community invites, trial classes.","owner":"Preeti / Silvana","due":"2026-09-15","status":"Open","notes":"","callPin":true},
+        {"id":"ACT-14","cat":"Construction & Permitting","desc":"Obtain Certificate of Occupancy from Harris County after final inspection.","owner":"Jaspal","due":"2026-09-22","status":"Open","notes":"Gate to legally open."},
+        {"id":"ACT-15","cat":"Grand Opening & Ops","desc":"Plan & schedule the Grand Opening event — date, ribbon-cutting, community invites, trial classes.","owner":"Preeti / Silvana","due":"2026-09-15","status":"Open","notes":""},
         {"id":"ACT-18","cat":"Exterior Signage","desc":"Obtain Signage permit from local jurisdiction.","owner":"Signage company","due":"2026-08-21","status":"Open","notes":""},
         {"id":"ACT-19","cat":"Business & Finance","desc":"Introductions to Finance Partners","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
         {"id":"ACT-20","cat":"Business & Finance","desc":"Create a Business Plan","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
@@ -1352,10 +1152,10 @@
         {"id":"ACT-137","cat":"Hiring & Training","desc":"Attend weekly corporate Zoom training calls","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"}
       ],
       risks: [
-        {"id":"RSK-01","desc":"Exterior sign manufacturing/installation delay impacts grand-opening visibility.","impact":"High","likelihood":"Medium","mitigation":"Submit specs to corporate immediately upon receiving vendor quotes; ensure local sign vendor guarantees delivery schedule.","owner":"Santiago / Jaspal","status":"Open","callPin":true},
-        {"id":"RSK-02","desc":"Delayed digital ad onboarding leads to lower initial enrollment volume at launch.","impact":"High","likelihood":"Low","mitigation":"Connect with Creative Tricycle promptly; complete ad setup at least 3–4 weeks prior to opening.","owner":"Jaspal","status":"Open","callPin":true},
+        {"id":"RSK-01","desc":"Exterior sign manufacturing/installation delay impacts grand-opening visibility.","impact":"High","likelihood":"Medium","mitigation":"Submit specs to corporate immediately upon receiving vendor quotes; ensure local sign vendor guarantees delivery schedule.","owner":"Santiago / Jaspal","status":"Open"},
+        {"id":"RSK-02","desc":"Delayed digital ad onboarding leads to lower initial enrollment volume at launch.","impact":"High","likelihood":"Low","mitigation":"Connect with Creative Tricycle promptly; complete ad setup at least 3–4 weeks prior to opening.","owner":"Jaspal","status":"Open"},
         {"id":"RSK-03","desc":"\"Level Up\" interior board delivery exceeds the 4-week window.","impact":"Medium","likelihood":"Medium","mitigation":"Place order immediately with recommended local printer.","owner":"Santiago","status":"Open"},
-        {"id":"RSK-04","desc":"Build-out, permit review or Certificate of Occupancy delay pushes opening.","impact":"High","likelihood":"Medium","mitigation":"Submit permit package early; track inspection dates; keep GC on firm schedule.","owner":"Jaspal","status":"Open","callPin":true},
+        {"id":"RSK-04","desc":"Build-out, permit review or Certificate of Occupancy delay pushes opening.","impact":"High","likelihood":"Medium","mitigation":"Submit permit package early; track inspection dates; keep GC on firm schedule.","owner":"Jaspal","status":"Open"},
         {"id":"RSK-05","desc":"Suite turns out single-phase only — forces a different kiln model and rewiring.","impact":"Medium","likelihood":"Medium","mitigation":"Obtain electrician's written confirmation of phase & amperage before placing kiln order.","owner":"Jaspal","status":"Closed"}
       ],
       register: [
@@ -1404,54 +1204,10 @@
         {"id":"REG-21","date":"2026-08-18","type":"Trial","source":"Website","student":"Sophia Viesca","email":"bgarciadealba@gmail.com","dob":"10/16/2017","age":8,"parent":"Bernadette","phone":"(305) 781-7298","days":"","prob":"xx%","notes":"Responded on 08/18"},
         {"id":"REG-22","date":"2026-08-19","type":"Trial","source":"Website","student":"Gabriela Van der Ree","email":"randyvdr@gmail.com","dob":"10/05/2015","age":10,"parent":"Randy Van Der Ree","phone":"(346) 273-9674","days":"","prob":"xx%","notes":"Responded on 08/20"},
         {"id":"REG-23","date":"2026-08-20","type":"Trial","source":"Website","student":"New Student Lead","email":"contact@cordovan.com","dob":"","age":"","parent":"Guardian Name","phone":"(832) 000-0000","days":"","prob":"xx%","notes":"Responded on 08/20"}
-      ],
-      schools: [
-        {
-          "id": "SCH-01",
-          "org": "Southwater Elementary School",
-          "poc": "John Doe",
-          "phone": "(444) 444-4444",
-          "email": "johndoe@gmail.com",
-          "actionType": "1 Free Month of Classes",
-          "amountPaid": "n/a",
-          "details": "We donated 1 month free classes for silent auction. The school will list us on their website between 3/1/26-5/31/26, and let us have flyer distribution in their school",
-          "eventDate": "2/25/2028",
-          "eventTime": "n/a",
-          "verifiedDate": "2/2/2026",
-          "notes": "On 2/2/26 800 flyers were delivered and sent in the student's take home folders. We are listed on the schools website"
-        },
-        {
-          "id": "SCH-02",
-          "org": "Sommerville Women Painters",
-          "poc": "Jane Doe",
-          "phone": "(444) 444-4444",
-          "email": "janedoe@gmail.com",
-          "actionType": "Fundraiser/Spirit Event",
-          "amountPaid": "30% of proceeds from fundraiser",
-          "details": "Sip and paint. 30% of proceeds to back to their organization",
-          "eventDate": "2/25/2028",
-          "eventTime": "6:00:00 PM",
-          "verifiedDate": "2/25/2028",
-          "notes": "Great experience. do again next year. A check for 30% was sent to the organiztion for the fundraiser by Payroll."
-        },
-        {
-          "id": "SCH-03",
-          "org": "Gattis Elementary School PTA",
-          "poc": "Jane Doe",
-          "phone": "(444) 444-4444",
-          "email": "janedoe@gmail.com",
-          "actionType": "Paid Sponsorship",
-          "amountPaid": "$500.00",
-          "details": "Banner at school, listing in school newsletter, 1,000 summer camp flyers in school distribution to kids",
-          "eventDate": "2/25/2028",
-          "eventTime": "n/a",
-          "verifiedDate": "2/1/2028",
-          "notes": "Great experience. do again next year. I drove by and saw the banner. I delivered 1,000 flyers on 3/1/26 and verified they got sent home with the students on 3/7/26. I saw the email go out that listed Cordovan Art School as a sponsor on 3/15/26"
-        }
       ]
     };
 
-    let appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+    let appData = { actions: [], risks: [], register: [], decisions: [], registrations: [] };
     let editingTarget = null;
     let editingCategory = '';
     let activeActionFilter = 'open';
@@ -1473,8 +1229,8 @@
     };
 
     function checkAuth() {
-      const entered = document.getElementById('passcode').value.trim();
-      if (entered === TEAM_PASSCODE) {
+      const val = document.getElementById('passcode').value;
+      if (val === TEAM_PASSCODE) {
         document.getElementById('login-overlay').style.display = 'none';
         document.getElementById('app').style.display = 'block';
         initApp();
@@ -1494,53 +1250,30 @@
     }
 
     async function loadPersistedData() {
-      const storageKey = 'cordovan_master_store_final_v14';
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        const local = localStorage.getItem(storageKey);
-        if (local) {
-          try {
-            const parsed = JSON.parse(local);
-            if (parsed && parsed.actions && parsed.actions.length > 50) {
-              appData = parsed;
-            } else {
-              appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
-            }
-          } catch(e) {
-            appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
-          }
-        } else {
-          appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
-          localStorage.setItem(storageKey, JSON.stringify(appData));
-        }
+        const local = localStorage.getItem('cordovan_grand_opening_store_clean_v9');
+        appData = local ? JSON.parse(local) : JSON.parse(JSON.stringify(SEED_DATA));
       } else {
         try {
           const res = await fetch(FIREBASE_DB_URL);
           const remote = await res.json();
-          if (remote && remote.actions && remote.actions.length > 50) {
+          if (remote && remote.actions) {
             appData = remote;
           } else {
-            await syncPersistedData(MASTER_SEED_DATA);
-            appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+            await syncPersistedData(SEED_DATA);
+            appData = JSON.parse(JSON.stringify(SEED_DATA));
           }
         } catch (e) {
-          appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+          console.error(e);
         }
       }
-      
-      if (!appData.actions || appData.actions.length === 0) appData.actions = JSON.parse(JSON.stringify(MASTER_SEED_DATA.actions));
-      if (!appData.risks || appData.risks.length === 0) appData.risks = JSON.parse(JSON.stringify(MASTER_SEED_DATA.risks));
-      if (!appData.register || appData.register.length === 0) appData.register = JSON.parse(JSON.stringify(MASTER_SEED_DATA.register));
-      if (!appData.decisions || appData.decisions.length === 0) appData.decisions = JSON.parse(JSON.stringify(MASTER_SEED_DATA.decisions));
-      if (!appData.registrations || appData.registrations.length === 0) appData.registrations = JSON.parse(JSON.stringify(MASTER_SEED_DATA.registrations));
-      if (!appData.schools || appData.schools.length === 0) appData.schools = JSON.parse(JSON.stringify(MASTER_SEED_DATA.schools));
-      
+      if (!appData.registrations) appData.registrations = JSON.parse(JSON.stringify(SEED_DATA.registrations));
       renderAllViews();
     }
 
     async function syncPersistedData(data) {
-      const storageKey = 'cordovan_master_store_final_v14';
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        localStorage.setItem(storageKey, JSON.stringify(data));
+        localStorage.setItem('cordovan_grand_opening_store_clean_v9', JSON.stringify(data));
       } else {
         try {
           await fetch(FIREBASE_DB_URL, {
@@ -1551,16 +1284,6 @@
         } catch (e) {
           console.error(e);
         }
-      }
-    }
-
-    function forceRestoreDefaults() {
-      if (confirm("Reset all project checklists, risks, decisions, and outreach back to master template?")) {
-        appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
-        syncPersistedData(appData);
-        populateCategoryAndOwnerDropdowns();
-        renderAllViews();
-        alert("Master data restored successfully!");
       }
     }
 
@@ -1689,10 +1412,10 @@
       
       if (type === 'high') {
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: High Impact Open Risks";
+        bannerText.innerText = "Showing: High Impact Open Risks (3)";
       } else if (type === 'open') {
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: All Open Risks";
+        bannerText.innerText = "Showing: All Open Risks (4)";
       } else {
         banner.style.display = 'none';
       }
@@ -1708,7 +1431,7 @@
       
       if (type === 'open') {
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: Open & Pending Register Items";
+        bannerText.innerText = "Showing: Open & Pending Register Items (10)";
       } else {
         banner.style.display = 'none';
       }
@@ -1745,13 +1468,13 @@
       const register = appData.register || [];
       const decisions = appData.decisions || [];
       const registrations = appData.registrations || [];
-      const schools = appData.schools || [];
 
       const doneCnt = actions.filter(a => a.status === 'Done').length;
       const openCnt = actions.filter(a => a.status === 'Open').length;
       const progCnt = actions.filter(a => a.status === 'In Progress').length;
       const totalActions = actions.length || 1;
       
+      // Percentage gauge is strictly tied to operational action items (does not impact registrations)
       const pct = Math.round((doneCnt / totalActions) * 100);
 
       const baseline = new Date("2026-08-21T00:00:00");
@@ -1768,19 +1491,12 @@
 
       const highRisksCnt = risks.filter(r => r.status === 'Open' && r.impact === 'High').length;
       const openRegCnt = register.filter(r => r.status === 'Open' || r.status === 'Pending').length;
-      
-      const pinnedActions = actions.filter(a => a.callPin);
-      const pinnedRisks = risks.filter(r => r.callPin);
-      const totalCallPinned = pinnedActions.length + pinnedRisks.length;
 
       document.getElementById('hero-open-actions').innerText = openCnt + progCnt;
       document.getElementById('hero-overdue-actions').innerText = overdueCnt;
       document.getElementById('hero-high-risks').innerText = highRisksCnt;
       document.getElementById('hero-decisions-count').innerText = decisions.length;
       document.getElementById('hero-reg-count').innerText = registrations.length;
-      document.getElementById('hero-school-count').innerText = schools.length;
-      document.getElementById('hero-call-count').innerText = totalCallPinned;
-
       document.getElementById('readiness-pct-text').innerText = pct + '%';
       document.getElementById('radial-gauge').style.setProperty('--pct', pct + '%');
 
@@ -1790,26 +1506,20 @@
       document.getElementById('card-open-risks').innerText = risks.filter(r => r.status === 'Open').length;
       document.getElementById('card-open-reg').innerText = openRegCnt;
       document.getElementById('card-trial-count').innerText = registrations.length;
-      document.getElementById('card-school-count').innerText = schools.length;
-      document.getElementById('card-call-count').innerText = `${totalCallPinned}/10`;
 
       document.getElementById('tab-cnt-actions').innerText = openCnt + progCnt;
       document.getElementById('tab-cnt-risks').innerText = highRisksCnt;
       document.getElementById('tab-cnt-reg').innerText = openRegCnt;
       document.getElementById('tab-cnt-dec').innerText = decisions.length;
       document.getElementById('tab-cnt-trial').innerText = registrations.length;
-      document.getElementById('tab-cnt-schools').innerText = schools.length;
-      document.getElementById('tab-cnt-call').innerText = totalCallPinned;
 
       renderCategoryBars();
       renderUrgentItems();
       renderActionsTable();
-      renderFridayCallTable();
       renderRisksTable();
       renderRegisterTable();
       renderDecisionsTable();
       renderRegistrationsTable();
-      renderSchoolsTable();
     }
 
     function renderCategoryBars() {
@@ -1851,10 +1561,6 @@
         .slice(0, 5);
 
       const target = document.getElementById('urgent-items-list');
-      if (urgent.length === 0) {
-        target.innerHTML = `<div style="color:#888; padding:12px;">No overdue or imminent tasks. Everything is on schedule!</div>`;
-        return;
-      }
       target.innerHTML = urgent.map(u => `
         <div class="urgent-row" onclick="openInspector('${u.id}', 'actions')">
           <div class="late-badge">${u.diff < 0 ? Math.abs(u.diff) + 'd late' : u.diff + 'd left'}</div>
@@ -1898,11 +1604,6 @@
 
       document.getElementById('actions-table-body').innerHTML = filtered.map(a => `
         <tr class="clickable" onclick="openInspector('${a.id}', 'actions')">
-          <td onclick="event.stopPropagation()">
-            <button class="pin-checkbox-btn ${a.callPin ? 'pinned' : ''}" onclick="toggleCallPin('${a.id}', 'actions')" title="Toggle Friday Call Agenda Pin">
-              ${a.callPin ? '📌' : '⚪'}
-            </button>
-          </td>
           <td><strong>${a.id}</strong></td>
           <td>${a.cat || '-'}</td>
           <td>
@@ -1926,59 +1627,6 @@
       `).join('');
     }
 
-    function renderFridayCallTable() {
-      const pinnedActions = (appData.actions || []).filter(a => a.callPin);
-      const pinnedRisks = (appData.risks || []).filter(r => r.callPin);
-      const combined = [...pinnedActions, ...pinnedRisks];
-
-      const tbody = document.getElementById('friday-call-table-body');
-      if (combined.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:#888;">No items pinned for the Friday Call yet. Click the 📌 icon next to any Action or Risk to add it here (up to 10 items).</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = combined.map(item => {
-        const isRisk = item.id.startsWith('RSK');
-        return `
-          <tr class="clickable" onclick="openInspector('${item.id}', '${isRisk ? 'risks' : 'actions'}')">
-            <td onclick="event.stopPropagation()">
-              <button class="pin-checkbox-btn pinned" onclick="toggleCallPin('${item.id}', '${isRisk ? 'risks' : 'actions'}')" title="Remove from Friday Call">📌</button>
-            </td>
-            <td><strong>${item.id}</strong></td>
-            <td><span style="font-weight:600; color: ${isRisk ? '#b91c1c' : '#1e40af'}">${isRisk ? 'Risk Item' : (item.cat || '-')}</span></td>
-            <td>
-              <div><strong>${item.desc}</strong></div>
-              ${item.notes || item.mitigation ? `<small style="color:#666;">${item.notes || item.mitigation}</small>` : ''}
-            </td>
-            <td>${item.owner || '-'}</td>
-            <td>${item.due || 'High Risk'}</td>
-            <td>
-              <span class="action-type-pill ${item.status === 'Done' || item.status === 'Closed' ? 'type-classes' : item.status === 'In Progress' ? 'type-fundraiser' : 'type-sponsorship'}">
-                ${item.status}
-              </span>
-            </td>
-          </tr>
-        `;
-      }).join('');
-    }
-
-    async function toggleCallPin(id, category) {
-      const list = appData[category] || [];
-      const item = list.find(x => x.id === id);
-      if (!item) return;
-
-      const currentPinnedCount = (appData.actions || []).filter(a => a.callPin).length + (appData.risks || []).filter(r => r.callPin).length;
-
-      if (!item.callPin && currentPinnedCount >= 10) {
-        alert("You have reached the maximum limit of 10 items for the Friday Call agenda. Please unpin an item first.");
-        return;
-      }
-
-      item.callPin = !item.callPin;
-      renderAllViews();
-      await syncPersistedData(appData);
-    }
-
     function renderRisksTable() {
       const statusFilter = document.getElementById('filter-risk-status').value;
       const filtered = (appData.risks || []).filter(r => {
@@ -1994,11 +1642,6 @@
 
       document.getElementById('risks-table-body').innerHTML = filtered.map(r => `
         <tr class="clickable" onclick="openInspector('${r.id}', 'risks')">
-          <td onclick="event.stopPropagation()">
-            <button class="pin-checkbox-btn ${r.callPin ? 'pinned' : ''}" onclick="toggleCallPin('${r.id}', 'risks')" title="Toggle Friday Call Agenda Pin">
-              ${r.callPin ? '📌' : '⚪'}
-            </button>
-          </td>
           <td><strong>${r.id}</strong></td>
           <td>${r.desc}</td>
           <td><span style="font-weight:700; color:${r.impact === 'High' ? '#dc2626' : '#d97706'}">${r.impact}</span></td>
@@ -2038,7 +1681,7 @@
           <td><small>${reg.basis || reg.resolution || reg.impact || '-'}</small></td>
           <td onclick="event.stopPropagation()">
             <div class="table-actions-cell">
-              <select class="status-pill-select ${reg.status === 'Validated' || reg.status === 'Closed' ? 'pill-done' : 'pill-prog'}" 
+              <select class="status-pill-select ${reg.status === 'Validated' || reg.status === 'Closed' ? 'pill-done' : 'pill-prog'}"
                 onchange="changeRegisterStatus('${reg.id}', this.value)">
                 <option value="Open" ${reg.status === 'Open' ? 'selected':''}>Open</option>
                 <option value="Pending" ${reg.status === 'Pending' ? 'selected':''}>Pending</option>
@@ -2053,22 +1696,13 @@
     }
 
     function renderDecisionsTable() {
-      const tbody = document.getElementById('decisions-table-body');
-      const list = appData.decisions || [];
-      if (!tbody) return;
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:20px; color:#888;">No decisions logged. Click '+ Add Item' to create one.</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = list.map(d => `
-        <tr class="clickable" onclick="openInspector('${d.id}', 'decisions')">
+      document.getElementById('decisions-table-body').innerHTML = (appData.decisions || []).map(d => `
+        <tr>
           <td><strong>${d.id}</strong></td>
           <td>${d.date || '-'}</td>
           <td>${d.summary}</td>
           <td><small>${d.stakeholders || '-'}</small></td>
-          <td onclick="event.stopPropagation()">
+          <td>
             <button class="del-btn" onclick="directDeleteItem('${d.id}', 'decisions')" title="Delete Decision">×</button>
           </td>
         </tr>
@@ -2099,44 +1733,11 @@
           <td><small>${r.days || '-'}</small></td>
           <td><strong>${r.prob || 'xx%'}</strong></td>
           <td><small style="color:#666;">${r.notes || '-'}</small></td>
+          <td onclick="event.stopPropagation()">
+            <button class="del-btn" onclick="directDeleteItem('${r.id}', 'registrations')" title="Delete Lead">×</button>
+          </td>
         </tr>
       `).join('');
-    }
-
-    function renderSchoolsTable() {
-      const q = (document.getElementById('filter-school-search').value || '').toLowerCase();
-      const actionFilter = document.getElementById('filter-school-action').value;
-
-      const filtered = (appData.schools || []).filter(s => {
-        const matchQ = (s.org + " " + s.poc + " " + s.phone + " " + s.email + " " + (s.details || '') + " " + (s.notes || '')).toLowerCase().includes(q);
-        const matchA = actionFilter ? s.actionType === actionFilter : true;
-        return matchQ && matchA;
-      });
-
-      document.getElementById('schools-table-body').innerHTML = filtered.map(s => {
-        let badgeClass = "type-classes";
-        if (s.actionType === "Fundraiser/Spirit Event") badgeClass = "type-fundraiser";
-        if (s.actionType === "Paid Sponsorship") badgeClass = "type-sponsorship";
-
-        return `
-          <tr class="clickable" onclick="openInspector('${s.id}', 'schools')">
-            <td><strong>${s.org}</strong></td>
-            <td>${s.poc || '-'}</td>
-            <td>${s.phone || '-'}</td>
-            <td><small>${s.email || '-'}</small></td>
-            <td><span class="action-type-pill ${badgeClass}">${s.actionType}</span></td>
-            <td><strong>${s.amountPaid || 'n/a'}</strong></td>
-            <td><small>${s.details}</small></td>
-            <td>${s.eventDate || '-'}</td>
-            <td>${s.eventTime || '-'}</td>
-            <td>${s.verifiedDate || '-'}</td>
-            <td><small style="color:#666;">${s.notes || '-'}</small></td>
-            <td onclick="event.stopPropagation()">
-              <button class="del-btn" onclick="directDeleteItem('${s.id}', 'schools')" title="Delete Outreach Record">×</button>
-            </td>
-          </tr>
-        `;
-      }).join('');
     }
 
     async function changeActionStatus(id, st) {
@@ -2159,23 +1760,12 @@
       if (!item) return;
 
       editingTarget = item;
-      document.getElementById('modal-heading').innerText = `${item.id || item.org || 'Lead'}: Details`;
+      document.getElementById('modal-heading').innerText = `${item.id || 'Lead'}: Details`;
 
-      document.getElementById('standard-edit-fields').style.display = 'none';
-      document.getElementById('decision-edit-fields').style.display = 'none';
-      document.getElementById('reg-edit-fields').style.display = 'none';
-      document.getElementById('school-edit-fields').style.display = 'none';
-
-      const delBtn = document.getElementById('modal-del-btn');
-      delBtn.style.display = (category === 'registrations') ? 'none' : 'block';
-
-      if (category === 'decisions') {
-        document.getElementById('decision-edit-fields').style.display = 'block';
-        document.getElementById('modal-dec-date').value = item.date || '';
-        document.getElementById('modal-dec-summary').value = item.summary || '';
-        document.getElementById('modal-dec-stakeholders').value = item.stakeholders || '';
-      } else if (category === 'registrations') {
+      if (category === 'registrations') {
+        document.getElementById('standard-edit-fields').style.display = 'none';
         document.getElementById('reg-edit-fields').style.display = 'block';
+
         document.getElementById('modal-reg-date').value = item.date || '';
         document.getElementById('modal-reg-type').value = item.type || 'Trial';
         document.getElementById('modal-reg-student').value = item.student || '';
@@ -2187,21 +1777,10 @@
         document.getElementById('modal-reg-days').value = item.days || '';
         document.getElementById('modal-reg-prob').value = item.prob || '';
         document.getElementById('modal-reg-notes').value = item.notes || '';
-      } else if (category === 'schools') {
-        document.getElementById('school-edit-fields').style.display = 'block';
-        document.getElementById('modal-school-org').value = item.org || '';
-        document.getElementById('modal-school-poc').value = item.poc || '';
-        document.getElementById('modal-school-phone').value = item.phone || '';
-        document.getElementById('modal-school-email').value = item.email || '';
-        document.getElementById('modal-school-action').value = item.actionType || '1 Free Month of Classes';
-        document.getElementById('modal-school-paid').value = item.amountPaid || '';
-        document.getElementById('modal-school-details').value = item.details || '';
-        document.getElementById('modal-school-evdate').value = item.eventDate || '';
-        document.getElementById('modal-school-evtime').value = item.eventTime || '';
-        document.getElementById('modal-school-verdate').value = item.verifiedDate || '';
-        document.getElementById('modal-school-notes').value = item.notes || '';
       } else {
         document.getElementById('standard-edit-fields').style.display = 'block';
+        document.getElementById('reg-edit-fields').style.display = 'none';
+
         document.getElementById('modal-input-desc').value = item.desc || item.summary || '';
         document.getElementById('modal-input-owner').value = item.owner || item.stakeholders || '';
         document.getElementById('modal-input-due').value = item.due || item.date || '';
@@ -2218,11 +1797,12 @@
 
     function toggleAddFields() {
       const type = document.getElementById('new-item-type').value;
-      document.getElementById('tracker-add-fields').style.display = (type !== 'registrations' && type !== 'schools') ? 'block' : 'none';
-      document.getElementById('registration-add-fields').style.display = (type === 'registrations') ? 'block' : 'none';
-      document.getElementById('school-add-fields').style.display = (type === 'schools') ? 'block' : 'none';
-
-      if (type !== 'registrations' && type !== 'schools') {
+      if (type === 'registrations') {
+        document.getElementById('tracker-add-fields').style.display = 'none';
+        document.getElementById('registration-add-fields').style.display = 'block';
+      } else {
+        document.getElementById('tracker-add-fields').style.display = 'block';
+        document.getElementById('registration-add-fields').style.display = 'none';
         document.getElementById('group-cat').style.display = (type === 'actions') ? 'block' : 'none';
         document.getElementById('group-due').style.display = (type === 'actions' || type === 'decisions') ? 'block' : 'none';
       }
@@ -2235,11 +1815,7 @@
     async function saveModalChanges() {
       if (!editingTarget) return;
 
-      if (editingCategory === 'decisions') {
-        editingTarget.date = document.getElementById('modal-dec-date').value;
-        editingTarget.summary = document.getElementById('modal-dec-summary').value;
-        editingTarget.stakeholders = document.getElementById('modal-dec-stakeholders').value;
-      } else if (editingCategory === 'registrations') {
+      if (editingCategory === 'registrations') {
         editingTarget.date = document.getElementById('modal-reg-date').value;
         editingTarget.type = document.getElementById('modal-reg-type').value;
         editingTarget.student = document.getElementById('modal-reg-student').value;
@@ -2251,18 +1827,6 @@
         editingTarget.days = document.getElementById('modal-reg-days').value;
         editingTarget.prob = document.getElementById('modal-reg-prob').value;
         editingTarget.notes = document.getElementById('modal-reg-notes').value;
-      } else if (editingCategory === 'schools') {
-        editingTarget.org = document.getElementById('modal-school-org').value;
-        editingTarget.poc = document.getElementById('modal-school-poc').value;
-        editingTarget.phone = document.getElementById('modal-school-phone').value;
-        editingTarget.email = document.getElementById('modal-school-email').value;
-        editingTarget.actionType = document.getElementById('modal-school-action').value;
-        editingTarget.amountPaid = document.getElementById('modal-school-paid').value;
-        editingTarget.details = document.getElementById('modal-school-details').value;
-        editingTarget.eventDate = document.getElementById('modal-school-evdate').value;
-        editingTarget.eventTime = document.getElementById('modal-school-evtime').value;
-        editingTarget.verifiedDate = document.getElementById('modal-school-verdate').value;
-        editingTarget.notes = document.getElementById('modal-school-notes').value;
       } else {
         editingTarget.desc = document.getElementById('modal-input-desc').value;
         if (editingTarget.owner !== undefined) editingTarget.owner = document.getElementById('modal-input-owner').value;
@@ -2278,7 +1842,6 @@
     }
 
     async function directDeleteItem(id, category) {
-      if (category === 'registrations') return;
       if (confirm(`Are you sure you want to delete ${id}?`)) {
         appData[category] = (appData[category] || []).filter(item => item.id !== id);
         renderAllViews();
@@ -2288,8 +1851,8 @@
     }
 
     async function deleteFromModal() {
-      if (!editingTarget || !editingCategory || editingCategory === 'registrations') return;
-      if (confirm(`Are you sure you want to delete this record (${editingTarget.id || editingTarget.org})?`)) {
+      if (!editingTarget || !editingCategory) return;
+      if (confirm(`Are you sure you want to delete this record (${editingTarget.id || editingTarget.student})?`)) {
         appData[editingCategory] = (appData[editingCategory] || []).filter(item => item.id !== editingTarget.id);
         closeModal('edit-modal');
         renderAllViews();
@@ -2324,27 +1887,6 @@
         };
         list.push(newLead);
         appData.registrations = list;
-      } else if (type === 'schools') {
-        const org = document.getElementById('new-school-org').value.trim();
-        if (!org) { alert("Please provide the organization name."); return; }
-
-        const newId = `SCH-${list.length + 1 < 10 ? '0' : ''}${list.length + 1}`;
-        const newSchool = {
-          id: newId,
-          org: org,
-          poc: document.getElementById('new-school-poc').value.trim(),
-          phone: document.getElementById('new-school-phone').value.trim(),
-          email: document.getElementById('new-school-email').value.trim(),
-          actionType: document.getElementById('new-school-action').value,
-          amountPaid: document.getElementById('new-school-paid').value.trim() || 'n/a',
-          details: document.getElementById('new-school-details').value.trim(),
-          eventDate: document.getElementById('new-school-evdate').value.trim(),
-          eventTime: document.getElementById('new-school-evtime').value.trim(),
-          verifiedDate: document.getElementById('new-school-verdate').value.trim(),
-          notes: document.getElementById('new-school-notes').value.trim()
-        };
-        list.push(newSchool);
-        appData.schools = list;
       } else {
         const desc = document.getElementById('new-item-desc').value.trim();
         if (!desc) { alert("Please provide a description."); return; }
