@@ -52,7 +52,7 @@
       border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px;
     }
 
-    .container { max-width: 1160px; margin: 0 auto; display: none; }
+    .container { max-width: 1200px; margin: 0 auto; display: none; }
 
     .brand-headline { margin-bottom: 18px; }
     .brand-headline h1 {
@@ -178,7 +178,7 @@
 
     .hero-kpis {
       display: flex;
-      gap: 36px;
+      gap: 32px;
       border-top: 1px solid rgba(255,255,255,0.14);
       padding-top: 18px;
       flex-wrap: wrap;
@@ -299,7 +299,7 @@
 
     .kpi-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
       gap: 14px;
       margin-bottom: 24px;
     }
@@ -462,7 +462,6 @@
     .pill-prog { background: #fef3c7; color: #92400e; }
     .pill-open { background: #fee2e2; color: #991b1b; }
 
-    /* Action Icon Buttons in Tables */
     .table-actions-cell {
       display: flex;
       align-items: center;
@@ -483,17 +482,15 @@
       font-size: 13px;
       transition: background 0.15s;
     }
-    .del-btn:hover {
-      background: #fca5a5;
-    }
+    .del-btn:hover { background: #fca5a5; }
 
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(0,0,0,0.45);
       display: none; align-items: center; justify-content: center; z-index: 10000;
     }
     .modal-sheet {
-      background: #fff; border-radius: 14px; width: 92%; max-width: 520px;
-      padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+      background: #fff; border-radius: 14px; width: 92%; max-width: 580px;
+      padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto;
     }
     .modal-sheet h3 {
       font-family: 'Playfair Display', Georgia, serif;
@@ -504,6 +501,7 @@
     .field-group input, .field-group textarea, .field-group select {
       width: 100%; padding: 8px 10px; border: 1px solid var(--border-subtle); border-radius: 6px; font-size: 13px; outline: none;
     }
+    .modal-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .modal-btn-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
     .btn-danger {
       background: var(--danger-red);
@@ -514,9 +512,7 @@
       font-weight: bold;
       cursor: pointer;
     }
-    .btn-danger:hover {
-      background: var(--danger-hover);
-    }
+    .btn-danger:hover { background: var(--danger-hover); }
 
     @media (max-width: 820px) {
       .hero-top-grid { grid-template-columns: 1fr; }
@@ -585,6 +581,10 @@
           <h4 id="hero-decisions-count">0</h4>
           <span>Decisions</span>
         </div>
+        <div class="hero-kpi-item" onclick="switchNav('registrations')">
+          <h4 id="hero-reg-count">23</h4>
+          <span>Trial Registrations</span>
+        </div>
       </div>
     </div>
 
@@ -594,6 +594,7 @@
       <button class="tab-pill" id="tab-btn-risks" onclick="filterAndNavigateRisks('high')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">0</span></button>
       <button class="tab-pill" id="tab-btn-register" onclick="filterAndNavigateRegister('open')">📎 Register <span class="tab-badge" id="tab-cnt-reg">0</span></button>
       <button class="tab-pill" id="tab-btn-decisions" onclick="switchNav('decisions')">🤝 Decisions <span class="tab-badge" id="tab-cnt-dec">0</span></button>
+      <button class="tab-pill" id="tab-btn-registrations" onclick="switchNav('registrations')">🎨 Trial Registrations <span class="tab-badge" id="tab-cnt-trial">23</span></button>
       <div class="top-actions-right">
         <button class="shift-btn" onclick="openShiftModal()">🗓 Shift Open Dates</button>
         <button class="add-btn" onclick="openCreateModal()">+ Add Item</button>
@@ -632,6 +633,11 @@
           <div class="kpi-card-header">📎 Open Register Items</div>
           <div class="kpi-card-val" id="card-open-reg">0</div>
           <div class="kpi-card-sub">assumptions/issues/deps</div>
+        </div>
+        <div class="kpi-card" onclick="switchNav('registrations')">
+          <div class="kpi-card-header">🎨 Trial Registrations</div>
+          <div class="kpi-card-val" id="card-trial-count">23</div>
+          <div class="kpi-card-sub">leads enrolled</div>
         </div>
       </div>
 
@@ -764,28 +770,130 @@
       </div>
     </div>
 
+    <!-- Tab 6: Trial Registrations Table (New Layer) -->
+    <div id="view-registrations" class="page-view" style="display: none;">
+      <div class="filter-bar-row">
+        <input type="text" id="filter-reg-search" placeholder="Search students, parents, email, phone, or notes..." oninput="renderRegistrationsTable()" style="flex:1;">
+        <select id="filter-reg-type" onchange="renderRegistrationsTable()">
+          <option value="">All Registration Types</option>
+          <option value="Trial">Trial</option>
+          <option value="Wheel Party">Wheel Party</option>
+          <option value="Call">Call</option>
+        </select>
+      </div>
+      <div class="data-table-card">
+        <table>
+          <thead>
+            <tr>
+              <th width="95">Reg Date</th>
+              <th width="105">Type</th>
+              <th width="85">Source</th>
+              <th>Student Name</th>
+              <th>Email</th>
+              <th width="80">DOB</th>
+              <th width="50">Age</th>
+              <th>Parent Name</th>
+              <th width="120">Phone</th>
+              <th width="100">Preferred Days</th>
+              <th width="70">Prob.</th>
+              <th>Notes</th>
+              <th width="60">Action</th>
+            </tr>
+          </thead>
+          <tbody id="registrations-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Detail Edit Modal with Delete Option -->
+  <!-- Detail Edit Modal (Universal) -->
   <div id="edit-modal" class="modal-backdrop">
     <div class="modal-sheet">
       <h3 id="modal-heading">Edit Item</h3>
-      <div class="field-group">
-        <label>Description</label>
-        <textarea id="modal-input-desc" rows="3"></textarea>
+      
+      <!-- Standard Tracker Fields -->
+      <div id="standard-edit-fields">
+        <div class="field-group">
+          <label>Description</label>
+          <textarea id="modal-input-desc" rows="3"></textarea>
+        </div>
+        <div class="field-group">
+          <label>Owner / Assigned</label>
+          <input type="text" id="modal-input-owner">
+        </div>
+        <div class="field-group">
+          <label>Due Date</label>
+          <input type="date" id="modal-input-due">
+        </div>
+        <div class="field-group">
+          <label>Notes / Mitigation</label>
+          <textarea id="modal-input-notes" rows="3"></textarea>
+        </div>
       </div>
-      <div class="field-group">
-        <label>Owner / Assigned</label>
-        <input type="text" id="modal-input-owner">
+
+      <!-- Registration Edit Fields -->
+      <div id="reg-edit-fields" style="display:none;">
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Registration Date</label>
+            <input type="date" id="modal-reg-date">
+          </div>
+          <div class="field-group">
+            <label>Type</label>
+            <select id="modal-reg-type">
+              <option value="Trial">Trial</option>
+              <option value="Wheel Party">Wheel Party</option>
+              <option value="Call">Call</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Student Name</label>
+            <input type="text" id="modal-reg-student">
+          </div>
+          <div class="field-group">
+            <label>Parent Name</label>
+            <input type="text" id="modal-reg-parent">
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Email Address</label>
+            <input type="email" id="modal-reg-email">
+          </div>
+          <div class="field-group">
+            <label>Phone Number</label>
+            <input type="text" id="modal-reg-phone">
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>DOB (MM/DD/YYYY)</label>
+            <input type="text" id="modal-reg-dob">
+          </div>
+          <div class="field-group">
+            <label>Age</label>
+            <input type="number" id="modal-reg-age">
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Preferred Days</label>
+            <input type="text" id="modal-reg-days">
+          </div>
+          <div class="field-group">
+            <label>Probability</label>
+            <input type="text" id="modal-reg-prob" placeholder="e.g. 50%, 100%, xx%">
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Notes / Status</label>
+          <textarea id="modal-reg-notes" rows="2"></textarea>
+        </div>
       </div>
-      <div class="field-group">
-        <label>Due Date</label>
-        <input type="date" id="modal-input-due">
-      </div>
-      <div class="field-group">
-        <label>Notes / Mitigation</label>
-        <textarea id="modal-input-notes" rows="3"></textarea>
-      </div>
+
       <div class="modal-btn-row" style="justify-content: space-between;">
         <button class="btn-danger" onclick="deleteFromModal()">Delete Item</button>
         <div style="display: flex; gap: 8px;">
@@ -796,6 +904,7 @@
     </div>
   </div>
 
+  <!-- Add Item Modal -->
   <div id="add-modal" class="modal-backdrop">
     <div class="modal-sheet">
       <h3>Add New Item</h3>
@@ -803,31 +912,99 @@
         <label>Type</label>
         <select id="new-item-type" onchange="toggleAddFields()">
           <option value="actions">Action Item</option>
+          <option value="registrations">Trial Registration</option>
           <option value="risks">Risk</option>
           <option value="register">Register (Assumption/Issue/Dep)</option>
           <option value="decisions">Decision</option>
         </select>
       </div>
-      <div class="field-group" id="group-cat">
-        <label>Category</label>
-        <input type="text" id="new-item-cat" placeholder="e.g. Facilities, Marketing, Legal">
+
+      <!-- Tracker Form -->
+      <div id="tracker-add-fields">
+        <div class="field-group" id="group-cat">
+          <label>Category</label>
+          <input type="text" id="new-item-cat" placeholder="e.g. Facilities & FF&E, Marketing, Legal">
+        </div>
+        <div class="field-group">
+          <label>Description / Summary</label>
+          <textarea id="new-item-desc" rows="3" placeholder="Enter description..."></textarea>
+        </div>
+        <div class="field-group" id="group-owner">
+          <label>Owner / Stakeholders</label>
+          <input type="text" id="new-item-owner" placeholder="e.g. Jaspal / Santiago">
+        </div>
+        <div class="field-group" id="group-due">
+          <label>Due Date / Date</label>
+          <input type="date" id="new-item-due">
+        </div>
+        <div class="field-group" id="group-notes">
+          <label>Notes / Mitigation Plan / Details</label>
+          <textarea id="new-item-notes" rows="2" placeholder="Optional details..."></textarea>
+        </div>
       </div>
-      <div class="field-group">
-        <label>Description / Summary</label>
-        <textarea id="new-item-desc" rows="3" placeholder="Enter description..."></textarea>
+
+      <!-- Registration Form -->
+      <div id="registration-add-fields" style="display:none;">
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Registration Date</label>
+            <input type="date" id="new-reg-date">
+          </div>
+          <div class="field-group">
+            <label>Registration Type</label>
+            <select id="new-reg-type">
+              <option value="Trial">Trial</option>
+              <option value="Wheel Party">Wheel Party</option>
+              <option value="Call">Call</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Student Name</label>
+            <input type="text" id="new-reg-student" placeholder="Student name">
+          </div>
+          <div class="field-group">
+            <label>Parent Name</label>
+            <input type="text" id="new-reg-parent" placeholder="Parent name">
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Email</label>
+            <input type="email" id="new-reg-email" placeholder="Email address">
+          </div>
+          <div class="field-group">
+            <label>Phone</label>
+            <input type="text" id="new-reg-phone" placeholder="Phone number">
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>DOB (MM/DD/YYYY)</label>
+            <input type="text" id="new-reg-dob" placeholder="MM/DD/YYYY">
+          </div>
+          <div class="field-group">
+            <label>Age</label>
+            <input type="number" id="new-reg-age" placeholder="Age">
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Preferred Days</label>
+            <input type="text" id="new-reg-days" placeholder="e.g. Weeknights, Evenings">
+          </div>
+          <div class="field-group">
+            <label>Probability</label>
+            <input type="text" id="new-reg-prob" placeholder="e.g. 50%, 100%, xx%">
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Notes</label>
+          <textarea id="new-reg-notes" rows="2" placeholder="e.g. Responded on 08/18"></textarea>
+        </div>
       </div>
-      <div class="field-group" id="group-owner">
-        <label>Owner / Stakeholders</label>
-        <input type="text" id="new-item-owner" placeholder="e.g. Jaspal / Santiago">
-      </div>
-      <div class="field-group" id="group-due">
-        <label>Due Date / Date</label>
-        <input type="date" id="new-item-due">
-      </div>
-      <div class="field-group" id="group-notes">
-        <label>Notes / Mitigation Plan / Details</label>
-        <textarea id="new-item-notes" rows="2" placeholder="Optional details..."></textarea>
-      </div>
+
       <div class="modal-btn-row">
         <button onclick="closeModal('add-modal')" style="padding: 7px 12px; border: 1px solid var(--border-subtle); background:#fff; border-radius:6px; cursor:pointer;">Cancel</button>
         <button onclick="createNewItem()" style="padding: 7px 14px; background:var(--hero-bg); color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Add Item</button>
@@ -1002,10 +1179,35 @@
         {"id":"DEC-03","summary":"Establish Woodlands-Gosling Rd as the primary franchise facility location.","date":"2026-07-15","stakeholders":"Prospera Experience Group LLC, Cordovan HQ"},
         {"id":"DEC-04","summary":"Target Grand Opening set to October 31, 2026.","date":"2026-07-31","stakeholders":"Jaspal, Santiago, Preeti, Silvana"},
         {"id":"DEC-05","summary":"Install one Skutt KMT-1022 electric kiln with EnviroVent 2 downdraft venting ducted to exterior.","date":"2026-07-20","stakeholders":"Jaspal, Santiago, Cordovan HQ"}
+      ],
+      registrations: [
+        {"id":"REG-01","date":"2026-07-07","type":"Trial","source":"Website","student":"Olivia","email":"tahaniweichlein@gmail.com","dob":"02/26/2015","age":11,"parent":"Tahani A Weichlein","phone":"(832) 620-0218","days":"","prob":"xx%","notes":"Responded on 07/24"},
+        {"id":"REG-02","date":"2026-07-13","type":"Trial","source":"Website","student":"Maria Vidal","email":"cathystevenson@aol.com","dob":"11/18/2008","age":17,"parent":"Jaime Vidal","phone":"(556) 190-4087","days":"","prob":"xx%","notes":"Responded on 07/20"},
+        {"id":"REG-03","date":"2026-07-18","type":"Trial","source":"Website","student":"Lucienne Camors","email":"l.camors29@gmail.com","dob":"11/29/1986","age":39,"parent":"Lucienne Camors","phone":"(346) 268-9548","days":"","prob":"xx%","notes":"Responded on 07/20"},
+        {"id":"REG-04","date":"2026-07-19","type":"Wheel Party","source":"Website","student":"Kae Shakir","email":"mctxgm1908@gmail.com","dob":"","age":"","parent":"Kae Shakir","phone":"(713) 398-4868","days":"","prob":"xx%","notes":"Responded on 07/20"},
+        {"id":"REG-05","date":"2026-07-22","type":"Trial","source":"Website","student":"Kylie Looney","email":"brooke.looney1@gmail.com","dob":"01/28/2019","age":7,"parent":"cathystevenson@aol.com","phone":"NA","days":"Right now, evenir","prob":"50%","notes":"Responded on 07/24"},
+        {"id":"REG-06","date":"2026-07-23","type":"Trial","source":"Website","student":"Cat & Vik","email":"vusshay@gmail.com","dob":"02/01/2013","age":13,"parent":"Vusala","phone":"(832) 832-1019","days":"","prob":"xx%","notes":"Responded on 07/24"},
+        {"id":"REG-07","date":"2026-07-24","type":"Trial","source":"Website","student":"Penelope Lizalde","email":"jgarcia0515@yahoo.com","dob":"02/20/2015","age":11,"parent":"Jacquelin Lizalde","phone":"(281) 770-1740","days":"","prob":"xx%","notes":"Responded on 07/24"},
+        {"id":"REG-08","date":"2026-07-30","type":"Trial","source":"Website","student":"Polina Skorovorova","email":"doveorsk@gmail.com","dob":"11/29/2015","age":10,"parent":"Svetlana Skorovorova","phone":"(936) 330-4719","days":"","prob":"xx%","notes":"Responded on 07/31"},
+        {"id":"REG-09","date":"2026-08-05","type":"Trial","source":"Website","student":"Xiomara Baltateanu","email":"calinandmara@yahoo.com","dob":"03/29/2015","age":11,"parent":"Xiomara Baltateanu","phone":"(714) 488-3510","days":"","prob":"xx%","notes":"Responded on 08/05"},
+        {"id":"REG-10","date":"2026-08-03","type":"Trial","source":"Website","student":"Deborah Jones","email":"deborah7067@att.net","dob":"07/24/2026","age":0,"parent":"Deborah","phone":"(346) 837-4664","days":"","prob":"xx%","notes":"Responded on 08/05"},
+        {"id":"REG-11","date":"2026-07-31","type":"Trial","source":"Website","student":"Valentina Gonzalez-M","email":"jayme.leigh.meyer@gmail.com","dob":"06/18/2013","age":13,"parent":"Jayme Meyer","phone":"(512) 653-0241","days":"We could potenti","prob":"50%","notes":"Responded on 08/05"},
+        {"id":"REG-12","date":"2026-08-08","type":"Call","source":"call","student":"Beyza Daglioglu","email":"kdaglioglu@gmail.com","dob":"","age":13,"parent":"Kemal DAGLIOGLU","phone":"832 610 5347","days":"","prob":"100%","notes":"Emailed on 08/08"},
+        {"id":"REG-13","date":"2026-08-08","type":"Trial","source":"Website","student":"Amelia Huang","email":"s.guan0056@gmail.com","dob":"05/03/2021","age":5,"parent":"SUJUN GUAN","phone":"(832) 575-1564","days":"","prob":"xx%","notes":"Responded on 08/08"},
+        {"id":"REG-14","date":"2026-08-08","type":"Trial","source":"Website","student":"Olivia Neve","email":"smartinez2989@gmail.com","dob":"05/07/2020","age":6,"parent":"Samantha Neve","phone":"(956) 279-6475","days":"","prob":"xx%","notes":"Responded on 08/08"},
+        {"id":"REG-15","date":"2026-08-09","type":"Trial","source":"Website","student":"Charlotte Wiggand","email":"ekaterina.wiggand@gmail.com","dob":"04/20/2018","age":8,"parent":"Katia Wiggand","phone":"(518) 390-6142","days":"","prob":"xx%","notes":"Responded on 08/10"},
+        {"id":"REG-16","date":"2026-08-09","type":"Trial","source":"Website","student":"Shiloh Brazda","email":"cathystevenson@aol.com","dob":"06/15/2021","age":5,"parent":"Jessica Brazda","phone":"(832) 918-2211","days":"homeschooling, i","prob":"100%","notes":"Responded on 08/10"},
+        {"id":"REG-17","date":"2026-08-11","type":"Trial","source":"Website","student":"Marcus Chen","email":"cathystevenson@aol.com","dob":"09/02/2018","age":7,"parent":"Candy Jiang","phone":"(713) 517-8883","days":"","prob":"xx%","notes":"Responded on 08/11"},
+        {"id":"REG-18","date":"2026-08-14","type":"Trial","source":"Website","student":"Catherine Stevenson","email":"cathystevenson@aol.com","dob":"","age":"","parent":"Catherine Stevenson","phone":"(602) 739-6389","days":"","prob":"xx%","notes":"Responded on 08/14"},
+        {"id":"REG-19","date":"2026-08-15","type":"Trial","source":"Website","student":"Zakariya Chohan","email":"razanakhan5@gmail.com","dob":"08/25/2019","age":6,"parent":"Razana Khan","phone":"(917) 774-4214","days":"","prob":"xx%","notes":"Responded on 08/18"},
+        {"id":"REG-20","date":"2026-08-16","type":"Trial","source":"Website","student":"Carson Moore","email":"moorelm2021@gmail.com","dob":"10/17/2013","age":12,"parent":"Leah Moore","phone":"(443) 775-9271","days":"Weeknights or w","prob":"xx%","notes":"Responded on 08/18"},
+        {"id":"REG-21","date":"2026-08-18","type":"Trial","source":"Website","student":"Sophia Viesca","email":"bgarciadealba@gmail.com","dob":"10/16/2017","age":8,"parent":"Bernadette","phone":"(305) 781-7298","days":"","prob":"xx%","notes":"Responded on 08/18"},
+        {"id":"REG-22","date":"2026-08-19","type":"Trial","source":"Website","student":"Gabriela Van der Ree","email":"randyvdr@gmail.com","dob":"10/05/2015","age":10,"parent":"Randy Van Der Ree","phone":"(346) 273-9674","days":"","prob":"xx%","notes":"Responded on 08/20"},
+        {"id":"REG-23","date":"2026-08-20","type":"Trial","source":"Website","student":"New Student Lead","email":"contact@cordovan.com","dob":"","age":"","parent":"Guardian Name","phone":"(832) 000-0000","days":"","prob":"xx%","notes":"Responded on 08/20"}
       ]
     };
 
-    let appData = { actions: [], risks: [], register: [], decisions: [] };
+    let appData = { actions: [], risks: [], register: [], decisions: [], registrations: [] };
     let editingTarget = null;
     let editingCategory = '';
     let activeActionFilter = 'open';
@@ -1049,7 +1251,7 @@
 
     async function loadPersistedData() {
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        const local = localStorage.getItem('cordovan_grand_opening_store_clean_v8');
+        const local = localStorage.getItem('cordovan_grand_opening_store_clean_v9');
         appData = local ? JSON.parse(local) : JSON.parse(JSON.stringify(SEED_DATA));
       } else {
         try {
@@ -1065,12 +1267,13 @@
           console.error(e);
         }
       }
+      if (!appData.registrations) appData.registrations = JSON.parse(JSON.stringify(SEED_DATA.registrations));
       renderAllViews();
     }
 
     async function syncPersistedData(data) {
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        localStorage.setItem('cordovan_grand_opening_store_clean_v8', JSON.stringify(data));
+        localStorage.setItem('cordovan_grand_opening_store_clean_v9', JSON.stringify(data));
       } else {
         try {
           await fetch(FIREBASE_DB_URL, {
@@ -1264,12 +1467,14 @@
       const risks = appData.risks || [];
       const register = appData.register || [];
       const decisions = appData.decisions || [];
+      const registrations = appData.registrations || [];
 
       const doneCnt = actions.filter(a => a.status === 'Done').length;
       const openCnt = actions.filter(a => a.status === 'Open').length;
       const progCnt = actions.filter(a => a.status === 'In Progress').length;
       const totalActions = actions.length || 1;
       
+      // Percentage gauge is strictly tied to operational action items (does not impact registrations)
       const pct = Math.round((doneCnt / totalActions) * 100);
 
       const baseline = new Date("2026-08-21T00:00:00");
@@ -1291,6 +1496,7 @@
       document.getElementById('hero-overdue-actions').innerText = overdueCnt;
       document.getElementById('hero-high-risks').innerText = highRisksCnt;
       document.getElementById('hero-decisions-count').innerText = decisions.length;
+      document.getElementById('hero-reg-count').innerText = registrations.length;
       document.getElementById('readiness-pct-text').innerText = pct + '%';
       document.getElementById('radial-gauge').style.setProperty('--pct', pct + '%');
 
@@ -1299,11 +1505,13 @@
       document.getElementById('card-overdue').innerText = overdueCnt;
       document.getElementById('card-open-risks').innerText = risks.filter(r => r.status === 'Open').length;
       document.getElementById('card-open-reg').innerText = openRegCnt;
+      document.getElementById('card-trial-count').innerText = registrations.length;
 
       document.getElementById('tab-cnt-actions').innerText = openCnt + progCnt;
       document.getElementById('tab-cnt-risks').innerText = highRisksCnt;
       document.getElementById('tab-cnt-reg').innerText = openRegCnt;
       document.getElementById('tab-cnt-dec').innerText = decisions.length;
+      document.getElementById('tab-cnt-trial').innerText = registrations.length;
 
       renderCategoryBars();
       renderUrgentItems();
@@ -1311,6 +1519,7 @@
       renderRisksTable();
       renderRegisterTable();
       renderDecisionsTable();
+      renderRegistrationsTable();
     }
 
     function renderCategoryBars() {
@@ -1500,6 +1709,37 @@
       `).join('');
     }
 
+    function renderRegistrationsTable() {
+      const q = (document.getElementById('filter-reg-search').value || '').toLowerCase();
+      const typeFilter = document.getElementById('filter-reg-type').value;
+
+      const filtered = (appData.registrations || []).filter(r => {
+        const matchQ = (r.student + " " + r.parent + " " + r.email + " " + r.phone + " " + (r.notes || '') + " " + (r.days || '')).toLowerCase().includes(q);
+        const matchT = typeFilter ? r.type === typeFilter : true;
+        return matchQ && matchT;
+      });
+
+      document.getElementById('registrations-table-body').innerHTML = filtered.map(r => `
+        <tr class="clickable" onclick="openInspector('${r.id}', 'registrations')">
+          <td>${r.date || '-'}</td>
+          <td><strong style="color: ${r.type === 'Trial' ? '#0d9488' : r.type === 'Wheel Party' ? '#b45309' : '#4338ca'};">${r.type}</strong></td>
+          <td>${r.source || 'Website'}</td>
+          <td><strong>${r.student}</strong></td>
+          <td><small>${r.email}</small></td>
+          <td>${r.dob || '-'}</td>
+          <td>${r.age || '-'}</td>
+          <td>${r.parent || '-'}</td>
+          <td>${r.phone || '-'}</td>
+          <td><small>${r.days || '-'}</small></td>
+          <td><strong>${r.prob || 'xx%'}</strong></td>
+          <td><small style="color:#666;">${r.notes || '-'}</small></td>
+          <td onclick="event.stopPropagation()">
+            <button class="del-btn" onclick="directDeleteItem('${r.id}', 'registrations')" title="Delete Lead">×</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
     async function changeActionStatus(id, st) {
       const target = (appData.actions || []).find(a => a.id === id);
       if (target) { target.status = st; renderAllViews(); await syncPersistedData(appData); }
@@ -1520,11 +1760,32 @@
       if (!item) return;
 
       editingTarget = item;
-      document.getElementById('modal-heading').innerText = `${item.id}: Item Details`;
-      document.getElementById('modal-input-desc').value = item.desc || item.summary || '';
-      document.getElementById('modal-input-owner').value = item.owner || item.stakeholders || '';
-      document.getElementById('modal-input-due').value = item.due || item.date || '';
-      document.getElementById('modal-input-notes').value = item.notes || item.mitigation || item.resolution || item.basis || '';
+      document.getElementById('modal-heading').innerText = `${item.id || 'Lead'}: Details`;
+
+      if (category === 'registrations') {
+        document.getElementById('standard-edit-fields').style.display = 'none';
+        document.getElementById('reg-edit-fields').style.display = 'block';
+
+        document.getElementById('modal-reg-date').value = item.date || '';
+        document.getElementById('modal-reg-type').value = item.type || 'Trial';
+        document.getElementById('modal-reg-student').value = item.student || '';
+        document.getElementById('modal-reg-parent').value = item.parent || '';
+        document.getElementById('modal-reg-email').value = item.email || '';
+        document.getElementById('modal-reg-phone').value = item.phone || '';
+        document.getElementById('modal-reg-dob').value = item.dob || '';
+        document.getElementById('modal-reg-age').value = item.age || '';
+        document.getElementById('modal-reg-days').value = item.days || '';
+        document.getElementById('modal-reg-prob').value = item.prob || '';
+        document.getElementById('modal-reg-notes').value = item.notes || '';
+      } else {
+        document.getElementById('standard-edit-fields').style.display = 'block';
+        document.getElementById('reg-edit-fields').style.display = 'none';
+
+        document.getElementById('modal-input-desc').value = item.desc || item.summary || '';
+        document.getElementById('modal-input-owner').value = item.owner || item.stakeholders || '';
+        document.getElementById('modal-input-due').value = item.due || item.date || '';
+        document.getElementById('modal-input-notes').value = item.notes || item.mitigation || item.resolution || item.basis || '';
+      }
 
       document.getElementById('edit-modal').style.display = 'flex';
     }
@@ -1536,8 +1797,15 @@
 
     function toggleAddFields() {
       const type = document.getElementById('new-item-type').value;
-      document.getElementById('group-cat').style.display = (type === 'actions') ? 'block' : 'none';
-      document.getElementById('group-due').style.display = (type === 'actions' || type === 'decisions') ? 'block' : 'none';
+      if (type === 'registrations') {
+        document.getElementById('tracker-add-fields').style.display = 'none';
+        document.getElementById('registration-add-fields').style.display = 'block';
+      } else {
+        document.getElementById('tracker-add-fields').style.display = 'block';
+        document.getElementById('registration-add-fields').style.display = 'none';
+        document.getElementById('group-cat').style.display = (type === 'actions') ? 'block' : 'none';
+        document.getElementById('group-due').style.display = (type === 'actions' || type === 'decisions') ? 'block' : 'none';
+      }
     }
 
     function closeModal(modalId) {
@@ -1546,20 +1814,33 @@
 
     async function saveModalChanges() {
       if (!editingTarget) return;
-      editingTarget.desc = document.getElementById('modal-input-desc').value;
-      if (editingTarget.owner !== undefined) editingTarget.owner = document.getElementById('modal-input-owner').value;
-      if (editingTarget.due !== undefined) editingTarget.due = document.getElementById('modal-input-due').value;
 
-      if (editingTarget.notes !== undefined) editingTarget.notes = document.getElementById('modal-input-notes').value;
-      if (editingTarget.mitigation !== undefined) editingTarget.mitigation = document.getElementById('modal-input-notes').value;
-      if (editingTarget.resolution !== undefined) editingTarget.resolution = document.getElementById('modal-input-notes').value;
+      if (editingCategory === 'registrations') {
+        editingTarget.date = document.getElementById('modal-reg-date').value;
+        editingTarget.type = document.getElementById('modal-reg-type').value;
+        editingTarget.student = document.getElementById('modal-reg-student').value;
+        editingTarget.parent = document.getElementById('modal-reg-parent').value;
+        editingTarget.email = document.getElementById('modal-reg-email').value;
+        editingTarget.phone = document.getElementById('modal-reg-phone').value;
+        editingTarget.dob = document.getElementById('modal-reg-dob').value;
+        editingTarget.age = document.getElementById('modal-reg-age').value;
+        editingTarget.days = document.getElementById('modal-reg-days').value;
+        editingTarget.prob = document.getElementById('modal-reg-prob').value;
+        editingTarget.notes = document.getElementById('modal-reg-notes').value;
+      } else {
+        editingTarget.desc = document.getElementById('modal-input-desc').value;
+        if (editingTarget.owner !== undefined) editingTarget.owner = document.getElementById('modal-input-owner').value;
+        if (editingTarget.due !== undefined) editingTarget.due = document.getElementById('modal-input-due').value;
+        if (editingTarget.notes !== undefined) editingTarget.notes = document.getElementById('modal-input-notes').value;
+        if (editingTarget.mitigation !== undefined) editingTarget.mitigation = document.getElementById('modal-input-notes').value;
+        if (editingTarget.resolution !== undefined) editingTarget.resolution = document.getElementById('modal-input-notes').value;
+      }
 
       closeModal('edit-modal');
       renderAllViews();
       await syncPersistedData(appData);
     }
 
-    /* Delete Operations */
     async function directDeleteItem(id, category) {
       if (confirm(`Are you sure you want to delete ${id}?`)) {
         appData[category] = (appData[category] || []).filter(item => item.id !== id);
@@ -1571,7 +1852,7 @@
 
     async function deleteFromModal() {
       if (!editingTarget || !editingCategory) return;
-      if (confirm(`Are you sure you want to delete ${editingTarget.id}?`)) {
+      if (confirm(`Are you sure you want to delete this record (${editingTarget.id || editingTarget.student})?`)) {
         appData[editingCategory] = (appData[editingCategory] || []).filter(item => item.id !== editingTarget.id);
         closeModal('edit-modal');
         renderAllViews();
@@ -1582,40 +1863,60 @@
 
     async function createNewItem() {
       const type = document.getElementById('new-item-type').value;
-      const desc = document.getElementById('new-item-desc').value.trim();
-      if (!desc) { alert("Please provide a description."); return; }
-
       const list = appData[type] || [];
-      const prefix = type === 'actions' ? 'ACT' : type === 'risks' ? 'RSK' : type === 'decisions' ? 'DEC' : 'REG';
-      const newId = `${prefix}-${list.length + 1 < 10 ? '0' : ''}${list.length + 1}`;
 
-      const newItem = {
-        id: newId,
-        desc: desc,
-        status: "Open"
-      };
+      if (type === 'registrations') {
+        const student = document.getElementById('new-reg-student').value.trim();
+        if (!student) { alert("Please provide student name."); return; }
 
-      if (type === 'actions') {
-        newItem.cat = document.getElementById('new-item-cat').value.trim() || 'General';
-        newItem.owner = document.getElementById('new-item-owner').value.trim();
-        newItem.due = document.getElementById('new-item-due').value;
-        newItem.notes = document.getElementById('new-item-notes').value.trim();
-      } else if (type === 'risks') {
-        newItem.impact = "Medium";
-        newItem.likelihood = "Medium";
-        newItem.mitigation = document.getElementById('new-item-notes').value.trim();
-        newItem.owner = document.getElementById('new-item-owner').value.trim();
-      } else if (type === 'register') {
-        newItem.k = "assumption";
-        newItem.basis = document.getElementById('new-item-notes').value.trim();
-      } else if (type === 'decisions') {
-        newItem.summary = desc;
-        newItem.date = document.getElementById('new-item-due').value;
-        newItem.stakeholders = document.getElementById('new-item-owner').value.trim();
+        const newId = `REG-${list.length + 1 < 10 ? '0' : ''}${list.length + 1}`;
+        const newLead = {
+          id: newId,
+          date: document.getElementById('new-reg-date').value || new Date().toISOString().split('T')[0],
+          type: document.getElementById('new-reg-type').value,
+          source: "Website",
+          student: student,
+          parent: document.getElementById('new-reg-parent').value.trim(),
+          email: document.getElementById('new-reg-email').value.trim(),
+          phone: document.getElementById('new-reg-phone').value.trim(),
+          dob: document.getElementById('new-reg-dob').value.trim(),
+          age: document.getElementById('new-reg-age').value.trim(),
+          days: document.getElementById('new-reg-days').value.trim(),
+          prob: document.getElementById('new-reg-prob').value.trim() || 'xx%',
+          notes: document.getElementById('new-reg-notes').value.trim()
+        };
+        list.push(newLead);
+        appData.registrations = list;
+      } else {
+        const desc = document.getElementById('new-item-desc').value.trim();
+        if (!desc) { alert("Please provide a description."); return; }
+
+        const prefix = type === 'actions' ? 'ACT' : type === 'risks' ? 'RSK' : type === 'decisions' ? 'DEC' : 'REG';
+        const newId = `${prefix}-${list.length + 1 < 10 ? '0' : ''}${list.length + 1}`;
+
+        const newItem = { id: newId, desc: desc, status: "Open" };
+
+        if (type === 'actions') {
+          newItem.cat = document.getElementById('new-item-cat').value.trim() || 'General';
+          newItem.owner = document.getElementById('new-item-owner').value.trim();
+          newItem.due = document.getElementById('new-item-due').value;
+          newItem.notes = document.getElementById('new-item-notes').value.trim();
+        } else if (type === 'risks') {
+          newItem.impact = "Medium";
+          newItem.likelihood = "Medium";
+          newItem.mitigation = document.getElementById('new-item-notes').value.trim();
+          newItem.owner = document.getElementById('new-item-owner').value.trim();
+        } else if (type === 'register') {
+          newItem.k = "assumption";
+          newItem.basis = document.getElementById('new-item-notes').value.trim();
+        } else if (type === 'decisions') {
+          newItem.summary = desc;
+          newItem.date = document.getElementById('new-item-due').value;
+          newItem.stakeholders = document.getElementById('new-item-owner').value.trim();
+        }
+        list.push(newItem);
+        appData[type] = list;
       }
-
-      list.push(newItem);
-      appData[type] = list;
 
       closeModal('add-modal');
       populateCategoryAndOwnerDropdowns();
