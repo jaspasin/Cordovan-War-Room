@@ -22,8 +22,6 @@
       --gold-prog: #f59e0b;
       --danger-red: #dc2626;
       --danger-hover: #b91c1c;
-      --call-blue: #1e40af;
-      --call-badge: #dbeafe;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -145,7 +143,7 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: conic-gradient(var(--gold-prog) var(--pct, 0%), rgba(255,255,255,0.12) 0);
+      background: conic-gradient(var(--gold-prog) var(--pct, 37%), rgba(255,255,255,0.12) 0);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -207,10 +205,8 @@
       font-weight: 600;
     }
 
-    /* 2-Line Tab Navigation Grid (No Scrollbars) */
-    .nav-tabs-wrapper {
-      margin-bottom: 24px;
-    }
+    /* 2-Line Tab Navigation Grid */
+    .nav-tabs-wrapper { margin-bottom: 24px; }
     .nav-tabs-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
@@ -258,7 +254,7 @@
       gap: 10px;
       margin-bottom: 16px;
     }
-    .shift-btn {
+    .ctrl-btn {
       background: #ffffff;
       color: var(--hero-bg);
       border: 1px solid var(--border-subtle);
@@ -271,7 +267,7 @@
       align-items: center;
       gap: 4px;
     }
-    .shift-btn:hover { background: #faf7f0; }
+    .ctrl-btn:hover { background: #faf7f0; }
     .add-btn {
       background: var(--hero-bg);
       color: white;
@@ -468,48 +464,22 @@
     .pill-prog { background: #fef3c7; color: #92400e; }
     .pill-open { background: #fee2e2; color: #991b1b; }
 
-    .table-actions-cell {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+    .table-actions-cell { display: flex; align-items: center; gap: 8px; }
     .del-btn {
-      background: #fee2e2;
-      color: #991b1b;
-      border: none;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-weight: bold;
-      font-size: 13px;
-      transition: background 0.15s;
+      background: #fee2e2; color: #991b1b; border: none; width: 24px; height: 24px;
+      border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;
+      cursor: pointer; font-weight: bold; font-size: 13px;
     }
     .del-btn:hover { background: #fca5a5; }
 
     .pin-checkbox-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-      padding: 2px 6px;
-      opacity: 0.35;
-      transition: all 0.15s ease;
+      background: none; border: none; cursor: pointer; font-size: 16px; padding: 2px 6px;
+      opacity: 0.35; transition: all 0.15s ease;
     }
-    .pin-checkbox-btn.pinned {
-      opacity: 1;
-      transform: scale(1.15);
-    }
+    .pin-checkbox-btn.pinned { opacity: 1; transform: scale(1.15); }
 
     .action-type-pill {
-      padding: 3px 8px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 700;
-      display: inline-block;
+      padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 700; display: inline-block;
     }
     .type-classes { background: #dcfce7; color: #15803d; }
     .type-fundraiser { background: #f3e8ff; color: #7e22ce; }
@@ -524,8 +494,7 @@
       padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto;
     }
     .modal-sheet h3 {
-      font-family: 'Playfair Display', Georgia, serif;
-      color: var(--hero-bg); font-size: 20px; margin-bottom: 14px; font-weight: 700;
+      font-family: 'Playfair Display', Georgia, serif; color: var(--hero-bg); font-size: 20px; margin-bottom: 14px; font-weight: 700;
     }
     .field-group { margin-bottom: 12px; }
     .field-group label { display: block; font-size: 11px; font-weight: 700; text-transform: uppercase; color: #666; margin-bottom: 4px; }
@@ -535,13 +504,7 @@
     .modal-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
     .modal-btn-row { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
     .btn-danger {
-      background: var(--danger-red);
-      color: #fff;
-      border: none;
-      padding: 7px 14px;
-      border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
+      background: var(--danger-red); color: #fff; border: none; padding: 7px 14px; border-radius: 6px; font-weight: bold; cursor: pointer;
     }
     .btn-danger:hover { background: var(--danger-hover); }
 
@@ -589,7 +552,7 @@
         <div class="gauge-box" onclick="filterAndNavigateActions('Done')" title="Click to view Completed Actions">
           <div class="gauge-circle" id="radial-gauge">
             <div class="gauge-inner-text">
-              <h3 id="readiness-pct-text">0%</h3>
+              <h3 id="readiness-pct-text">37%</h3>
               <p>Launch Ready</p>
             </div>
           </div>
@@ -598,19 +561,19 @@
 
       <div class="hero-kpis">
         <div class="hero-kpi-item" onclick="filterAndNavigateActions('open')">
-          <h4 id="hero-open-actions">0</h4>
+          <h4 id="hero-open-actions">79</h4>
           <span>Actions Open</span>
         </div>
         <div class="hero-kpi-item" onclick="filterAndNavigateActions('overdue')">
-          <h4 id="hero-overdue-actions">0</h4>
+          <h4 id="hero-overdue-actions">5</h4>
           <span>Overdue</span>
         </div>
         <div class="hero-kpi-item" onclick="filterAndNavigateRisks('high')">
-          <h4 id="hero-high-risks">0</h4>
+          <h4 id="hero-high-risks">3</h4>
           <span>High Risks</span>
         </div>
         <div class="hero-kpi-item" onclick="switchNav('fridaycall')">
-          <h4 id="hero-call-count">0</h4>
+          <h4 id="hero-call-count">10</h4>
           <span>Friday Call Top 10</span>
         </div>
         <div class="hero-kpi-item" onclick="switchNav('registrations')">
@@ -628,16 +591,17 @@
     <div class="nav-tabs-wrapper">
       <div class="nav-tabs-grid">
         <button class="tab-pill active" id="tab-btn-dashboard" onclick="switchNav('dashboard')">📊 Dashboard</button>
-        <button class="tab-pill" id="tab-btn-actions" onclick="filterAndNavigateActions('open')">✅ Actions <span class="tab-badge" id="tab-cnt-actions">0</span></button>
-        <button class="tab-pill" id="tab-btn-fridaycall" onclick="switchNav('fridaycall')">📞 Friday Call Top 10 <span class="tab-badge" id="tab-cnt-call" style="background:#dbeafe; color:#1e40af;">0</span></button>
-        <button class="tab-pill" id="tab-btn-risks" onclick="filterAndNavigateRisks('high')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">0</span></button>
-        <button class="tab-pill" id="tab-btn-register" onclick="filterAndNavigateRegister('open')">📎 Register <span class="tab-badge" id="tab-cnt-reg">0</span></button>
-        <button class="tab-pill" id="tab-btn-decisions" onclick="switchNav('decisions')">🤝 Decisions <span class="tab-badge" id="tab-cnt-dec">0</span></button>
+        <button class="tab-pill" id="tab-btn-actions" onclick="filterAndNavigateActions('open')">✅ Actions <span class="tab-badge" id="tab-cnt-actions">79</span></button>
+        <button class="tab-pill" id="tab-btn-fridaycall" onclick="switchNav('fridaycall')">📞 Friday Call Top 10 <span class="tab-badge" id="tab-cnt-call" style="background:#dbeafe; color:#1e40af;">10</span></button>
+        <button class="tab-pill" id="tab-btn-risks" onclick="filterAndNavigateRisks('high')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">3</span></button>
+        <button class="tab-pill" id="tab-btn-register" onclick="filterAndNavigateRegister('open')">📎 Register <span class="tab-badge" id="tab-cnt-reg">10</span></button>
+        <button class="tab-pill" id="tab-btn-decisions" onclick="switchNav('decisions')">🤝 Decisions <span class="tab-badge" id="tab-cnt-dec">5</span></button>
         <button class="tab-pill" id="tab-btn-registrations" onclick="switchNav('registrations')">🎨 Trial Registrations <span class="tab-badge" id="tab-cnt-trial">23</span></button>
         <button class="tab-pill" id="tab-btn-schools" onclick="switchNav('schools')">🏫 School Outreach <span class="tab-badge" id="tab-cnt-schools">3</span></button>
       </div>
       <div class="top-controls-bar">
-        <button class="shift-btn" onclick="openShiftModal()">🗓 Shift Open Dates</button>
+        <button class="ctrl-btn" onclick="forceRestoreDefaults()">🔄 Reload Master Data</button>
+        <button class="ctrl-btn" onclick="openShiftModal()">🗓 Shift Open Dates</button>
         <button class="add-btn" onclick="openCreateModal()">+ Add Item</button>
       </div>
     </div>
@@ -652,27 +616,27 @@
       <div class="kpi-row">
         <div class="kpi-card" onclick="filterAndNavigateActions('Done')">
           <div class="kpi-card-header">✅ Actions Done</div>
-          <div class="kpi-card-val" id="card-done-ratio">0/0</div>
+          <div class="kpi-card-val" id="card-done-ratio">46/125</div>
           <div class="kpi-card-sub">launch checklist</div>
         </div>
         <div class="kpi-card" onclick="filterAndNavigateActions('duesoon')">
           <div class="kpi-card-header">⏳ Due Within 7 Days</div>
-          <div class="kpi-card-val" id="card-due-soon">0</div>
+          <div class="kpi-card-val" id="card-due-soon">2</div>
           <div class="kpi-card-sub">keep the pace</div>
         </div>
         <div class="kpi-card overdue-card" onclick="filterAndNavigateActions('overdue')">
           <div class="kpi-card-header">🔴 Overdue</div>
-          <div class="kpi-card-val" id="card-overdue">0</div>
+          <div class="kpi-card-val" id="card-overdue">5</div>
           <div class="kpi-card-sub">needs attention now</div>
         </div>
         <div class="kpi-card" onclick="switchNav('fridaycall')">
           <div class="kpi-card-header">📞 Friday Call Focus</div>
-          <div class="kpi-card-val" id="card-call-count">0</div>
-          <div class="kpi-card-sub">agenda items (max 10)</div>
+          <div class="kpi-card-val" id="card-call-count">10/10</div>
+          <div class="kpi-card-sub">agenda items pinned</div>
         </div>
         <div class="kpi-card" onclick="filterAndNavigateRisks('open')">
           <div class="kpi-card-header">⚠️ Open Risks</div>
-          <div class="kpi-card-val" id="card-open-risks">0</div>
+          <div class="kpi-card-val" id="card-open-risks">4</div>
           <div class="kpi-card-sub">actively tracked</div>
         </div>
         <div class="kpi-card" onclick="switchNav('registrations')">
@@ -703,7 +667,7 @@
     <div id="view-actions" class="page-view" style="display: none;">
       <div id="action-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="action-filter-text">Filtered View Active</span>
-        <button onclick="clearActionFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All</button>
+        <button onclick="clearActionFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All Actions</button>
       </div>
       <div class="filter-bar-row">
         <input type="text" id="filter-action-search" placeholder="Search actions..." oninput="renderActionsTable()" style="flex:1;">
@@ -842,7 +806,7 @@
       </div>
     </div>
 
-    <!-- Tab 7: Trial Registrations Table (Deletion Option Removed) -->
+    <!-- Tab 7: Trial Registrations Table -->
     <div id="view-registrations" class="page-view" style="display: none;">
       <div class="filter-bar-row">
         <input type="text" id="filter-reg-search" placeholder="Search students, parents, email, phone, or notes..." oninput="renderRegistrationsTable()" style="flex:1;">
@@ -917,7 +881,6 @@
     <div class="modal-sheet">
       <h3 id="modal-heading">Edit Item</h3>
       
-      <!-- Standard Tracker Fields -->
       <div id="standard-edit-fields">
         <div class="field-group">
           <label>Description</label>
@@ -937,7 +900,6 @@
         </div>
       </div>
 
-      <!-- Registration Edit Fields -->
       <div id="reg-edit-fields" style="display:none;">
         <div class="modal-grid-2">
           <div class="field-group">
@@ -999,7 +961,6 @@
         </div>
       </div>
 
-      <!-- School Outreach Edit Fields -->
       <div id="school-edit-fields" style="display:none;">
         <div class="modal-grid-2">
           <div class="field-group">
@@ -1085,7 +1046,6 @@
         </select>
       </div>
 
-      <!-- Tracker Form -->
       <div id="tracker-add-fields">
         <div class="field-group" id="group-cat">
           <label>Category</label>
@@ -1109,7 +1069,6 @@
         </div>
       </div>
 
-      <!-- Registration Form -->
       <div id="registration-add-fields" style="display:none;">
         <div class="modal-grid-2">
           <div class="field-group">
@@ -1171,7 +1130,6 @@
         </div>
       </div>
 
-      <!-- School Outreach Form -->
       <div id="school-add-fields" style="display:none;">
         <div class="modal-grid-2">
           <div class="field-group">
@@ -1257,8 +1215,8 @@
     const TEAM_PASSCODE = "Cordovan2026";
     const FIREBASE_DB_URL = "FIREBASE_DATABASE_URL_HERE";
 
-    // Master Uncorrupted Dataset including all 120+ checklists, risks, decisions, registrations, and schools
-    const SEED_DATA = {
+    // Complete Uncorrupted Master Dataset
+    const MASTER_SEED_DATA = {
       openingDate: "2026-10-31",
       actions: [
         {"id":"ACT-01","cat":"Facilities & FF&E","desc":"Order 'Level Up' Board immediately from local sign vendor (2–4 week lead-time buffer).","owner":"Santiago","due":"2026-09-05","status":"Open","notes":"","callPin":true},
@@ -1478,7 +1436,7 @@
       ]
     };
 
-    let appData = { actions: [], risks: [], register: [], decisions: [], registrations: [], schools: [] };
+    let appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
     let editingTarget = null;
     let editingCategory = '';
     let activeActionFilter = 'open';
@@ -1521,54 +1479,54 @@
     }
 
     async function loadPersistedData() {
+      const storageKey = 'cordovan_master_store_final_v12';
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        // Safe key migration ensures that old corrupt/empty localStorage states are bypassed cleanly
-        const local = localStorage.getItem('cordovan_grand_opening_store_stable_v11');
+        const local = localStorage.getItem(storageKey);
         if (local) {
           try {
             const parsed = JSON.parse(local);
-            if (parsed && parsed.actions && parsed.actions.length > 0) {
+            if (parsed && parsed.actions && parsed.actions.length > 50) {
               appData = parsed;
             } else {
-              appData = JSON.parse(JSON.stringify(SEED_DATA));
+              appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
             }
           } catch(e) {
-            appData = JSON.parse(JSON.stringify(SEED_DATA));
+            appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
           }
         } else {
-          appData = JSON.parse(JSON.stringify(SEED_DATA));
-          localStorage.setItem('cordovan_grand_opening_store_stable_v11', JSON.stringify(appData));
+          appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+          localStorage.setItem(storageKey, JSON.stringify(appData));
         }
       } else {
         try {
           const res = await fetch(FIREBASE_DB_URL);
           const remote = await res.json();
-          if (remote && remote.actions && remote.actions.length > 0) {
+          if (remote && remote.actions && remote.actions.length > 50) {
             appData = remote;
           } else {
-            await syncPersistedData(SEED_DATA);
-            appData = JSON.parse(JSON.stringify(SEED_DATA));
+            await syncPersistedData(MASTER_SEED_DATA);
+            appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
           }
         } catch (e) {
-          console.error(e);
-          appData = JSON.parse(JSON.stringify(SEED_DATA));
+          appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
         }
       }
       
-      // Verification safeguard to guarantee datasets exist
-      if (!appData.actions || appData.actions.length === 0) appData.actions = JSON.parse(JSON.stringify(SEED_DATA.actions));
-      if (!appData.risks || appData.risks.length === 0) appData.risks = JSON.parse(JSON.stringify(SEED_DATA.risks));
-      if (!appData.register || appData.register.length === 0) appData.register = JSON.parse(JSON.stringify(SEED_DATA.register));
-      if (!appData.decisions || appData.decisions.length === 0) appData.decisions = JSON.parse(JSON.stringify(SEED_DATA.decisions));
-      if (!appData.registrations || appData.registrations.length === 0) appData.registrations = JSON.parse(JSON.stringify(SEED_DATA.registrations));
-      if (!appData.schools || appData.schools.length === 0) appData.schools = JSON.parse(JSON.stringify(SEED_DATA.schools));
+      // Strict Fallback Guarantees
+      if (!appData.actions || appData.actions.length === 0) appData.actions = JSON.parse(JSON.stringify(MASTER_SEED_DATA.actions));
+      if (!appData.risks || appData.risks.length === 0) appData.risks = JSON.parse(JSON.stringify(MASTER_SEED_DATA.risks));
+      if (!appData.register || appData.register.length === 0) appData.register = JSON.parse(JSON.stringify(MASTER_SEED_DATA.register));
+      if (!appData.decisions || appData.decisions.length === 0) appData.decisions = JSON.parse(JSON.stringify(MASTER_SEED_DATA.decisions));
+      if (!appData.registrations || appData.registrations.length === 0) appData.registrations = JSON.parse(JSON.stringify(MASTER_SEED_DATA.registrations));
+      if (!appData.schools || appData.schools.length === 0) appData.schools = JSON.parse(JSON.stringify(MASTER_SEED_DATA.schools));
       
       renderAllViews();
     }
 
     async function syncPersistedData(data) {
+      const storageKey = 'cordovan_master_store_final_v12';
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        localStorage.setItem('cordovan_grand_opening_store_stable_v11', JSON.stringify(data));
+        localStorage.setItem(storageKey, JSON.stringify(data));
       } else {
         try {
           await fetch(FIREBASE_DB_URL, {
@@ -1579,6 +1537,16 @@
         } catch (e) {
           console.error(e);
         }
+      }
+    }
+
+    function forceRestoreDefaults() {
+      if (confirm("Reset all project checklists, risks, and outreach back to master template?")) {
+        appData = JSON.parse(JSON.stringify(MASTER_SEED_DATA));
+        syncPersistedData(appData);
+        populateCategoryAndOwnerDropdowns();
+        renderAllViews();
+        alert("Master data reloaded successfully!");
       }
     }
 
@@ -1869,6 +1837,10 @@
         .slice(0, 5);
 
       const target = document.getElementById('urgent-items-list');
+      if (urgent.length === 0) {
+        target.innerHTML = `<div style="color:#888; padding:12px;">No overdue or imminent tasks. Everything is on schedule!</div>`;
+        return;
+      }
       target.innerHTML = urgent.map(u => `
         <div class="urgent-row" onclick="openInspector('${u.id}', 'actions')">
           <div class="late-badge">${u.diff < 0 ? Math.abs(u.diff) + 'd late' : u.diff + 'd left'}</div>
