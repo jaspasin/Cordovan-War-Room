@@ -22,6 +22,8 @@
       --gold-prog: #f59e0b;
       --danger-red: #dc2626;
       --danger-hover: #b91c1c;
+      --call-blue: #1e40af;
+      --call-badge: #dbeafe;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -52,7 +54,7 @@
       border: none; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 14px;
     }
 
-    .container { max-width: 1200px; margin: 0 auto; display: none; }
+    .container { max-width: 1240px; margin: 0 auto; display: none; }
 
     .brand-headline { margin-bottom: 18px; }
     .brand-headline h1 {
@@ -178,7 +180,7 @@
 
     .hero-kpis {
       display: flex;
-      gap: 32px;
+      gap: 28px;
       border-top: 1px solid rgba(255,255,255,0.14);
       padding-top: 18px;
       flex-wrap: wrap;
@@ -208,7 +210,7 @@
     .nav-tabs {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       margin-bottom: 24px;
       overflow-x: auto;
       padding-bottom: 4px;
@@ -216,10 +218,10 @@
     .tab-pill {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background: transparent;
       border: 1px solid transparent;
-      padding: 8px 14px;
+      padding: 8px 12px;
       border-radius: 20px;
       font-size: 13px;
       font-weight: 600;
@@ -299,15 +301,15 @@
 
     .kpi-row {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 12px;
       margin-bottom: 24px;
     }
     .kpi-card {
       background: var(--card-bg);
       border: 1px solid var(--border-subtle);
       border-radius: 14px;
-      padding: 18px 16px;
+      padding: 16px 14px;
       box-shadow: 0 2px 5px rgba(0,0,0,0.02);
       cursor: pointer;
       transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -329,7 +331,7 @@
     }
     .kpi-card-val {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: 32px;
+      font-size: 30px;
       font-weight: 700;
       line-height: 1;
       color: #1a1a1a;
@@ -385,7 +387,7 @@
     }
     .cat-bar-item:hover { background: #faf7f0; }
     .cat-dot { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
-    .cat-name { width: 140px; font-weight: 500; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .cat-name { width: 150px; font-weight: 500; color: #333; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .cat-track { flex: 1; height: 6px; background: #f0ece1; border-radius: 4px; overflow: hidden; }
     .cat-fill { height: 100%; border-radius: 4px; }
     .cat-num { width: 24px; text-align: right; font-weight: 700; color: #666; font-size: 12px; }
@@ -484,12 +486,39 @@
     }
     .del-btn:hover { background: #fca5a5; }
 
+    /* Friday Call Pin Checkbox */
+    .pin-checkbox-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 2px 6px;
+      opacity: 0.35;
+      transition: all 0.15s ease;
+    }
+    .pin-checkbox-btn.pinned {
+      opacity: 1;
+      transform: scale(1.15);
+    }
+
+    /* Action Type Badges for School Outreach */
+    .action-type-pill {
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      display: inline-block;
+    }
+    .type-classes { background: #dcfce7; color: #15803d; }
+    .type-fundraiser { background: #f3e8ff; color: #7e22ce; }
+    .type-sponsorship { background: #fee2e2; color: #b91c1c; }
+
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(0,0,0,0.45);
       display: none; align-items: center; justify-content: center; z-index: 10000;
     }
     .modal-sheet {
-      background: #fff; border-radius: 14px; width: 92%; max-width: 580px;
+      background: #fff; border-radius: 14px; width: 92%; max-width: 620px;
       padding: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.25); max-height: 90vh; overflow-y: auto;
     }
     .modal-sheet h3 {
@@ -577,13 +606,17 @@
           <h4 id="hero-high-risks">0</h4>
           <span>High Risks</span>
         </div>
-        <div class="hero-kpi-item" onclick="switchNav('decisions')">
-          <h4 id="hero-decisions-count">0</h4>
-          <span>Decisions</span>
+        <div class="hero-kpi-item" onclick="switchNav('fridaycall')">
+          <h4 id="hero-call-count">0</h4>
+          <span>Friday Call Top 10</span>
         </div>
         <div class="hero-kpi-item" onclick="switchNav('registrations')">
           <h4 id="hero-reg-count">23</h4>
           <span>Trial Registrations</span>
+        </div>
+        <div class="hero-kpi-item" onclick="switchNav('schools')">
+          <h4 id="hero-school-count">3</h4>
+          <span>School Outreach</span>
         </div>
       </div>
     </div>
@@ -591,10 +624,12 @@
     <div class="nav-tabs">
       <button class="tab-pill active" id="tab-btn-dashboard" onclick="switchNav('dashboard')">📊 Dashboard</button>
       <button class="tab-pill" id="tab-btn-actions" onclick="filterAndNavigateActions('open')">✅ Actions <span class="tab-badge" id="tab-cnt-actions">0</span></button>
+      <button class="tab-pill" id="tab-btn-fridaycall" onclick="switchNav('fridaycall')">📞 Friday Call Top 10 <span class="tab-badge" id="tab-cnt-call" style="background:#dbeafe; color:#1e40af;">0</span></button>
       <button class="tab-pill" id="tab-btn-risks" onclick="filterAndNavigateRisks('high')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">0</span></button>
       <button class="tab-pill" id="tab-btn-register" onclick="filterAndNavigateRegister('open')">📎 Register <span class="tab-badge" id="tab-cnt-reg">0</span></button>
       <button class="tab-pill" id="tab-btn-decisions" onclick="switchNav('decisions')">🤝 Decisions <span class="tab-badge" id="tab-cnt-dec">0</span></button>
       <button class="tab-pill" id="tab-btn-registrations" onclick="switchNav('registrations')">🎨 Trial Registrations <span class="tab-badge" id="tab-cnt-trial">23</span></button>
+      <button class="tab-pill" id="tab-btn-schools" onclick="switchNav('schools')">🏫 School Outreach <span class="tab-badge" id="tab-cnt-schools">3</span></button>
       <div class="top-actions-right">
         <button class="shift-btn" onclick="openShiftModal()">🗓 Shift Open Dates</button>
         <button class="add-btn" onclick="openCreateModal()">+ Add Item</button>
@@ -624,20 +659,25 @@
           <div class="kpi-card-val" id="card-overdue">0</div>
           <div class="kpi-card-sub">needs attention now</div>
         </div>
+        <div class="kpi-card" onclick="switchNav('fridaycall')">
+          <div class="kpi-card-header">📞 Friday Call Focus</div>
+          <div class="kpi-card-val" id="card-call-count">0</div>
+          <div class="kpi-card-sub">agenda items (max 10)</div>
+        </div>
         <div class="kpi-card" onclick="filterAndNavigateRisks('open')">
           <div class="kpi-card-header">⚠️ Open Risks</div>
           <div class="kpi-card-val" id="card-open-risks">0</div>
           <div class="kpi-card-sub">actively tracked</div>
         </div>
-        <div class="kpi-card" onclick="filterAndNavigateRegister('open')">
-          <div class="kpi-card-header">📎 Open Register Items</div>
-          <div class="kpi-card-val" id="card-open-reg">0</div>
-          <div class="kpi-card-sub">assumptions/issues/deps</div>
-        </div>
         <div class="kpi-card" onclick="switchNav('registrations')">
           <div class="kpi-card-header">🎨 Trial Registrations</div>
           <div class="kpi-card-val" id="card-trial-count">23</div>
           <div class="kpi-card-sub">leads enrolled</div>
+        </div>
+        <div class="kpi-card" onclick="switchNav('schools')">
+          <div class="kpi-card-header">🏫 School Partners</div>
+          <div class="kpi-card-val" id="card-school-count">3</div>
+          <div class="kpi-card-sub">outreach logged</div>
         </div>
       </div>
 
@@ -678,6 +718,7 @@
         <table>
           <thead>
             <tr>
+              <th width="45" title="Pin to Weekly Friday Call Agenda">Call</th>
               <th width="80">ID</th>
               <th width="140">Category</th>
               <th>Description & Notes</th>
@@ -691,7 +732,31 @@
       </div>
     </div>
 
-    <!-- Tab 3: Risks Table -->
+    <!-- Tab 3: Friday Call Top 10 Focus View -->
+    <div id="view-fridaycall" class="page-view" style="display: none;">
+      <div class="section-head">
+        <h2>📞 Weekly Friday Call — Top Focus Items</h2>
+        <p>Pick up to 10 critical items to drive discussions with leadership and the team. Click the 📌 icon on any task to add or remove.</p>
+      </div>
+      <div class="data-table-card">
+        <table>
+          <thead>
+            <tr>
+              <th width="50">Pin</th>
+              <th width="80">ID</th>
+              <th width="140">Category</th>
+              <th>Key Discussion Point & Description</th>
+              <th width="150">Owner</th>
+              <th width="110">Due Date</th>
+              <th width="140">Status</th>
+            </tr>
+          </thead>
+          <tbody id="friday-call-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 4: Risks Table -->
     <div id="view-risks" class="page-view" style="display: none;">
       <div id="risk-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="risk-filter-text">Filtered View Active</span>
@@ -709,6 +774,7 @@
         <table>
           <thead>
             <tr>
+              <th width="45" title="Pin to Weekly Friday Call Agenda">Call</th>
               <th width="90">ID</th>
               <th>Risk Description</th>
               <th width="90">Impact</th>
@@ -723,7 +789,7 @@
       </div>
     </div>
 
-    <!-- Tab 4: Register Table -->
+    <!-- Tab 5: Register Table -->
     <div id="view-register" class="page-view" style="display: none;">
       <div id="register-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="register-filter-text">Filtered View Active</span>
@@ -752,7 +818,7 @@
       </div>
     </div>
 
-    <!-- Tab 5: Decisions Table -->
+    <!-- Tab 6: Decisions Table -->
     <div id="view-decisions" class="page-view" style="display: none;">
       <div class="data-table-card">
         <table>
@@ -770,7 +836,7 @@
       </div>
     </div>
 
-    <!-- Tab 6: Trial Registrations Table (New Layer) -->
+    <!-- Tab 7: Trial Registrations Table (Deletion Option Removed) -->
     <div id="view-registrations" class="page-view" style="display: none;">
       <div class="filter-bar-row">
         <input type="text" id="filter-reg-search" placeholder="Search students, parents, email, phone, or notes..." oninput="renderRegistrationsTable()" style="flex:1;">
@@ -794,13 +860,46 @@
               <th width="50">Age</th>
               <th>Parent Name</th>
               <th width="120">Phone</th>
-              <th width="100">Preferred Days</th>
+              <th width="110">Preferred Days</th>
               <th width="70">Prob.</th>
-              <th>Notes</th>
-              <th width="60">Action</th>
+              <th>Notes / Updates</th>
             </tr>
           </thead>
           <tbody id="registrations-table-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Tab 8: School Information & Marketing Outreach Layer (New Layer) -->
+    <div id="view-schools" class="page-view" style="display: none;">
+      <div class="filter-bar-row">
+        <input type="text" id="filter-school-search" placeholder="Search school/org, contact person, agreement details, or notes..." oninput="renderSchoolsTable()" style="flex:1;">
+        <select id="filter-school-action" onchange="renderSchoolsTable()">
+          <option value="">All Action Types</option>
+          <option value="1 Free Month of Classes">1 Free Month of Classes</option>
+          <option value="Fundraiser/Spirit Event">Fundraiser/Spirit Event</option>
+          <option value="Paid Sponsorship">Paid Sponsorship</option>
+        </select>
+      </div>
+      <div class="data-table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Name of Organization</th>
+              <th width="130">Point of Contact</th>
+              <th width="120">Phone</th>
+              <th>Email</th>
+              <th width="170">Type of Action</th>
+              <th width="100">Amount Paid</th>
+              <th>Details of Agreement</th>
+              <th width="95">Date of Event</th>
+              <th width="90">Time</th>
+              <th width="95">Verified Date</th>
+              <th>Notes / Debrief</th>
+              <th width="60">Action</th>
+            </tr>
+          </thead>
+          <tbody id="schools-table-body"></tbody>
         </table>
       </div>
     </div>
@@ -832,7 +931,7 @@
         </div>
       </div>
 
-      <!-- Registration Edit Fields -->
+      <!-- Registration Edit Fields (Deletion button intentionally disabled for leads) -->
       <div id="reg-edit-fields" style="display:none;">
         <div class="modal-grid-2">
           <div class="field-group">
@@ -885,17 +984,77 @@
           </div>
           <div class="field-group">
             <label>Probability</label>
-            <input type="text" id="modal-reg-prob" placeholder="e.g. 50%, 100%, xx%">
+            <input type="text" id="modal-reg-prob">
           </div>
         </div>
         <div class="field-group">
-          <label>Notes / Status</label>
+          <label>Notes / Follow-Up</label>
           <textarea id="modal-reg-notes" rows="2"></textarea>
         </div>
       </div>
 
+      <!-- School Outreach Edit Fields -->
+      <div id="school-edit-fields" style="display:none;">
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Name of Organization</label>
+            <input type="text" id="modal-school-org">
+          </div>
+          <div class="field-group">
+            <label>Point of Contact</label>
+            <input type="text" id="modal-school-poc">
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Phone</label>
+            <input type="text" id="modal-school-phone">
+          </div>
+          <div class="field-group">
+            <label>Email</label>
+            <input type="email" id="modal-school-email">
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Type of Action</label>
+            <select id="modal-school-action">
+              <option value="1 Free Month of Classes">1 Free Month of Classes</option>
+              <option value="Fundraiser/Spirit Event">Fundraiser/Spirit Event</option>
+              <option value="Paid Sponsorship">Paid Sponsorship</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Amount Paid</label>
+            <input type="text" id="modal-school-paid" placeholder="e.g. n/a, $500.00, 30% of proceeds">
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Details of Agreement</label>
+          <textarea id="modal-school-details" rows="2"></textarea>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Date of Event</label>
+            <input type="text" id="modal-school-evdate" placeholder="e.g. 2/25/2028 or YYYY-MM-DD">
+          </div>
+          <div class="field-group">
+            <label>Time of Event</label>
+            <input type="text" id="modal-school-evtime" placeholder="e.g. 6:00 PM or n/a">
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Verified Date</label>
+          <input type="text" id="modal-school-verdate" placeholder="e.g. 2/2/2026">
+        </div>
+        <div class="field-group">
+          <label>Notes / Debrief</label>
+          <textarea id="modal-school-notes" rows="3"></textarea>
+        </div>
+      </div>
+
       <div class="modal-btn-row" style="justify-content: space-between;">
-        <button class="btn-danger" onclick="deleteFromModal()">Delete Item</button>
+        <button id="modal-del-btn" class="btn-danger" onclick="deleteFromModal()">Delete Item</button>
         <div style="display: flex; gap: 8px;">
           <button onclick="closeModal('edit-modal')" style="padding: 7px 12px; border: 1px solid var(--border-subtle); background:#fff; border-radius:6px; cursor:pointer;">Cancel</button>
           <button onclick="saveModalChanges()" style="padding: 7px 14px; background:var(--hero-bg); color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Save</button>
@@ -912,6 +1071,7 @@
         <label>Type</label>
         <select id="new-item-type" onchange="toggleAddFields()">
           <option value="actions">Action Item</option>
+          <option value="schools">School Outreach & Marketing</option>
           <option value="registrations">Trial Registration</option>
           <option value="risks">Risk</option>
           <option value="register">Register (Assumption/Issue/Dep)</option>
@@ -1005,6 +1165,66 @@
         </div>
       </div>
 
+      <!-- School Outreach Form -->
+      <div id="school-add-fields" style="display:none;">
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Name of Organization</label>
+            <input type="text" id="new-school-org" placeholder="e.g. Southwater Elementary School">
+          </div>
+          <div class="field-group">
+            <label>Point of Contact</label>
+            <input type="text" id="new-school-poc" placeholder="Contact name">
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Phone</label>
+            <input type="text" id="new-school-phone" placeholder="(444) 444-4444">
+          </div>
+          <div class="field-group">
+            <label>Email</label>
+            <input type="email" id="new-school-email" placeholder="contact@email.com">
+          </div>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Type of Action</label>
+            <select id="new-school-action">
+              <option value="1 Free Month of Classes">1 Free Month of Classes</option>
+              <option value="Fundraiser/Spirit Event">Fundraiser/Spirit Event</option>
+              <option value="Paid Sponsorship">Paid Sponsorship</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <label>Amount Paid</label>
+            <input type="text" id="new-school-paid" placeholder="e.g. n/a, $500.00, 30% of proceeds">
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Details of Agreement</label>
+          <textarea id="new-school-details" rows="2" placeholder="What was provided & return benefits..."></textarea>
+        </div>
+        <div class="modal-grid-2">
+          <div class="field-group">
+            <label>Date of Event</label>
+            <input type="text" id="new-school-evdate" placeholder="e.g. 2/25/2028 or YYYY-MM-DD">
+          </div>
+          <div class="field-group">
+            <label>Time of Event</label>
+            <input type="text" id="new-school-evtime" placeholder="e.g. 6:00 PM or n/a">
+          </div>
+        </div>
+        <div class="field-group">
+          <label>Verified Date</label>
+          <input type="text" id="new-school-verdate" placeholder="e.g. 2/2/2026">
+        </div>
+        <div class="field-group">
+          <label>Notes / Debrief</label>
+          <textarea id="new-school-notes" rows="2" placeholder="Flyer distribution verification, outcomes..."></textarea>
+        </div>
+      </div>
+
       <div class="modal-btn-row">
         <button onclick="closeModal('add-modal')" style="padding: 7px 12px; border: 1px solid var(--border-subtle); background:#fff; border-radius:6px; cursor:pointer;">Cancel</button>
         <button onclick="createNewItem()" style="padding: 7px 14px; background:var(--hero-bg); color:#fff; border:none; border-radius:6px; font-weight:bold; cursor:pointer;">Add Item</button>
@@ -1034,21 +1254,21 @@
     const SEED_DATA = {
       openingDate: "2026-10-31",
       actions: [
-        {"id":"ACT-01","cat":"Facilities & FF&E","desc":"Order 'Level Up' Board immediately from local sign vendor (2–4 week lead-time buffer).","owner":"Santiago","due":"2026-09-05","status":"Open","notes":""},
-        {"id":"ACT-02","cat":"Exterior Signage","desc":"Obtain 2+ quotes for exterior illuminated channel-letter sign & send spec sheet to John Howell for corporate approval before ordering.","owner":"Santiago / Jaspal","due":"2026-08-08","status":"In Progress","notes":""},
-        {"id":"ACT-03","cat":"Marketing","desc":"Onboard with Creative Tricycle for mandatory Google & Facebook digital ad campaigns.","owner":"Santiago / Jaspal","due":"2026-08-10","status":"Open","notes":""},
+        {"id":"ACT-01","cat":"Facilities & FF&E","desc":"Order 'Level Up' Board immediately from local sign vendor (2–4 week lead-time buffer).","owner":"Santiago","due":"2026-09-05","status":"Open","notes":"","callPin":true},
+        {"id":"ACT-02","cat":"Exterior Signage","desc":"Obtain 2+ quotes for exterior illuminated channel-letter sign & send spec sheet to John Howell for corporate approval before ordering.","owner":"Santiago / Jaspal","due":"2026-08-08","status":"In Progress","notes":"","callPin":true},
+        {"id":"ACT-03","cat":"Marketing","desc":"Onboard with Creative Tricycle for mandatory Google & Facebook digital ad campaigns.","owner":"Santiago / Jaspal","due":"2026-08-10","status":"Open","notes":"","callPin":true},
         {"id":"ACT-04","cat":"Marketing","desc":"Provide admin email to Matt Fowers for Facebook & Instagram local page admin access.","owner":"Santiago / Jaspal","due":"2026-07-31","status":"Done","notes":"Includes FB/IG admin confirmation."},
         {"id":"ACT-05","cat":"Marketing","desc":"Research local schools within a 5-mile radius and populate Google Contacts sheet for outreach.","owner":"Santiago / Jaspal","due":"2026-08-22","status":"Open","notes":""},
-        {"id":"ACT-06","cat":"Hiring & Training","desc":"Schedule & complete mid-August Jackrabbit software training with Shelly Wickerd & Nancy.","owner":"Jaspal / Santiago","due":"2026-08-15","status":"Open","notes":""},
+        {"id":"ACT-06","cat":"Hiring & Training","desc":"Schedule & complete mid-August Jackrabbit software training with Shelly Wickerd & Nancy.","owner":"Jaspal / Santiago","due":"2026-08-15","status":"Open","notes":"","callPin":true},
         {"id":"ACT-07","cat":"Business & Finance","desc":"Finalize bookkeeping, sales tax & payroll scope with Geoff Suval @ Xceleran for QBO integration.","owner":"Jaspal","due":"2026-08-07","status":"Done","notes":""},
         {"id":"ACT-08","cat":"Marketing","desc":"Order interior posters, flyers, name-tag pallets & pins via ASB Portal.","owner":"Santiago / Jaspal","due":"2026-08-15","status":"Open","notes":""},
-        {"id":"ACT-09","cat":"Construction & Permitting","desc":"Complete studio build-out at 24527 Gosling Rd, Suite H2 — floor plan, kiln install, utility sinks, WPC flooring, lighting.","owner":"Santiago / Jaspal","due":"2026-09-12","status":"In Progress","notes":"Critical path to opening."},
+        {"id":"ACT-09","cat":"Construction & Permitting","desc":"Complete studio build-out at 24527 Gosling Rd, Suite H2 — floor plan, kiln install, utility sinks, WPC flooring, lighting.","owner":"Santiago / Jaspal","due":"2026-09-12","status":"In Progress","notes":"Critical path to opening.","callPin":true},
         {"id":"ACT-10","cat":"Construction & Permitting","desc":"Submit Harris County permit response package — materials list, HMIS statement & Skutt kiln classification letters.","owner":"Jaspal","due":"2026-08-05","status":"Done","notes":"Drafts prepared (July); confirm submission & response."},
         {"id":"ACT-11","cat":"Facilities & FF&E","desc":"Get licensed electrician to confirm in writing: incoming amps, 240V vs 208V, single vs 3-phase, panel location & distance — before finalizing kiln order.","owner":"Jaspal","due":"2026-08-11","status":"Done","notes":"Kiln model depends on this."},
-        {"id":"ACT-12","cat":"Facilities & FF&E","desc":"Order Skutt KMT-1022 kiln + EnviroVent 2 once electrical spec is confirmed.","owner":"Jaspal","due":"2026-08-20","status":"Open","notes":""},
+        {"id":"ACT-12","cat":"Facilities & FF&E","desc":"Order Skutt KMT-1022 kiln + EnviroVent 2 once electrical spec is confirmed.","owner":"Jaspal","due":"2026-08-20","status":"Open","notes":"","callPin":true},
         {"id":"ACT-13","cat":"Business & Finance","desc":"Bind business insurance (general liability + property) before opening — PHLY via Texan Insurance as lead; Markel / McDade as parallel quotes.","owner":"Jaspal","due":"2026-09-05","status":"Open","notes":"List Cordovan Arts Franchising LLC as additional insured."},
-        {"id":"ACT-14","cat":"Construction & Permitting","desc":"Obtain Certificate of Occupancy from Harris County after final inspection.","owner":"Jaspal","due":"2026-09-22","status":"Open","notes":"Gate to legally open."},
-        {"id":"ACT-15","cat":"Grand Opening & Ops","desc":"Plan & schedule the Grand Opening event — date, ribbon-cutting, community invites, trial classes.","owner":"Preeti / Silvana","due":"2026-09-15","status":"Open","notes":""},
+        {"id":"ACT-14","cat":"Construction & Permitting","desc":"Obtain Certificate of Occupancy from Harris County after final inspection.","owner":"Jaspal","due":"2026-09-22","status":"Open","notes":"Gate to legally open.","callPin":true},
+        {"id":"ACT-15","cat":"Grand Opening & Ops","desc":"Plan & schedule the Grand Opening event — date, ribbon-cutting, community invites, trial classes.","owner":"Preeti / Silvana","due":"2026-09-15","status":"Open","notes":"","callPin":true},
         {"id":"ACT-18","cat":"Exterior Signage","desc":"Obtain Signage permit from local jurisdiction.","owner":"Signage company","due":"2026-08-21","status":"Open","notes":""},
         {"id":"ACT-19","cat":"Business & Finance","desc":"Introductions to Finance Partners","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
         {"id":"ACT-20","cat":"Business & Finance","desc":"Create a Business Plan","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
@@ -1152,10 +1372,10 @@
         {"id":"ACT-137","cat":"Hiring & Training","desc":"Attend weekly corporate Zoom training calls","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"}
       ],
       risks: [
-        {"id":"RSK-01","desc":"Exterior sign manufacturing/installation delay impacts grand-opening visibility.","impact":"High","likelihood":"Medium","mitigation":"Submit specs to corporate immediately upon receiving vendor quotes; ensure local sign vendor guarantees delivery schedule.","owner":"Santiago / Jaspal","status":"Open"},
-        {"id":"RSK-02","desc":"Delayed digital ad onboarding leads to lower initial enrollment volume at launch.","impact":"High","likelihood":"Low","mitigation":"Connect with Creative Tricycle promptly; complete ad setup at least 3–4 weeks prior to opening.","owner":"Jaspal","status":"Open"},
+        {"id":"RSK-01","desc":"Exterior sign manufacturing/installation delay impacts grand-opening visibility.","impact":"High","likelihood":"Medium","mitigation":"Submit specs to corporate immediately upon receiving vendor quotes; ensure local sign vendor guarantees delivery schedule.","owner":"Santiago / Jaspal","status":"Open","callPin":true},
+        {"id":"RSK-02","desc":"Delayed digital ad onboarding leads to lower initial enrollment volume at launch.","impact":"High","likelihood":"Low","mitigation":"Connect with Creative Tricycle promptly; complete ad setup at least 3–4 weeks prior to opening.","owner":"Jaspal","status":"Open","callPin":true},
         {"id":"RSK-03","desc":"\"Level Up\" interior board delivery exceeds the 4-week window.","impact":"Medium","likelihood":"Medium","mitigation":"Place order immediately with recommended local printer.","owner":"Santiago","status":"Open"},
-        {"id":"RSK-04","desc":"Build-out, permit review or Certificate of Occupancy delay pushes opening.","impact":"High","likelihood":"Medium","mitigation":"Submit permit package early; track inspection dates; keep GC on firm schedule.","owner":"Jaspal","status":"Open"},
+        {"id":"RSK-04","desc":"Build-out, permit review or Certificate of Occupancy delay pushes opening.","impact":"High","likelihood":"Medium","mitigation":"Submit permit package early; track inspection dates; keep GC on firm schedule.","owner":"Jaspal","status":"Open","callPin":true},
         {"id":"RSK-05","desc":"Suite turns out single-phase only — forces a different kiln model and rewiring.","impact":"Medium","likelihood":"Medium","mitigation":"Obtain electrician's written confirmation of phase & amperage before placing kiln order.","owner":"Jaspal","status":"Closed"}
       ],
       register: [
@@ -1204,10 +1424,54 @@
         {"id":"REG-21","date":"2026-08-18","type":"Trial","source":"Website","student":"Sophia Viesca","email":"bgarciadealba@gmail.com","dob":"10/16/2017","age":8,"parent":"Bernadette","phone":"(305) 781-7298","days":"","prob":"xx%","notes":"Responded on 08/18"},
         {"id":"REG-22","date":"2026-08-19","type":"Trial","source":"Website","student":"Gabriela Van der Ree","email":"randyvdr@gmail.com","dob":"10/05/2015","age":10,"parent":"Randy Van Der Ree","phone":"(346) 273-9674","days":"","prob":"xx%","notes":"Responded on 08/20"},
         {"id":"REG-23","date":"2026-08-20","type":"Trial","source":"Website","student":"New Student Lead","email":"contact@cordovan.com","dob":"","age":"","parent":"Guardian Name","phone":"(832) 000-0000","days":"","prob":"xx%","notes":"Responded on 08/20"}
+      ],
+      schools: [
+        {
+          "id": "SCH-01",
+          "org": "Southwater Elementary School",
+          "poc": "John Doe",
+          "phone": "(444) 444-4444",
+          "email": "johndoe@gmail.com",
+          "actionType": "1 Free Month of Classes",
+          "amountPaid": "n/a",
+          "details": "We donated 1 month free classes for silent auction. The school will list us on their website between 3/1/26-5/31/26, and let us have flyer distribution in their school",
+          "eventDate": "2/25/2028",
+          "eventTime": "n/a",
+          "verifiedDate": "2/2/2026",
+          "notes": "On 2/2/26 800 flyers were delivered and sent in the student's take home folders. We are listed on the schools website"
+        },
+        {
+          "id": "SCH-02",
+          "org": "Sommerville Women Painters",
+          "poc": "Jane Doe",
+          "phone": "(444) 444-4444",
+          "email": "janedoe@gmail.com",
+          "actionType": "Fundraiser/Spirit Event",
+          "amountPaid": "30% of proceeds from fundraiser",
+          "details": "Sip and paint. 30% of proceeds to back to their organization",
+          "eventDate": "2/25/2028",
+          "eventTime": "6:00:00 PM",
+          "verifiedDate": "2/25/2028",
+          "notes": "Great experience. do again next year. A check for 30% was sent to the organiztion for the fundraiser by Payroll."
+        },
+        {
+          "id": "SCH-03",
+          "org": "Gattis Elementary School PTA",
+          "poc": "Jane Doe",
+          "phone": "(444) 444-4444",
+          "email": "janedoe@gmail.com",
+          "actionType": "Paid Sponsorship",
+          "amountPaid": "$500.00",
+          "details": "Banner at school, listing in school newsletter, 1,000 summer camp flyers in school distribution to kids",
+          "eventDate": "2/25/2028",
+          "eventTime": "n/a",
+          "verifiedDate": "2/1/2028",
+          "notes": "Great experience. do again next year. I drove by and saw the banner. I delivered 1,000 flyers on 3/1/26 and verified they got sent home with the students on 3/7/26. I saw the email go out that listed Cordovan Art School as a sponsor on 3/15/26"
+        }
       ]
     };
 
-    let appData = { actions: [], risks: [], register: [], decisions: [], registrations: [] };
+    let appData = { actions: [], risks: [], register: [], decisions: [], registrations: [], schools: [] };
     let editingTarget = null;
     let editingCategory = '';
     let activeActionFilter = 'open';
@@ -1251,7 +1515,7 @@
 
     async function loadPersistedData() {
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        const local = localStorage.getItem('cordovan_grand_opening_store_clean_v9');
+        const local = localStorage.getItem('cordovan_grand_opening_store_clean_v10');
         appData = local ? JSON.parse(local) : JSON.parse(JSON.stringify(SEED_DATA));
       } else {
         try {
@@ -1268,12 +1532,13 @@
         }
       }
       if (!appData.registrations) appData.registrations = JSON.parse(JSON.stringify(SEED_DATA.registrations));
+      if (!appData.schools) appData.schools = JSON.parse(JSON.stringify(SEED_DATA.schools));
       renderAllViews();
     }
 
     async function syncPersistedData(data) {
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        localStorage.setItem('cordovan_grand_opening_store_clean_v9', JSON.stringify(data));
+        localStorage.setItem('cordovan_grand_opening_store_clean_v10', JSON.stringify(data));
       } else {
         try {
           await fetch(FIREBASE_DB_URL, {
@@ -1468,13 +1733,13 @@
       const register = appData.register || [];
       const decisions = appData.decisions || [];
       const registrations = appData.registrations || [];
+      const schools = appData.schools || [];
 
       const doneCnt = actions.filter(a => a.status === 'Done').length;
       const openCnt = actions.filter(a => a.status === 'Open').length;
       const progCnt = actions.filter(a => a.status === 'In Progress').length;
       const totalActions = actions.length || 1;
       
-      // Percentage gauge is strictly tied to operational action items (does not impact registrations)
       const pct = Math.round((doneCnt / totalActions) * 100);
 
       const baseline = new Date("2026-08-21T00:00:00");
@@ -1491,12 +1756,20 @@
 
       const highRisksCnt = risks.filter(r => r.status === 'Open' && r.impact === 'High').length;
       const openRegCnt = register.filter(r => r.status === 'Open' || r.status === 'Pending').length;
+      
+      // Count Friday Call Pinned Items
+      const pinnedActions = actions.filter(a => a.callPin);
+      const pinnedRisks = risks.filter(r => r.callPin);
+      const totalCallPinned = pinnedActions.length + pinnedRisks.length;
 
       document.getElementById('hero-open-actions').innerText = openCnt + progCnt;
       document.getElementById('hero-overdue-actions').innerText = overdueCnt;
       document.getElementById('hero-high-risks').innerText = highRisksCnt;
       document.getElementById('hero-decisions-count').innerText = decisions.length;
       document.getElementById('hero-reg-count').innerText = registrations.length;
+      document.getElementById('hero-school-count').innerText = schools.length;
+      document.getElementById('hero-call-count').innerText = totalCallPinned;
+
       document.getElementById('readiness-pct-text').innerText = pct + '%';
       document.getElementById('radial-gauge').style.setProperty('--pct', pct + '%');
 
@@ -1506,20 +1779,26 @@
       document.getElementById('card-open-risks').innerText = risks.filter(r => r.status === 'Open').length;
       document.getElementById('card-open-reg').innerText = openRegCnt;
       document.getElementById('card-trial-count').innerText = registrations.length;
+      document.getElementById('card-school-count').innerText = schools.length;
+      document.getElementById('card-call-count').innerText = `${totalCallPinned}/10`;
 
       document.getElementById('tab-cnt-actions').innerText = openCnt + progCnt;
       document.getElementById('tab-cnt-risks').innerText = highRisksCnt;
       document.getElementById('tab-cnt-reg').innerText = openRegCnt;
       document.getElementById('tab-cnt-dec').innerText = decisions.length;
       document.getElementById('tab-cnt-trial').innerText = registrations.length;
+      document.getElementById('tab-cnt-schools').innerText = schools.length;
+      document.getElementById('tab-cnt-call').innerText = totalCallPinned;
 
       renderCategoryBars();
       renderUrgentItems();
       renderActionsTable();
+      renderFridayCallTable();
       renderRisksTable();
       renderRegisterTable();
       renderDecisionsTable();
       renderRegistrationsTable();
+      renderSchoolsTable();
     }
 
     function renderCategoryBars() {
@@ -1604,6 +1883,11 @@
 
       document.getElementById('actions-table-body').innerHTML = filtered.map(a => `
         <tr class="clickable" onclick="openInspector('${a.id}', 'actions')">
+          <td onclick="event.stopPropagation()">
+            <button class="pin-checkbox-btn ${a.callPin ? 'pinned' : ''}" onclick="toggleCallPin('${a.id}', 'actions')" title="Toggle Friday Call Agenda Pin">
+              ${a.callPin ? '📌' : '⚪'}
+            </button>
+          </td>
           <td><strong>${a.id}</strong></td>
           <td>${a.cat || '-'}</td>
           <td>
@@ -1627,6 +1911,60 @@
       `).join('');
     }
 
+    /* Friday Call Focus Top 10 View */
+    function renderFridayCallTable() {
+      const pinnedActions = (appData.actions || []).filter(a => a.callPin);
+      const pinnedRisks = (appData.risks || []).filter(r => r.callPin);
+      const combined = [...pinnedActions, ...pinnedRisks];
+
+      const tbody = document.getElementById('friday-call-table-body');
+      if (combined.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:24px; color:#888;">No items pinned for the Friday Call yet. Click the 📌 icon next to any Action or Risk to add it here (up to 10 items).</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = combined.map(item => {
+        const isRisk = item.id.startsWith('RSK');
+        return `
+          <tr class="clickable" onclick="openInspector('${item.id}', '${isRisk ? 'risks' : 'actions'}')">
+            <td onclick="event.stopPropagation()">
+              <button class="pin-checkbox-btn pinned" onclick="toggleCallPin('${item.id}', '${isRisk ? 'risks' : 'actions'}')" title="Remove from Friday Call">📌</button>
+            </td>
+            <td><strong>${item.id}</strong></td>
+            <td><span style="font-weight:600; color: ${isRisk ? '#b91c1c' : '#1e40af'}">${isRisk ? 'Risk Item' : (item.cat || '-')}</span></td>
+            <td>
+              <div><strong>${item.desc}</strong></div>
+              ${item.notes || item.mitigation ? `<small style="color:#666;">${item.notes || item.mitigation}</small>` : ''}
+            </td>
+            <td>${item.owner || '-'}</td>
+            <td>${item.due || 'High Risk'}</td>
+            <td>
+              <span class="action-type-pill ${item.status === 'Done' || item.status === 'Closed' ? 'type-classes' : item.status === 'In Progress' ? 'type-fundraiser' : 'type-sponsorship'}">
+                ${item.status}
+              </span>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    async function toggleCallPin(id, category) {
+      const list = appData[category] || [];
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+
+      const currentPinnedCount = (appData.actions || []).filter(a => a.callPin).length + (appData.risks || []).filter(r => r.callPin).length;
+
+      if (!item.callPin && currentPinnedCount >= 10) {
+        alert("You have reached the maximum limit of 10 items for the Friday Call agenda. Please unpin an item first.");
+        return;
+      }
+
+      item.callPin = !item.callPin;
+      renderAllViews();
+      await syncPersistedData(appData);
+    }
+
     function renderRisksTable() {
       const statusFilter = document.getElementById('filter-risk-status').value;
       const filtered = (appData.risks || []).filter(r => {
@@ -1642,6 +1980,11 @@
 
       document.getElementById('risks-table-body').innerHTML = filtered.map(r => `
         <tr class="clickable" onclick="openInspector('${r.id}', 'risks')">
+          <td onclick="event.stopPropagation()">
+            <button class="pin-checkbox-btn ${r.callPin ? 'pinned' : ''}" onclick="toggleCallPin('${r.id}', 'risks')" title="Toggle Friday Call Agenda Pin">
+              ${r.callPin ? '📌' : '⚪'}
+            </button>
+          </td>
           <td><strong>${r.id}</strong></td>
           <td>${r.desc}</td>
           <td><span style="font-weight:700; color:${r.impact === 'High' ? '#dc2626' : '#d97706'}">${r.impact}</span></td>
@@ -1681,7 +2024,7 @@
           <td><small>${reg.basis || reg.resolution || reg.impact || '-'}</small></td>
           <td onclick="event.stopPropagation()">
             <div class="table-actions-cell">
-              <select class="status-pill-select ${reg.status === 'Validated' || reg.status === 'Closed' ? 'pill-done' : 'pill-prog'}"
+              <select class="status-pill-select ${reg.status === 'Validated' || reg.status === 'Closed' ? 'pill-done' : 'pill-prog'}" 
                 onchange="changeRegisterStatus('${reg.id}', this.value)">
                 <option value="Open" ${reg.status === 'Open' ? 'selected':''}>Open</option>
                 <option value="Pending" ${reg.status === 'Pending' ? 'selected':''}>Pending</option>
@@ -1709,6 +2052,7 @@
       `).join('');
     }
 
+    /* Trial Registrations Table (Deletion removed) */
     function renderRegistrationsTable() {
       const q = (document.getElementById('filter-reg-search').value || '').toLowerCase();
       const typeFilter = document.getElementById('filter-reg-type').value;
@@ -1733,11 +2077,45 @@
           <td><small>${r.days || '-'}</small></td>
           <td><strong>${r.prob || 'xx%'}</strong></td>
           <td><small style="color:#666;">${r.notes || '-'}</small></td>
-          <td onclick="event.stopPropagation()">
-            <button class="del-btn" onclick="directDeleteItem('${r.id}', 'registrations')" title="Delete Lead">×</button>
-          </td>
         </tr>
       `).join('');
+    }
+
+    /* School Information & Marketing Outreach Table */
+    function renderSchoolsTable() {
+      const q = (document.getElementById('filter-school-search').value || '').toLowerCase();
+      const actionFilter = document.getElementById('filter-school-action').value;
+
+      const filtered = (appData.schools || []).filter(s => {
+        const matchQ = (s.org + " " + s.poc + " " + s.phone + " " + s.email + " " + (s.details || '') + " " + (s.notes || '')).toLowerCase().includes(q);
+        const matchA = actionFilter ? s.actionType === actionFilter : true;
+        return matchQ && matchA;
+      });
+
+      document.getElementById('schools-table-body').innerHTML = filtered.map(s => {
+        let badgeClass = "type-classes";
+        if (s.actionType === "Fundraiser/Spirit Event") badgeClass = "type-fundraiser";
+        if (s.actionType === "Paid Sponsorship") badgeClass = "type-sponsorship";
+
+        return `
+          <tr class="clickable" onclick="openInspector('${s.id}', 'schools')">
+            <td><strong>${s.org}</strong></td>
+            <td>${s.poc || '-'}</td>
+            <td>${s.phone || '-'}</td>
+            <td><small>${s.email || '-'}</small></td>
+            <td><span class="action-type-pill ${badgeClass}">${s.actionType}</span></td>
+            <td><strong>${s.amountPaid || 'n/a'}</strong></td>
+            <td><small>${s.details}</small></td>
+            <td>${s.eventDate || '-'}</td>
+            <td>${s.eventTime || '-'}</td>
+            <td>${s.verifiedDate || '-'}</td>
+            <td><small style="color:#666;">${s.notes || '-'}</small></td>
+            <td onclick="event.stopPropagation()">
+              <button class="del-btn" onclick="directDeleteItem('${s.id}', 'schools')" title="Delete Outreach Record">×</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
     }
 
     async function changeActionStatus(id, st) {
@@ -1760,12 +2138,19 @@
       if (!item) return;
 
       editingTarget = item;
-      document.getElementById('modal-heading').innerText = `${item.id || 'Lead'}: Details`;
+      document.getElementById('modal-heading').innerText = `${item.id || item.org || 'Lead'}: Details`;
+
+      // Hide all specific sub-forms first
+      document.getElementById('standard-edit-fields').style.display = 'none';
+      document.getElementById('reg-edit-fields').style.display = 'none';
+      document.getElementById('school-edit-fields').style.display = 'none';
+
+      // Hide delete button if editing a registration lead
+      const delBtn = document.getElementById('modal-del-btn');
+      delBtn.style.display = (category === 'registrations') ? 'none' : 'block';
 
       if (category === 'registrations') {
-        document.getElementById('standard-edit-fields').style.display = 'none';
         document.getElementById('reg-edit-fields').style.display = 'block';
-
         document.getElementById('modal-reg-date').value = item.date || '';
         document.getElementById('modal-reg-type').value = item.type || 'Trial';
         document.getElementById('modal-reg-student').value = item.student || '';
@@ -1777,10 +2162,21 @@
         document.getElementById('modal-reg-days').value = item.days || '';
         document.getElementById('modal-reg-prob').value = item.prob || '';
         document.getElementById('modal-reg-notes').value = item.notes || '';
+      } else if (category === 'schools') {
+        document.getElementById('school-edit-fields').style.display = 'block';
+        document.getElementById('modal-school-org').value = item.org || '';
+        document.getElementById('modal-school-poc').value = item.poc || '';
+        document.getElementById('modal-school-phone').value = item.phone || '';
+        document.getElementById('modal-school-email').value = item.email || '';
+        document.getElementById('modal-school-action').value = item.actionType || '1 Free Month of Classes';
+        document.getElementById('modal-school-paid').value = item.amountPaid || '';
+        document.getElementById('modal-school-details').value = item.details || '';
+        document.getElementById('modal-school-evdate').value = item.eventDate || '';
+        document.getElementById('modal-school-evtime').value = item.eventTime || '';
+        document.getElementById('modal-school-verdate').value = item.verifiedDate || '';
+        document.getElementById('modal-school-notes').value = item.notes || '';
       } else {
         document.getElementById('standard-edit-fields').style.display = 'block';
-        document.getElementById('reg-edit-fields').style.display = 'none';
-
         document.getElementById('modal-input-desc').value = item.desc || item.summary || '';
         document.getElementById('modal-input-owner').value = item.owner || item.stakeholders || '';
         document.getElementById('modal-input-due').value = item.due || item.date || '';
@@ -1797,12 +2193,11 @@
 
     function toggleAddFields() {
       const type = document.getElementById('new-item-type').value;
-      if (type === 'registrations') {
-        document.getElementById('tracker-add-fields').style.display = 'none';
-        document.getElementById('registration-add-fields').style.display = 'block';
-      } else {
-        document.getElementById('tracker-add-fields').style.display = 'block';
-        document.getElementById('registration-add-fields').style.display = 'none';
+      document.getElementById('tracker-add-fields').style.display = (type !== 'registrations' && type !== 'schools') ? 'block' : 'none';
+      document.getElementById('registration-add-fields').style.display = (type === 'registrations') ? 'block' : 'none';
+      document.getElementById('school-add-fields').style.display = (type === 'schools') ? 'block' : 'none';
+
+      if (type !== 'registrations' && type !== 'schools') {
         document.getElementById('group-cat').style.display = (type === 'actions') ? 'block' : 'none';
         document.getElementById('group-due').style.display = (type === 'actions' || type === 'decisions') ? 'block' : 'none';
       }
@@ -1827,6 +2222,18 @@
         editingTarget.days = document.getElementById('modal-reg-days').value;
         editingTarget.prob = document.getElementById('modal-reg-prob').value;
         editingTarget.notes = document.getElementById('modal-reg-notes').value;
+      } else if (editingCategory === 'schools') {
+        editingTarget.org = document.getElementById('modal-school-org').value;
+        editingTarget.poc = document.getElementById('modal-school-poc').value;
+        editingTarget.phone = document.getElementById('modal-school-phone').value;
+        editingTarget.email = document.getElementById('modal-school-email').value;
+        editingTarget.actionType = document.getElementById('modal-school-action').value;
+        editingTarget.amountPaid = document.getElementById('modal-school-paid').value;
+        editingTarget.details = document.getElementById('modal-school-details').value;
+        editingTarget.eventDate = document.getElementById('modal-school-evdate').value;
+        editingTarget.eventTime = document.getElementById('modal-school-evtime').value;
+        editingTarget.verifiedDate = document.getElementById('modal-school-verdate').value;
+        editingTarget.notes = document.getElementById('modal-school-notes').value;
       } else {
         editingTarget.desc = document.getElementById('modal-input-desc').value;
         if (editingTarget.owner !== undefined) editingTarget.owner = document.getElementById('modal-input-owner').value;
@@ -1842,6 +2249,7 @@
     }
 
     async function directDeleteItem(id, category) {
+      if (category === 'registrations') return; // Enforce no deletion for leads
       if (confirm(`Are you sure you want to delete ${id}?`)) {
         appData[category] = (appData[category] || []).filter(item => item.id !== id);
         renderAllViews();
@@ -1851,8 +2259,8 @@
     }
 
     async function deleteFromModal() {
-      if (!editingTarget || !editingCategory) return;
-      if (confirm(`Are you sure you want to delete this record (${editingTarget.id || editingTarget.student})?`)) {
+      if (!editingTarget || !editingCategory || editingCategory === 'registrations') return;
+      if (confirm(`Are you sure you want to delete this record (${editingTarget.id || editingTarget.org})?`)) {
         appData[editingCategory] = (appData[editingCategory] || []).filter(item => item.id !== editingTarget.id);
         closeModal('edit-modal');
         renderAllViews();
@@ -1887,6 +2295,27 @@
         };
         list.push(newLead);
         appData.registrations = list;
+      } else if (type === 'schools') {
+        const org = document.getElementById('new-school-org').value.trim();
+        if (!org) { alert("Please provide the organization name."); return; }
+
+        const newId = `SCH-${list.length + 1 < 10 ? '0' : ''}${list.length + 1}`;
+        const newSchool = {
+          id: newId,
+          org: org,
+          poc: document.getElementById('new-school-poc').value.trim(),
+          phone: document.getElementById('new-school-phone').value.trim(),
+          email: document.getElementById('new-school-email').value.trim(),
+          actionType: document.getElementById('new-school-action').value,
+          amountPaid: document.getElementById('new-school-paid').value.trim() || 'n/a',
+          details: document.getElementById('new-school-details').value.trim(),
+          eventDate: document.getElementById('new-school-evdate').value.trim(),
+          eventTime: document.getElementById('new-school-evtime').value.trim(),
+          verifiedDate: document.getElementById('new-school-verdate').value.trim(),
+          notes: document.getElementById('new-school-notes').value.trim()
+        };
+        list.push(newSchool);
+        appData.schools = list;
       } else {
         const desc = document.getElementById('new-item-desc').value.trim();
         if (!desc) { alert("Please provide a description."); return; }
