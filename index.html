@@ -31,7 +31,6 @@
       font-size: 14px;
     }
 
-    /* Auth Screen */
     #login-overlay {
       position: fixed; inset: 0; background: rgba(55, 16, 23, 0.96);
       display: flex; align-items: center; justify-content: center; z-index: 99999;
@@ -53,10 +52,7 @@
 
     .container { max-width: 1160px; margin: 0 auto; display: none; }
 
-    /* Top Brand Header */
-    .brand-headline {
-      margin-bottom: 18px;
-    }
+    .brand-headline { margin-bottom: 18px; }
     .brand-headline h1 {
       font-family: 'Playfair Display', Georgia, serif;
       font-size: 34px;
@@ -71,7 +67,6 @@
       margin-top: 4px;
     }
 
-    /* Hero Maroon Card */
     .hero-card {
       background: linear-gradient(135deg, #4d1b24 0%, #361118 100%);
       color: #ffffff;
@@ -130,7 +125,6 @@
       font-size: 12px;
     }
 
-    /* Radial Progress Gauge */
     .gauge-box {
       width: 120px;
       height: 120px;
@@ -147,7 +141,7 @@
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: conic-gradient(var(--gold-prog) var(--pct, 34%), rgba(255,255,255,0.12) 0);
+      background: conic-gradient(var(--gold-prog) var(--pct, 0%), rgba(255,255,255,0.12) 0);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -180,7 +174,6 @@
       margin-top: 2px;
     }
 
-    /* Hero Bottom Clickable Stats Strip */
     .hero-kpis {
       display: flex;
       gap: 36px;
@@ -210,7 +203,6 @@
       font-weight: 600;
     }
 
-    /* Pill Navigation Bar */
     .nav-tabs {
       display: flex;
       align-items: center;
@@ -287,10 +279,7 @@
     }
     .add-btn:hover { background: var(--hero-dark); }
 
-    /* Section Subheader */
-    .section-head {
-      margin-bottom: 16px;
-    }
+    .section-head { margin-bottom: 16px; }
     .section-head h2 {
       font-family: 'Playfair Display', Georgia, serif;
       font-size: 24px;
@@ -306,7 +295,6 @@
       margin-top: 2px;
     }
 
-    /* 5 Clickable Metric Cards */
     .kpi-row {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -359,7 +347,6 @@
       color: #991b1b;
     }
 
-    /* Split Dashboard Panels */
     .dashboard-split {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -384,7 +371,6 @@
       color: #222;
     }
 
-    /* Category Rows */
     .cat-bar-item {
       display: flex;
       align-items: center;
@@ -402,7 +388,6 @@
     .cat-fill { height: 100%; border-radius: 4px; }
     .cat-num { width: 24px; text-align: right; font-weight: 700; color: #666; font-size: 12px; }
 
-    /* Overdue List */
     .urgent-row {
       display: flex;
       align-items: flex-start;
@@ -425,7 +410,6 @@
     .urgent-text h5 { font-size: 13px; font-weight: 600; color: #222; line-height: 1.35; margin-bottom: 3px; }
     .urgent-text p { font-size: 11px; color: var(--text-muted); }
 
-    /* Tables & Controls */
     .filter-bar-row {
       display: flex;
       gap: 10px;
@@ -476,7 +460,6 @@
     .pill-prog { background: #fef3c7; color: #92400e; }
     .pill-open { background: #fee2e2; color: #991b1b; }
 
-    /* Modals */
     .modal-backdrop {
       position: fixed; inset: 0; background: rgba(0,0,0,0.45);
       display: none; align-items: center; justify-content: center; z-index: 10000;
@@ -506,7 +489,6 @@
 </head>
 <body>
 
-  <!-- Password Access Gate -->
   <div id="login-overlay">
     <div class="login-box">
       <h2>Cordovan Grand Opening</h2>
@@ -519,13 +501,11 @@
 
   <div class="container" id="app">
     
-    <!-- Top Large Header -->
     <div class="brand-headline">
       <h1>Cordovan Grand Opening</h1>
       <p>Woodlands-Gosling Road Studio • War Room & Pre-Opening Ops</p>
     </div>
 
-    <!-- Hero Maroon Countdown Banner -->
     <div class="hero-card">
       <div class="hero-top-grid">
         <div>
@@ -539,45 +519,42 @@
             <button class="hero-edit-link" onclick="promptChangeDate()">edit date</button>
           </div>
         </div>
-        <!-- Progress Gauge linked to total completed vs open actions -->
         <div class="gauge-box" onclick="filterAndNavigateActions('Done')" title="Click to view Completed Actions">
           <div class="gauge-circle" id="radial-gauge">
             <div class="gauge-inner-text">
-              <h3 id="readiness-pct-text">34%</h3>
+              <h3 id="readiness-pct-text">0%</h3>
               <p>Launch Ready</p>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Hero Clickable Stats Strip (Each targets exact counts) -->
       <div class="hero-kpis">
         <div class="hero-kpi-item" onclick="filterAndNavigateActions('open')">
-          <h4 id="hero-open-actions">88</h4>
+          <h4 id="hero-open-actions">0</h4>
           <span>Actions Open</span>
         </div>
         <div class="hero-kpi-item" onclick="filterAndNavigateActions('overdue')">
-          <h4 id="hero-overdue-actions">5</h4>
+          <h4 id="hero-overdue-actions">0</h4>
           <span>Overdue</span>
         </div>
         <div class="hero-kpi-item" onclick="filterAndNavigateRisks('high')">
-          <h4 id="hero-high-risks">3</h4>
+          <h4 id="hero-high-risks">0</h4>
           <span>High Risks</span>
         </div>
         <div class="hero-kpi-item" onclick="switchNav('decisions')">
-          <h4 id="hero-decisions-count">5</h4>
+          <h4 id="hero-decisions-count">0</h4>
           <span>Decisions</span>
         </div>
       </div>
     </div>
 
-    <!-- Navigation Tab Pills -->
     <div class="nav-tabs">
       <button class="tab-pill active" id="tab-btn-dashboard" onclick="switchNav('dashboard')">📊 Dashboard</button>
-      <button class="tab-pill" id="tab-btn-actions" onclick="filterAndNavigateActions('open')">✅ Actions <span class="tab-badge" id="tab-cnt-actions">88</span></button>
-      <button class="tab-pill" id="tab-btn-risks" onclick="filterAndNavigateRisks('high')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">3</span></button>
-      <button class="tab-pill" id="tab-btn-register" onclick="filterAndNavigateRegister('open')">📎 Register <span class="tab-badge" id="tab-cnt-reg">10</span></button>
-      <button class="tab-pill" id="tab-btn-decisions" onclick="switchNav('decisions')">🤝 Decisions <span class="tab-badge" id="tab-cnt-dec">5</span></button>
+      <button class="tab-pill" id="tab-btn-actions" onclick="filterAndNavigateActions('open')">✅ Actions <span class="tab-badge" id="tab-cnt-actions">0</span></button>
+      <button class="tab-pill" id="tab-btn-risks" onclick="filterAndNavigateRisks('high')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">0</span></button>
+      <button class="tab-pill" id="tab-btn-register" onclick="filterAndNavigateRegister('open')">📎 Register <span class="tab-badge" id="tab-cnt-reg">0</span></button>
+      <button class="tab-pill" id="tab-btn-decisions" onclick="switchNav('decisions')">🤝 Decisions <span class="tab-badge" id="tab-cnt-dec">0</span></button>
       <div class="top-actions-right">
         <button class="shift-btn" onclick="openShiftModal()">🗓 Shift Open Dates</button>
         <button class="add-btn" onclick="openCreateModal()">+ Add Item</button>
@@ -591,31 +568,30 @@
         <p>Everything at a glance — click any metric card to jump directly to its filtered list</p>
       </div>
 
-      <!-- 5 Metric Cards (Targeted Exact Filtering) -->
       <div class="kpi-row">
         <div class="kpi-card" onclick="filterAndNavigateActions('Done')">
           <div class="kpi-card-header">✅ Actions Done</div>
-          <div class="kpi-card-val" id="card-done-ratio">46/134</div>
+          <div class="kpi-card-val" id="card-done-ratio">0/0</div>
           <div class="kpi-card-sub">launch checklist</div>
         </div>
         <div class="kpi-card" onclick="filterAndNavigateActions('duesoon')">
           <div class="kpi-card-header">⏳ Due Within 7 Days</div>
-          <div class="kpi-card-val" id="card-due-soon">2</div>
+          <div class="kpi-card-val" id="card-due-soon">0</div>
           <div class="kpi-card-sub">keep the pace</div>
         </div>
         <div class="kpi-card overdue-card" onclick="filterAndNavigateActions('overdue')">
           <div class="kpi-card-header">🔴 Overdue</div>
-          <div class="kpi-card-val" id="card-overdue">5</div>
+          <div class="kpi-card-val" id="card-overdue">0</div>
           <div class="kpi-card-sub">needs attention now</div>
         </div>
         <div class="kpi-card" onclick="filterAndNavigateRisks('open')">
           <div class="kpi-card-header">⚠️ Open Risks</div>
-          <div class="kpi-card-val" id="card-open-risks">4</div>
+          <div class="kpi-card-val" id="card-open-risks">0</div>
           <div class="kpi-card-sub">actively tracked</div>
         </div>
         <div class="kpi-card" onclick="filterAndNavigateRegister('open')">
           <div class="kpi-card-header">📎 Open Register Items</div>
-          <div class="kpi-card-val" id="card-open-reg">10</div>
+          <div class="kpi-card-val" id="card-open-reg">0</div>
           <div class="kpi-card-sub">assumptions/issues/deps</div>
         </div>
       </div>
@@ -636,7 +612,7 @@
     <div id="view-actions" class="page-view" style="display: none;">
       <div id="action-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="action-filter-text">Filtered View Active</span>
-        <button onclick="clearActionFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All (134)</button>
+        <button onclick="clearActionFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All</button>
       </div>
       <div class="filter-bar-row">
         <input type="text" id="filter-action-search" placeholder="Search actions..." oninput="renderActionsTable()" style="flex:1;">
@@ -674,14 +650,14 @@
     <div id="view-risks" class="page-view" style="display: none;">
       <div id="risk-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="risk-filter-text">Filtered View Active</span>
-        <button onclick="clearRiskFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All Risks (5)</button>
+        <button onclick="clearRiskFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All Risks</button>
       </div>
       <div class="filter-bar-row">
         <select id="filter-risk-status" onchange="renderRisksTable()">
           <option value="">All Risks</option>
-          <option value="high" selected>High Impact Open Risks (3)</option>
-          <option value="open">All Open Risks (4)</option>
-          <option value="Closed">Closed Risks (1)</option>
+          <option value="high">High Impact Open Risks</option>
+          <option value="open">All Open Risks</option>
+          <option value="Closed">Closed Risks</option>
         </select>
       </div>
       <div class="data-table-card">
@@ -706,13 +682,13 @@
     <div id="view-register" class="page-view" style="display: none;">
       <div id="register-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="register-filter-text">Filtered View Active</span>
-        <button onclick="clearRegisterFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All Register (13)</button>
+        <button onclick="clearRegisterFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All Register</button>
       </div>
       <div class="filter-bar-row">
         <select id="filter-register-status" onchange="renderRegisterTable()">
-          <option value="">All Register Items (13)</option>
-          <option value="open" selected>Open & Pending (10)</option>
-          <option value="validated">Validated / Closed (3)</option>
+          <option value="">All Register Items</option>
+          <option value="open">Open & Pending</option>
+          <option value="validated">Validated / Closed</option>
         </select>
       </div>
       <div class="data-table-card">
@@ -750,7 +726,6 @@
 
   </div>
 
-  <!-- Detail Edit Modal -->
   <div id="edit-modal" class="modal-backdrop">
     <div class="modal-sheet">
       <h3 id="modal-heading">Edit Item</h3>
@@ -777,7 +752,6 @@
     </div>
   </div>
 
-  <!-- Add Item Modal -->
   <div id="add-modal" class="modal-backdrop">
     <div class="modal-sheet">
       <h3>Add New Item</h3>
@@ -817,7 +791,6 @@
     </div>
   </div>
 
-  <!-- Date Shifter Modal -->
   <div id="shift-modal" class="modal-backdrop">
     <div class="modal-sheet">
       <h3>Shift Open Item Dates</h3>
@@ -837,143 +810,126 @@
     const TEAM_PASSCODE = "Cordovan2026";
     const FIREBASE_DB_URL = "FIREBASE_DATABASE_URL_HERE";
 
+    // Cleaned, De-duplicated, and Re-categorized Master Dataset
     const SEED_DATA = {
       openingDate: "2026-10-31",
       actions: [
-        {"id":"ACT-01","cat":"Facilities","desc":"Order \"Level Up\" Board immediately from local sign vendor (2–4 week lead-time buffer).","owner":"Santiago","due":"2026-09-05","status":"Open","notes":""},
-        {"id":"ACT-02","cat":"Signage","desc":"Obtain 2+ quotes for exterior illuminated channel-letter sign & send spec sheet to John Howell for corporate approval before ordering.","owner":"Santiago / Jaspal","due":"2026-08-08","status":"In Progress","notes":""},
-        {"id":"ACT-04","cat":"Social Media","desc":"Provide admin email to Matt Fowers for Facebook & Instagram local page admin access.","owner":"Santiago / Jaspal","due":"2026-07-31","status":"Done","notes":""},
-        {"id":"ACT-05","cat":"Local PR","desc":"Research local schools within a 5-mile radius and populate Google Contacts sheet for outreach.","owner":"Santiago / Jaspal","due":"2026-08-22","status":"Open","notes":""},
-        {"id":"ACT-06","cat":"Operations","desc":"Schedule & complete mid-August Jackrabbit software training with Shelly Wickerd & Nancy.","owner":"Jaspal / Santiago","due":"2026-08-15","status":"Open","notes":""},
-        {"id":"ACT-07","cat":"Finance","desc":"Finalize bookkeeping, sales tax & payroll scope with Geoff Suval @ Xceleran for QBO integration.","owner":"Jaspal","due":"2026-08-07","status":"Done","notes":""},
-        {"id":"ACT-08","cat":"Printing","desc":"Order interior posters, flyers, name-tag pallets & pins via ASB Portal.","owner":"Santiago / Jaspal","due":"2026-08-15","status":"Open","notes":""},
-        {"id":"ACT-09","cat":"Facilities","desc":"Complete studio build-out at 24527 Gosling Rd, Suite H2 — floor plan, kiln install, utility sinks, WPC flooring, lighting.","owner":"Santiago / Jaspal","due":"2026-09-12","status":"In Progress","notes":"Critical path to opening."},
-        {"id":"ACT-10","cat":"Legal","desc":"Submit Harris County permit response package — materials list, HMIS statement & Skutt kiln classification letters.","owner":"Jaspal","due":"2026-08-05","status":"Done","notes":"Drafts prepared (July); confirm submission & response."},
-        {"id":"ACT-12","cat":"Facilities","desc":"Order Skutt KMT-1022 kiln + EnviroVent 2 once electrical spec is confirmed.","owner":"Jaspal","due":"2026-08-20","status":"Open","notes":""},
-        {"id":"ACT-13","cat":"Legal","desc":"Bind business insurance (general liability + property) before opening — PHLY via Texan Insurance as lead; Markel / McDade as parallel quotes.","owner":"Jaspal","due":"2026-09-05","status":"Open","notes":""},
-        {"id":"ACT-14","cat":"Operations","desc":"Obtain Certificate of Occupancy from Harris County after final inspection.","owner":"Jaspal","due":"2026-09-22","status":"Open","notes":"Gate to legally open."},
-        {"id":"ACT-15","cat":"Marketing","desc":"Plan & schedule the Grand Opening event — date, ribbon-cutting, community invites, trial classes.","owner":"Preeti / Silvana","due":"2026-09-15","status":"Open","notes":""},
-        {"id":"ACT-16","cat":"Social Media","desc":"Matt (Robb) to provide admin access to FB","owner":"Matt","due":"2026-07-31","status":"Done","notes":""},
-        {"id":"ACT-17","cat":"Social Media","desc":"Matt (Robb) to provide admin access to Instagram","owner":"Matt","due":"2026-07-31","status":"Done","notes":""},
-        {"id":"ACT-18","cat":"Signage","desc":"Signage permit is an additional requirement","owner":"Signage company","due":"2026-08-21","status":"Open","notes":""},
+        {"id":"ACT-01","cat":"Facilities & FF&E","desc":"Order 'Level Up' Board immediately from local sign vendor (2–4 week lead-time buffer).","owner":"Santiago","due":"2026-09-05","status":"Open","notes":""},
+        {"id":"ACT-02","cat":"Exterior Signage","desc":"Obtain 2+ quotes for exterior illuminated channel-letter sign & send spec sheet to John Howell for corporate approval before ordering.","owner":"Santiago / Jaspal","due":"2026-08-08","status":"In Progress","notes":""},
         {"id":"ACT-03","cat":"Marketing","desc":"Onboard with Creative Tricycle for mandatory Google & Facebook digital ad campaigns.","owner":"Santiago / Jaspal","due":"2026-08-10","status":"Open","notes":""},
-        {"id":"ACT-11","cat":"Facilities","desc":"Get licensed electrician to confirm in writing: incoming amps, 240V vs 208V, single vs 3-phase, panel location & distance — before finalizing kiln order.","owner":"Jaspal","due":"2026-08-11","status":"Done","notes":"Kiln model depends on this."},
-        {"id":"ACT-19","cat":"Financing","desc":"Introductions to Finance Partners","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
-        {"id":"ACT-20","cat":"Financing","desc":"Create a Business Plan","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
-        {"id":"ACT-21","cat":"Business Setup","desc":"Set up legal structure of business: Consult with Legal Counsel","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
-        {"id":"ACT-22","cat":"Business Setup","desc":"Bookkeeping: Introductions to Xceleran","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
-        {"id":"ACT-24","cat":"Business Setup","desc":"Open bank account: Signature cards, debit cards, order checks, stamp, etc.","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
-        {"id":"ACT-26","cat":"Business Setup","desc":"Sales Tax Certificate (PYOP only)","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
-        {"id":"ACT-27","cat":"Business Setup","desc":"Business License (if needed)","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
-        {"id":"ACT-28","cat":"Business Setup","desc":"Health & Safety Posters","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
-        {"id":"ACT-29","cat":"Site Selection","desc":"Introductions to real estate partners","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
-        {"id":"ACT-30","cat":"Site Selection","desc":"Analyzing Demographic reports","owner":"Matt / John","due":"","status":"Done","notes":"CAS help: Matt/ John"},
-        {"id":"ACT-31","cat":"Site Selection","desc":"Site Approval","owner":"Matt / John","due":"","status":"Done","notes":"CAS help: Matt/ John"},
-        {"id":"ACT-32","cat":"Lease","desc":"Coaching call: Please negotiation tips","owner":"Matt / John","due":"","status":"Done","notes":"CAS help: Matt/ John"},
-        {"id":"ACT-33","cat":"Lease","desc":"Negotiations/ legal review/ revisions/ sign lease","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
-        {"id":"ACT-34","cat":"Lease","desc":"Sign a Lease","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
-        {"id":"ACT-35","cat":"Lease","desc":"Deliver 1st month rent / security deposit","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
-        {"id":"ACT-36","cat":"Lease","desc":"Turn in TI reimbursement request to landlord after construction is complete","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
-        {"id":"ACT-37","cat":"Lease","desc":"Record Keeping: Keep information organized","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
-        {"id":"ACT-38","cat":"Insurance","desc":"Insurance: See lease for landlord's requirements.","owner":"Jessica","due":"","status":"Open","notes":"CAS help: Jessica"},
-        {"id":"ACT-39","cat":"Insurance","desc":"Franchisor requirements: List Cordovan Arts Franchising LLC as additional insured.","owner":"Jessica","due":"","status":"Open","notes":"CAS help: Jessica"},
-        {"id":"ACT-40","cat":"Systems & Tech","desc":"Email / web hosting","owner":"Jamee","due":"","status":"Done","notes":"CAS help: Jamee"},
-        {"id":"ACT-41","cat":"Systems & Tech","desc":"Jackrabbit Class configuration","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
-        {"id":"ACT-42","cat":"Systems & Tech","desc":"Credit card processing for Jackrabbit Class","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
-        {"id":"ACT-43","cat":"Systems & Tech","desc":"Input Classes, Camps, Workshops, Events, etc.","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
-        {"id":"ACT-44","cat":"Systems & Tech","desc":"Clover setup","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-04","cat":"Marketing","desc":"Provide admin email to Matt Fowers for Facebook & Instagram local page admin access.","owner":"Santiago / Jaspal","due":"2026-07-31","status":"Done","notes":"Includes FB/IG admin confirmation."},
+        {"id":"ACT-05","cat":"Marketing","desc":"Research local schools within a 5-mile radius and populate Google Contacts sheet for outreach.","owner":"Santiago / Jaspal","due":"2026-08-22","status":"Open","notes":""},
+        {"id":"ACT-06","cat":"Hiring & Training","desc":"Schedule & complete mid-August Jackrabbit software training with Shelly Wickerd & Nancy.","owner":"Jaspal / Santiago","due":"2026-08-15","status":"Open","notes":""},
+        {"id":"ACT-07","cat":"Business & Finance","desc":"Finalize bookkeeping, sales tax & payroll scope with Geoff Suval @ Xceleran for QBO integration.","owner":"Jaspal","due":"2026-08-07","status":"Done","notes":""},
+        {"id":"ACT-08","cat":"Marketing","desc":"Order interior posters, flyers, name-tag pallets & pins via ASB Portal.","owner":"Santiago / Jaspal","due":"2026-08-15","status":"Open","notes":""},
+        {"id":"ACT-09","cat":"Construction & Permitting","desc":"Complete studio build-out at 24527 Gosling Rd, Suite H2 — floor plan, kiln install, utility sinks, WPC flooring, lighting.","owner":"Santiago / Jaspal","due":"2026-09-12","status":"In Progress","notes":"Critical path to opening."},
+        {"id":"ACT-10","cat":"Construction & Permitting","desc":"Submit Harris County permit response package — materials list, HMIS statement & Skutt kiln classification letters.","owner":"Jaspal","due":"2026-08-05","status":"Done","notes":"Drafts prepared (July); confirm submission & response."},
+        {"id":"ACT-11","cat":"Facilities & FF&E","desc":"Get licensed electrician to confirm in writing: incoming amps, 240V vs 208V, single vs 3-phase, panel location & distance — before finalizing kiln order.","owner":"Jaspal","due":"2026-08-11","status":"Done","notes":"Kiln model depends on this."},
+        {"id":"ACT-12","cat":"Facilities & FF&E","desc":"Order Skutt KMT-1022 kiln + EnviroVent 2 once electrical spec is confirmed.","owner":"Jaspal","due":"2026-08-20","status":"Open","notes":""},
+        {"id":"ACT-13","cat":"Business & Finance","desc":"Bind business insurance (general liability + property) before opening — PHLY via Texan Insurance as lead; Markel / McDade as parallel quotes.","owner":"Jaspal","due":"2026-09-05","status":"Open","notes":"List Cordovan Arts Franchising LLC as additional insured."},
+        {"id":"ACT-14","cat":"Construction & Permitting","desc":"Obtain Certificate of Occupancy from Harris County after final inspection.","owner":"Jaspal","due":"2026-09-22","status":"Open","notes":"Gate to legally open."},
+        {"id":"ACT-15","cat":"Grand Opening & Ops","desc":"Plan & schedule the Grand Opening event — date, ribbon-cutting, community invites, trial classes.","owner":"Preeti / Silvana","due":"2026-09-15","status":"Open","notes":""},
+        {"id":"ACT-18","cat":"Exterior Signage","desc":"Obtain Signage permit from local jurisdiction.","owner":"Signage company","due":"2026-08-21","status":"Open","notes":""},
+        {"id":"ACT-19","cat":"Business & Finance","desc":"Introductions to Finance Partners","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-20","cat":"Business & Finance","desc":"Create a Business Plan","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-21","cat":"Business & Finance","desc":"Set up legal structure of business: Consult with Legal Counsel (Articles of Org, FEIN, Operating Agreement)","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-24","cat":"Business & Finance","desc":"Open commercial bank account: Signature cards, debit cards, order checks, stamp.","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-26","cat":"Business & Finance","desc":"Sales Tax Certificate (PYOP only)","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-27","cat":"Business & Finance","desc":"Business License (if needed)","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
+        {"id":"ACT-28","cat":"Grand Opening & Ops","desc":"Post Health & Safety Posters in studio","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
+        {"id":"ACT-29","cat":"Site Selection & Lease","desc":"Introductions to real estate partners","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-30","cat":"Site Selection & Lease","desc":"Analyzing Demographic reports","owner":"Matt / John","due":"","status":"Done","notes":"CAS help: Matt/ John"},
+        {"id":"ACT-31","cat":"Site Selection & Lease","desc":"Site Approval","owner":"Matt / John","due":"","status":"Done","notes":"CAS help: Matt/ John"},
+        {"id":"ACT-32","cat":"Site Selection & Lease","desc":"Coaching call: Lease negotiation tips","owner":"Matt / John","due":"","status":"Done","notes":"CAS help: Matt/ John"},
+        {"id":"ACT-33","cat":"Site Selection & Lease","desc":"Negotiations/ legal review/ revisions/ sign lease","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-35","cat":"Site Selection & Lease","desc":"Deliver 1st month rent / security deposit","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-36","cat":"Site Selection & Lease","desc":"Turn in TI reimbursement request to landlord after construction is complete","owner":"Santiago / Jaspal","due":"","status":"Done","notes":""},
+        {"id":"ACT-37","cat":"Site Selection & Lease","desc":"Record Keeping: Keep lease & landlord info in organized folder","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
+        {"id":"ACT-40","cat":"Systems & Tech","desc":"Corporate Email / web hosting setup","owner":"Jamee","due":"","status":"Done","notes":"CAS help: Jamee"},
+        {"id":"ACT-41","cat":"Systems & Tech","desc":"Jackrabbit Class configuration & tuition setup","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-42","cat":"Systems & Tech","desc":"Credit card processing gateway for Jackrabbit Class","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
+        {"id":"ACT-43","cat":"Systems & Tech","desc":"Input Classes, Camps, Workshops, Events into Jackrabbit","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-44","cat":"Systems & Tech","desc":"Clover POS setup","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
         {"id":"ACT-45","cat":"Systems & Tech","desc":"Input PYOP inventory into POS software","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
-        {"id":"ACT-46","cat":"Systems & Tech","desc":"Credit card processing for Clover","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
-        {"id":"ACT-47","cat":"Systems & Tech","desc":"Custom Channels: Music","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
-        {"id":"ACT-49","cat":"Systems & Tech","desc":"Tech Stack alignment","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-51","cat":"Systems & Tech","desc":"FB/ Instagram: New location name","owner":"Robb / Emily","due":"","status":"Done","notes":"CAS help: Robb/ Emily"},
-        {"id":"ACT-52","cat":"Systems & Tech","desc":"Google files: Set up file folder for new studio","owner":"Jessica","due":"","status":"Open","notes":"CAS help: Jessica"},
-        {"id":"ACT-53","cat":"Systems & Tech","desc":"Amazon business account","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-54","cat":"Website","desc":"Artist rendering of new studio for website","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
-        {"id":"ACT-55","cat":"Website","desc":"Upload new studio to website: CordovanArtSchool.com","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
-        {"id":"ACT-56","cat":"Website","desc":"SEO for all new webpages at CordovanArtSchool.com","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
-        {"id":"ACT-57","cat":"Website","desc":"Link website forms to franchisee's email address","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-58","cat":"Exterior Signage","desc":"Facia: Must get landlord approval","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-59","cat":"Exterior Signage","desc":"Pylon: Must get landlord approval","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-60","cat":"Exterior Signage","desc":"Coming Soon Banner","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-61","cat":"Exterior Signage","desc":"Bandit Signs","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-62","cat":"Exterior Signage","desc":"Window Photo Decals","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-63","cat":"Exterior Signage","desc":"Now Open Banner","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-64","cat":"Exterior Signage","desc":"Billboards & other signage approved by Franchisor","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-65","cat":"Construction","desc":"Coaching call: Construction tips","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
-        {"id":"ACT-66","cat":"Construction","desc":"Hire Architect or Designer","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
-        {"id":"ACT-67","cat":"Construction","desc":"Provide design to landlord for written approval","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
-        {"id":"ACT-68","cat":"Construction","desc":"Hire General Contractor (recommended 3 bids)","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-69","cat":"Construction","desc":"Permits (asbestos survey, county, plumbing, electrical)","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
-        {"id":"ACT-70","cat":"Construction","desc":"Final walk-thru with GC; Change keys / locks","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-71","cat":"Construction","desc":"Receive Lien releases from GC","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-72","cat":"Construction","desc":"Receive a Certificate of occupancy","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-73","cat":"Construction","desc":"Lockbox / hide-away key outside building","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-74","cat":"Construction","desc":"Get a mail key from post office","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-75","cat":"Construction","desc":"Layout suggestions for classroom space","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
-        {"id":"ACT-76","cat":"Permits","desc":"Coaching Call: Licenses & Permits","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
-        {"id":"ACT-77","cat":"Kiln","desc":"Order Kiln (may take up to 3 months)","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
-        {"id":"ACT-78","cat":"Utilities","desc":"Phone & Internet setup","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-79","cat":"Utilities","desc":"Water service","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-80","cat":"Utilities","desc":"Electricity service","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-81","cat":"Utilities","desc":"Trash service","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-82","cat":"Utilities","desc":"HVAC service contract","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-83","cat":"Utilities","desc":"Pest / rodent control contract","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-84","cat":"Utilities","desc":"Set up voicemail","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-85","cat":"Utilities","desc":"Set up Property Taxes with appraisal district","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-86","cat":"Utilities","desc":"Snow Removal (if needed)","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-87","cat":"Utilities","desc":"Streaming services","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-88","cat":"Utilities","desc":"Amazon supplies setup","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
-        {"id":"ACT-89","cat":"FF&E","desc":"FFE Worksheet: Quantities & orders for supplies","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
-        {"id":"ACT-90","cat":"FF&E","desc":"Vendor intros (Amazon, Jerry's Artarama, Gare)","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
-        {"id":"ACT-91","cat":"Other","desc":"Aprons, Pins & Palettes for Level Up program","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
-        {"id":"ACT-92","cat":"FF&E","desc":"Large classroom easel for teacher","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
-        {"id":"ACT-93","cat":"FF&E","desc":"Ring Camera setup","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
-        {"id":"ACT-94","cat":"Décor & Signage","desc":"Ordering decorations, signage & staging","owner":"David / Nancy / Robb","due":"","status":"Open","notes":"CAS help: David, Nancy, Robb"},
-        {"id":"ACT-95","cat":"Décor & Signage","desc":"Samples of clay hand-build student projects","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
-        {"id":"ACT-96","cat":"Décor & Signage","desc":"Original Artwork Package for classrooms","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
-        {"id":"ACT-97","cat":"Décor & Signage","desc":"Ordering seasonal décor for lobby","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
-        {"id":"ACT-98","cat":"Décor & Signage","desc":"Framed T-shirts","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
-        {"id":"ACT-99","cat":"Décor & Signage","desc":"\"Before / After\" Plate (PYOP only)","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
-        {"id":"ACT-100","cat":"Décor & Signage","desc":"Paint Bar tiles — all colors (PYOP only)","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
-        {"id":"ACT-101","cat":"Décor & Signage","desc":"Painted samples of PYOP (PYOP only)","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
-        {"id":"ACT-102","cat":"Décor & Signage","desc":"Digital Board setup","owner":"David / Robb","due":"","status":"Open","notes":"CAS help: David/ Robb"},
-        {"id":"ACT-103","cat":"Décor & Signage","desc":"Order High-res canvas prints of Artwork Package","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-104","cat":"Décor & Signage","desc":"Level Up Board order","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-105","cat":"Décor & Signage","desc":"Vinyl signage: STUDIO 1, STUDIO 2, STUDIO 3","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-106","cat":"Décor & Signage","desc":"Vinyl signage for front door: logos / hours","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-107","cat":"Décor & Signage","desc":"Pottery Parlor logo for lobby","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-108","cat":"Décor & Signage","desc":"\"Paint Bar\" sign","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-109","cat":"Décor & Signage","desc":"Chalk Board for upcoming events","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-110","cat":"Décor & Signage","desc":"Labels A–Z to organize PYOP by customer name","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-111","cat":"Décor & Signage","desc":"Signs showing PYOP shelf locations","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-112","cat":"Décor & Signage","desc":"A-frame easel for sidewalk","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-113","cat":"Décor & Signage","desc":"\"$6 studio fee\" signs placed on shelves","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-114","cat":"Décor & Signage","desc":"Manager/Teacher hang original artwork in studio","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
-        {"id":"ACT-115","cat":"Marketing","desc":"Training Call: ASB + Marketing manual","owner":"John","due":"","status":"Open","notes":"CAS help: John"},
-        {"id":"ACT-116","cat":"Marketing","desc":"Online Training System access setup","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
-        {"id":"ACT-117","cat":"Marketing","desc":"Marketing Assets Google Folder","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
-        {"id":"ACT-118","cat":"Marketing","desc":"Google Folder studio access","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
-        {"id":"ACT-119","cat":"Marketing","desc":"Level Up posters, flyers, pins & magnets","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
-        {"id":"ACT-120","cat":"Marketing","desc":"ASB 1st order quantities finalized","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
-        {"id":"ACT-121","cat":"Marketing","desc":"Graphic Design requests","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
-        {"id":"ACT-122","cat":"Marketing","desc":"Google My Business setup","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
-        {"id":"ACT-123","cat":"Marketing","desc":"Google Ads campaign setup","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
-        {"id":"ACT-124","cat":"Marketing","desc":"Apple Maps listing","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
-        {"id":"ACT-125","cat":"Marketing","desc":"Yelp setup","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
-        {"id":"ACT-126","cat":"Marketing","desc":"Partner with local social media influencers","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
-        {"id":"ACT-127","cat":"Marketing","desc":"Advertise in local camp/education guides","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
-        {"id":"ACT-128","cat":"Marketing","desc":"Notify local newspaper for new business section","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
-        {"id":"ACT-129","cat":"Marketing","desc":"Newspaper / Magazine / Print Ads","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
-        {"id":"ACT-130","cat":"Marketing","desc":"Facebook Page Woodlands-Gosling Rd active","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
-        {"id":"ACT-131","cat":"Marketing","desc":"Instagram / Facebook ad campaigns pushdown","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
-        {"id":"ACT-132","cat":"Hiring & Ops","desc":"Training Call: Online system","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
-        {"id":"ACT-133","cat":"Hiring & Ops","desc":"Hire manager","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
-        {"id":"ACT-134","cat":"Hiring & Ops","desc":"Set studio hours","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
-        {"id":"ACT-135","cat":"Hiring & Ops","desc":"Hire teachers","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
-        {"id":"ACT-136","cat":"Hiring & Ops","desc":"Set date for in-person training","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
-        {"id":"ACT-137","cat":"Hiring & Ops","desc":"Invite to weekly Zoom call trainings","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
-        {"id":"ACT-138","cat":"Hiring & Ops","desc":"Set date for Grand Opening event","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"}
+        {"id":"ACT-46","cat":"Systems & Tech","desc":"Credit card processing merchant account for Clover","owner":"Santiago / Jaspal","due":"","status":"Open","notes":""},
+        {"id":"ACT-47","cat":"Systems & Tech","desc":"Custom Music & Entertainment Channels setup","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-49","cat":"Systems & Tech","desc":"Tech Stack alignment & hardware check","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-52","cat":"Systems & Tech","desc":"Google Shared Drive setup for studio team files","owner":"Jessica","due":"","status":"Open","notes":"CAS help: Jessica"},
+        {"id":"ACT-53","cat":"Systems & Tech","desc":"Amazon Business Account setup","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-54","cat":"Marketing","desc":"Artist rendering of new studio for website","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-55","cat":"Marketing","desc":"Upload new studio to website: CordovanArtSchool.com","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-56","cat":"Marketing","desc":"SEO for all new webpages at CordovanArtSchool.com","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-57","cat":"Marketing","desc":"Link website inquiry forms to franchisee email","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-58","cat":"Exterior Signage","desc":"Facia Sign: Obtain landlord approval per lease criteria","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-59","cat":"Exterior Signage","desc":"Pylon Sign: Obtain landlord approval per lease criteria","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-60","cat":"Exterior Signage","desc":"Order Coming Soon Banner","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-61","cat":"Exterior Signage","desc":"Order Bandit Signs","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-62","cat":"Exterior Signage","desc":"Order Window Photo Decals","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-63","cat":"Exterior Signage","desc":"Order Now Open Banner","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-64","cat":"Exterior Signage","desc":"Billboards & other exterior signage (Franchisor approval)","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-65","cat":"Construction & Permitting","desc":"Coaching call: Construction tips","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-66","cat":"Construction & Permitting","desc":"Hire Architect / Designer","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-67","cat":"Construction & Permitting","desc":"Provide architectural design to landlord for written approval","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-68","cat":"Construction & Permitting","desc":"Hire General Contractor (recommended 3 bids)","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-70","cat":"Construction & Permitting","desc":"Final walk-thru with GC; Change building locks & keys","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-71","cat":"Construction & Permitting","desc":"Receive Lien releases from General Contractor","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-73","cat":"Grand Opening & Ops","desc":"Install lockbox / hide-away key outside building for emergencies","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-74","cat":"Grand Opening & Ops","desc":"Get mail key from post office (bring lease copy)","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-75","cat":"Construction & Permitting","desc":"Classroom flow & maximized space layout approval","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-76","cat":"Construction & Permitting","desc":"Coaching Call: Licenses & Permits","owner":"Matt","due":"","status":"Done","notes":"CAS help: Matt"},
+        {"id":"ACT-78","cat":"Utilities","desc":"Phone & Commercial High-Speed Internet setup","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-79","cat":"Utilities","desc":"Establish Water utility account","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-80","cat":"Utilities","desc":"Establish Electricity account","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-81","cat":"Utilities","desc":"Establish Trash collection service","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-82","cat":"Utilities","desc":"HVAC service contract execution","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-83","cat":"Utilities","desc":"Pest / rodent control contract execution","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-84","cat":"Utilities","desc":"Set up studio phone voicemail greeting","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-85","cat":"Utilities","desc":"Property Taxes appraisal district registration","owner":"Matt","due":"","status":"Open","notes":"CAS help: Matt"},
+        {"id":"ACT-89","cat":"Facilities & FF&E","desc":"FFE Worksheet: Fill out quantities & place furniture/supplies orders","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
+        {"id":"ACT-90","cat":"Facilities & FF&E","desc":"Introduction to art vendors (Jerry's Artarama, Gare, Bailey's)","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
+        {"id":"ACT-91","cat":"Facilities & FF&E","desc":"Order Aprons, Pins & Palettes for Level Up program","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
+        {"id":"ACT-92","cat":"Facilities & FF&E","desc":"Order large classroom easels for teachers","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
+        {"id":"ACT-93","cat":"Facilities & FF&E","desc":"Install Ring Security Camera system","owner":"David / Nancy","due":"","status":"Open","notes":"CAS help: David, Nancy"},
+        {"id":"ACT-94","cat":"Décor & Staging","desc":"Coaching Call: Ordering decorations, signage & staging","owner":"David / Nancy / Robb","due":"","status":"Open","notes":"CAS help: David, Nancy, Robb"},
+        {"id":"ACT-95","cat":"Décor & Staging","desc":"Curate clay hand-build student project samples","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-96","cat":"Décor & Staging","desc":"Original Classroom Artwork Package (non-framed)","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-97","cat":"Décor & Staging","desc":"Order seasonal lobby décor","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-98","cat":"Décor & Staging","desc":"Mount framed Cordovan T-shirts","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-99","cat":"Décor & Staging","desc":"'Before / After' Display Plate (PYOP only)","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-100","cat":"Décor & Staging","desc":"Paint Bar color sample tiles (PYOP only)","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-101","cat":"Décor & Staging","desc":"Painted finished samples of PYOP pottery","owner":"David","due":"","status":"Open","notes":"CAS help: David"},
+        {"id":"ACT-102","cat":"Décor & Staging","desc":"Install Digital Board display","owner":"David / Robb","due":"","status":"Open","notes":"CAS help: David/ Robb"},
+        {"id":"ACT-103","cat":"Décor & Staging","desc":"Order High-res canvas prints of artwork package","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-105","cat":"Décor & Staging","desc":"Install vinyl room signage: STUDIO 1, STUDIO 2, STUDIO 3","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-106","cat":"Décor & Staging","desc":"Install front door vinyl signage: logos & business hours","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-107","cat":"Décor & Staging","desc":"Install Pottery Parlor lobby logo","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-108","cat":"Décor & Staging","desc":"Install 'Paint Bar' sign","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-109","cat":"Décor & Staging","desc":"Install Chalk Board for schedules & events","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-110","cat":"Décor & Staging","desc":"Labels A–Z to organize PYOP customer pickup shelves","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-111","cat":"Décor & Staging","desc":"Shelf location signs (before/after firing)","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-112","cat":"Décor & Staging","desc":"A-frame easel for sidewalk promotions","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-113","cat":"Décor & Staging","desc":"'$6 studio fee' shelf signage","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-114","cat":"Décor & Staging","desc":"Hang approved original artwork in studio","owner":"Robb","due":"","status":"Open","notes":"CAS help: Robb"},
+        {"id":"ACT-115","cat":"Marketing","desc":"Training Call: ASB + Marketing manual review","owner":"John","due":"","status":"Open","notes":"CAS help: John"},
+        {"id":"ACT-116","cat":"Hiring & Training","desc":"Staff login creation on Online Training System","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-117","cat":"Marketing","desc":"Marketing Assets Google Folder review","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-120","cat":"Marketing","desc":"ASB Portal 1st collateral order (cards, promos, coupons)","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-121","cat":"Marketing","desc":"Submit custom Graphic Design requests","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-122","cat":"Marketing","desc":"Google Business Profile setup & verification","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-123","cat":"Marketing","desc":"Launch targeted Google Ads campaigns","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-124","cat":"Marketing","desc":"Apple Maps business listing verification","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-125","cat":"Marketing","desc":"Yelp for Business profile setup","owner":"John","due":"","status":"Done","notes":"CAS help: John"},
+        {"id":"ACT-126","cat":"Marketing","desc":"Outreach to local mom blogs & community influencers","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
+        {"id":"ACT-127","cat":"Marketing","desc":"Book ads in local school & education guides","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
+        {"id":"ACT-128","cat":"Marketing","desc":"Submit press release to local newspaper 'New Business' section","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
+        {"id":"ACT-129","cat":"Marketing","desc":"Book local print & community magazine ads","owner":"Susan","due":"","status":"Done","notes":"CAS help: Susan"},
+        {"id":"ACT-130","cat":"Marketing","desc":"Publish localized Facebook & Instagram pages","owner":"Robb","due":"","status":"Done","notes":"CAS help: Robb"},
+        {"id":"ACT-132","cat":"Hiring & Training","desc":"Management operations training via portal","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-133","cat":"Hiring & Training","desc":"Recruit & hire Studio Manager","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-134","cat":"Grand Opening & Ops","desc":"Finalize weekly studio operating hours","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-135","cat":"Hiring & Training","desc":"Recruit & hire art teachers / instructors","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-136","cat":"Hiring & Training","desc":"Schedule & conduct in-person staff training","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"},
+        {"id":"ACT-137","cat":"Hiring & Training","desc":"Attend weekly corporate Zoom training calls","owner":"Nancy","due":"","status":"Open","notes":"CAS help: Nancy"}
       ],
       risks: [
         {"id":"RSK-01","desc":"Exterior sign manufacturing/installation delay impacts grand-opening visibility.","impact":"High","likelihood":"Medium","mitigation":"Submit specs to corporate immediately upon receiving vendor quotes; ensure local sign vendor guarantees delivery schedule.","owner":"Santiago / Jaspal","status":"Open"},
@@ -984,7 +940,7 @@
       ],
       register: [
         {"id":"ASM-01","k":"assumption","desc":"Landlord permits flexible illuminated exterior signage design based on budget.","basis":"Confirmed by corporate review; no restrictive criteria.","status":"Validated"},
-        {"id":"ASM-02","k":"assumption","desc":"Existing 7 pre-registrations convert to active enrollments once Jackrabbit is live.","basis":"Early market interest demonstrated.","status":"Pending"},
+        {"id":"ASM-02","k":"assumption","desc":"Existing pre-registrations convert to active enrollments once Jackrabbit is live.","basis":"Early market interest demonstrated.","status":"Pending"},
         {"id":"ASM-03","k":"assumption","desc":"Corporate Marketing Assets folder is the single source of truth for brand compliance.","basis":"Confirmed with John Howell & Robb Costello.","status":"Validated"},
         {"id":"ISS-01","k":"issue","desc":"Accounting & payroll package structure pending finalization with Xceleran.","severity":"Medium","resolution":"Schedule call with Geoff Suval to align payroll options.","owner":"Jaspal","status":"Open"},
         {"id":"DEP-01","k":"dependency","desc":"Exterior sign ordering depends on corporate approval from John Howell.","dependsOn":"John Howell / Corporate Review","impact":"Delay in placing order.","status":"Open"},
@@ -1014,15 +970,17 @@
     let activeRegisterFilter = 'open';
 
     const categoryColors = {
-      "Décor & Signage": "#d97706",
-      "Marketing": "#f97316",
-      "Systems & Tech": "#0d9488",
-      "Construction": "#65a30d",
-      "Utilities": "#881337",
+      "Facilities & FF&E": "#b45309",
       "Exterior Signage": "#701a75",
-      "Hiring & Ops": "#4338ca",
-      "Facilities": "#b45309",
-      "Business Setup": "#0284c7"
+      "Marketing": "#f97316",
+      "Hiring & Training": "#4338ca",
+      "Business & Finance": "#0284c7",
+      "Construction & Permitting": "#65a30d",
+      "Grand Opening & Ops": "#0d9488",
+      "Site Selection & Lease": "#3b82f6",
+      "Systems & Tech": "#059669",
+      "Utilities": "#881337",
+      "Décor & Staging": "#d97706"
     };
 
     function checkAuth() {
@@ -1048,7 +1006,7 @@
 
     async function loadPersistedData() {
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        const local = localStorage.getItem('cordovan_grand_opening_store_v6');
+        const local = localStorage.getItem('cordovan_grand_opening_store_clean_v7');
         appData = local ? JSON.parse(local) : JSON.parse(JSON.stringify(SEED_DATA));
       } else {
         try {
@@ -1069,7 +1027,7 @@
 
     async function syncPersistedData(data) {
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        localStorage.setItem('cordovan_grand_opening_store_v6', JSON.stringify(data));
+        localStorage.setItem('cordovan_grand_opening_store_clean_v7', JSON.stringify(data));
       } else {
         try {
           await fetch(FIREBASE_DB_URL, {
@@ -1160,7 +1118,6 @@
       if (btn) btn.classList.add('active');
     }
 
-    /* Targeted Filter Navigation Matching Exact Counts */
     function filterAndNavigateActions(type, value) {
       switchNav('actions');
       activeActionFilter = type;
@@ -1174,19 +1131,19 @@
       if (type === 'Done') {
         document.getElementById('filter-action-status').value = 'Done';
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: Completed Actions Only (46)";
+        bannerText.innerText = "Showing: Completed Actions Only";
       } else if (type === 'open') {
         document.getElementById('filter-action-status').value = 'Open';
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: Open & In Progress Actions (88)";
+        bannerText.innerText = "Showing: Open & In Progress Actions";
       } else if (type === 'overdue') {
         document.getElementById('filter-action-status').value = '';
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: Overdue Action Items (5)";
+        bannerText.innerText = "Showing: Overdue Action Items";
       } else if (type === 'duesoon') {
         document.getElementById('filter-action-status').value = '';
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: Items Due Within 7 Days (2)";
+        bannerText.innerText = "Showing: Items Due Within 7 Days";
       } else if (type === 'category') {
         document.getElementById('filter-action-status').value = '';
         document.getElementById('filter-action-category').value = value;
@@ -1270,7 +1227,6 @@
       const progCnt = actions.filter(a => a.status === 'In Progress').length;
       const totalActions = actions.length || 1;
       
-      // Dynamic Launch Ready % Calculation linked to actual completion
       const pct = Math.round((doneCnt / totalActions) * 100);
 
       const baseline = new Date("2026-08-21T00:00:00");
@@ -1288,7 +1244,6 @@
       const highRisksCnt = risks.filter(r => r.status === 'Open' && r.impact === 'High').length;
       const openRegCnt = register.filter(r => r.status === 'Open' || r.status === 'Pending').length;
 
-      // Update Hero Header
       document.getElementById('hero-open-actions').innerText = openCnt + progCnt;
       document.getElementById('hero-overdue-actions').innerText = overdueCnt;
       document.getElementById('hero-high-risks').innerText = highRisksCnt;
@@ -1296,14 +1251,12 @@
       document.getElementById('readiness-pct-text').innerText = pct + '%';
       document.getElementById('radial-gauge').style.setProperty('--pct', pct + '%');
 
-      // Update 5 Metric Cards
       document.getElementById('card-done-ratio').innerText = `${doneCnt}/${totalActions}`;
       document.getElementById('card-due-soon').innerText = dueSoonCnt;
       document.getElementById('card-overdue').innerText = overdueCnt;
       document.getElementById('card-open-risks').innerText = risks.filter(r => r.status === 'Open').length;
       document.getElementById('card-open-reg').innerText = openRegCnt;
 
-      // Update Tab Badges
       document.getElementById('tab-cnt-actions').innerText = openCnt + progCnt;
       document.getElementById('tab-cnt-risks').innerText = highRisksCnt;
       document.getElementById('tab-cnt-reg').innerText = openRegCnt;
@@ -1492,7 +1445,6 @@
       `).join('');
     }
 
-    /* Status Mutators */
     async function changeActionStatus(id, st) {
       const target = (appData.actions || []).find(a => a.id === id);
       if (target) { target.status = st; renderAllViews(); await syncPersistedData(appData); }
@@ -1506,7 +1458,6 @@
       if (target) { target.status = st; renderAllViews(); await syncPersistedData(appData); }
     }
 
-    /* Inspector Modal */
     function openInspector(id, category) {
       editingCategory = category;
       const list = appData[category] || [];
