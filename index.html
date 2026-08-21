@@ -130,7 +130,7 @@
       font-size: 12px;
     }
 
-    /* Radial Gauge */
+    /* Radial Progress Gauge */
     .gauge-box {
       width: 120px;
       height: 120px;
@@ -140,7 +140,9 @@
       justify-content: center;
       justify-self: end;
       cursor: pointer;
+      transition: transform 0.15s ease;
     }
+    .gauge-box:hover { transform: scale(1.05); }
     .gauge-circle {
       width: 100%;
       height: 100%;
@@ -423,7 +425,7 @@
     .urgent-text h5 { font-size: 13px; font-weight: 600; color: #222; line-height: 1.35; margin-bottom: 3px; }
     .urgent-text p { font-size: 11px; color: var(--text-muted); }
 
-    /* Tables */
+    /* Tables & Controls */
     .filter-bar-row {
       display: flex;
       gap: 10px;
@@ -504,7 +506,7 @@
 </head>
 <body>
 
-  <!-- Password Authentication Gate -->
+  <!-- Password Access Gate -->
   <div id="login-overlay">
     <div class="login-box">
       <h2>Cordovan Grand Opening</h2>
@@ -517,13 +519,13 @@
 
   <div class="container" id="app">
     
-    <!-- Top Large Cordovan Grand Opening Header -->
+    <!-- Top Large Header -->
     <div class="brand-headline">
       <h1>Cordovan Grand Opening</h1>
       <p>Woodlands-Gosling Road Studio • War Room & Pre-Opening Ops</p>
     </div>
 
-    <!-- Hero Maroon Countdown Banner (Without 'Countdown to Grand Opening' label) -->
+    <!-- Hero Maroon Countdown Banner -->
     <div class="hero-card">
       <div class="hero-top-grid">
         <div>
@@ -537,7 +539,8 @@
             <button class="hero-edit-link" onclick="promptChangeDate()">edit date</button>
           </div>
         </div>
-        <div class="gauge-box" onclick="filterAndNavigateActions('all')">
+        <!-- Progress Gauge linked to total completed vs open actions -->
+        <div class="gauge-box" onclick="filterAndNavigateActions('Done')" title="Click to view Completed Actions">
           <div class="gauge-circle" id="radial-gauge">
             <div class="gauge-inner-text">
               <h3 id="readiness-pct-text">34%</h3>
@@ -547,7 +550,7 @@
         </div>
       </div>
 
-      <!-- Clickable Hero Stats Strip -->
+      <!-- Hero Clickable Stats Strip (Each targets exact counts) -->
       <div class="hero-kpis">
         <div class="hero-kpi-item" onclick="filterAndNavigateActions('open')">
           <h4 id="hero-open-actions">88</h4>
@@ -571,9 +574,9 @@
     <!-- Navigation Tab Pills -->
     <div class="nav-tabs">
       <button class="tab-pill active" id="tab-btn-dashboard" onclick="switchNav('dashboard')">📊 Dashboard</button>
-      <button class="tab-pill" id="tab-btn-actions" onclick="switchNav('actions')">✅ Actions <span class="tab-badge" id="tab-cnt-actions">88</span></button>
-      <button class="tab-pill" id="tab-btn-risks" onclick="switchNav('risks')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">3</span></button>
-      <button class="tab-pill" id="tab-btn-register" onclick="switchNav('register')">📎 Register <span class="tab-badge" id="tab-cnt-reg">10</span></button>
+      <button class="tab-pill" id="tab-btn-actions" onclick="filterAndNavigateActions('open')">✅ Actions <span class="tab-badge" id="tab-cnt-actions">88</span></button>
+      <button class="tab-pill" id="tab-btn-risks" onclick="filterAndNavigateRisks('high')">⚠️ Risks <span class="tab-badge" id="tab-cnt-risks">3</span></button>
+      <button class="tab-pill" id="tab-btn-register" onclick="filterAndNavigateRegister('open')">📎 Register <span class="tab-badge" id="tab-cnt-reg">10</span></button>
       <button class="tab-pill" id="tab-btn-decisions" onclick="switchNav('decisions')">🤝 Decisions <span class="tab-badge" id="tab-cnt-dec">5</span></button>
       <div class="top-actions-right">
         <button class="shift-btn" onclick="openShiftModal()">🗓 Shift Open Dates</button>
@@ -585,10 +588,10 @@
     <div id="view-dashboard" class="page-view">
       <div class="section-head">
         <h2>🎯 Launch Dashboard</h2>
-        <p>Everything at a glance — click any metric card to jump into details</p>
+        <p>Everything at a glance — click any metric card to jump directly to its filtered list</p>
       </div>
 
-      <!-- 5 Filter-Targeted Clickable Metric Cards -->
+      <!-- 5 Metric Cards (Targeted Exact Filtering) -->
       <div class="kpi-row">
         <div class="kpi-card" onclick="filterAndNavigateActions('Done')">
           <div class="kpi-card-header">✅ Actions Done</div>
@@ -633,7 +636,7 @@
     <div id="view-actions" class="page-view" style="display: none;">
       <div id="action-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="action-filter-text">Filtered View Active</span>
-        <button onclick="clearActionFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Clear Filter</button>
+        <button onclick="clearActionFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All (134)</button>
       </div>
       <div class="filter-bar-row">
         <input type="text" id="filter-action-search" placeholder="Search actions..." oninput="renderActionsTable()" style="flex:1;">
@@ -671,7 +674,15 @@
     <div id="view-risks" class="page-view" style="display: none;">
       <div id="risk-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="risk-filter-text">Filtered View Active</span>
-        <button onclick="clearRiskFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Clear Filter</button>
+        <button onclick="clearRiskFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All Risks (5)</button>
+      </div>
+      <div class="filter-bar-row">
+        <select id="filter-risk-status" onchange="renderRisksTable()">
+          <option value="">All Risks</option>
+          <option value="high" selected>High Impact Open Risks (3)</option>
+          <option value="open">All Open Risks (4)</option>
+          <option value="Closed">Closed Risks (1)</option>
+        </select>
       </div>
       <div class="data-table-card">
         <table>
@@ -695,7 +706,14 @@
     <div id="view-register" class="page-view" style="display: none;">
       <div id="register-filter-banner" class="active-filter-banner" style="display:none;">
         <span id="register-filter-text">Filtered View Active</span>
-        <button onclick="clearRegisterFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Clear Filter</button>
+        <button onclick="clearRegisterFilters()" style="background:none; border:none; color:#b45309; text-decoration:underline; font-weight:bold; cursor:pointer;">Show All Register (13)</button>
+      </div>
+      <div class="filter-bar-row">
+        <select id="filter-register-status" onchange="renderRegisterTable()">
+          <option value="">All Register Items (13)</option>
+          <option value="open" selected>Open & Pending (10)</option>
+          <option value="validated">Validated / Closed (3)</option>
+        </select>
       </div>
       <div class="data-table-card">
         <table>
@@ -991,9 +1009,9 @@
     let appData = { actions: [], risks: [], register: [], decisions: [] };
     let editingTarget = null;
     let editingCategory = '';
-    let activeActionFilter = null;
-    let activeRiskFilter = null;
-    let activeRegisterFilter = null;
+    let activeActionFilter = 'open';
+    let activeRiskFilter = 'high';
+    let activeRegisterFilter = 'open';
 
     const categoryColors = {
       "Décor & Signage": "#d97706",
@@ -1030,7 +1048,7 @@
 
     async function loadPersistedData() {
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        const local = localStorage.getItem('cordovan_grand_opening_store_v5');
+        const local = localStorage.getItem('cordovan_grand_opening_store_v6');
         appData = local ? JSON.parse(local) : JSON.parse(JSON.stringify(SEED_DATA));
       } else {
         try {
@@ -1051,7 +1069,7 @@
 
     async function syncPersistedData(data) {
       if (FIREBASE_DB_URL.includes("FIREBASE_DATABASE_URL_HERE")) {
-        localStorage.setItem('cordovan_grand_opening_store_v5', JSON.stringify(data));
+        localStorage.setItem('cordovan_grand_opening_store_v6', JSON.stringify(data));
       } else {
         try {
           await fetch(FIREBASE_DB_URL, {
@@ -1142,14 +1160,13 @@
       if (btn) btn.classList.add('active');
     }
 
-    /* Exact Count-Matched Filter Routing */
+    /* Targeted Filter Navigation Matching Exact Counts */
     function filterAndNavigateActions(type, value) {
       switchNav('actions');
       activeActionFilter = type;
       document.getElementById('filter-action-search').value = '';
       document.getElementById('filter-action-category').value = '';
       document.getElementById('filter-action-owner').value = '';
-      document.getElementById('filter-action-status').value = '';
 
       const banner = document.getElementById('action-filter-banner');
       const bannerText = document.getElementById('action-filter-text');
@@ -1157,22 +1174,26 @@
       if (type === 'Done') {
         document.getElementById('filter-action-status').value = 'Done';
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: Completed Actions Only";
+        bannerText.innerText = "Showing: Completed Actions Only (46)";
       } else if (type === 'open') {
         document.getElementById('filter-action-status').value = 'Open';
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: Open & In Progress Actions (Unfinished)";
+        bannerText.innerText = "Showing: Open & In Progress Actions (88)";
       } else if (type === 'overdue') {
+        document.getElementById('filter-action-status').value = '';
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: Overdue Action Items Only";
+        bannerText.innerText = "Showing: Overdue Action Items (5)";
       } else if (type === 'duesoon') {
+        document.getElementById('filter-action-status').value = '';
         banner.style.display = 'flex';
-        bannerText.innerText = "Showing: Items Due Within 7 Days";
+        bannerText.innerText = "Showing: Items Due Within 7 Days (2)";
       } else if (type === 'category') {
+        document.getElementById('filter-action-status').value = '';
         document.getElementById('filter-action-category').value = value;
         banner.style.display = 'flex';
         bannerText.innerText = `Showing Category: ${value}`;
       } else {
+        document.getElementById('filter-action-status').value = '';
         banner.style.display = 'none';
         activeActionFilter = null;
       }
@@ -1182,20 +1203,35 @@
     function filterAndNavigateRisks(type) {
       switchNav('risks');
       activeRiskFilter = type;
+      document.getElementById('filter-risk-status').value = type;
       const banner = document.getElementById('risk-filter-banner');
       const bannerText = document.getElementById('risk-filter-text');
-      banner.style.display = 'flex';
-      bannerText.innerText = type === 'high' ? "Showing: High Impact Open Risks Only" : "Showing: All Open Risks";
+      
+      if (type === 'high') {
+        banner.style.display = 'flex';
+        bannerText.innerText = "Showing: High Impact Open Risks (3)";
+      } else if (type === 'open') {
+        banner.style.display = 'flex';
+        bannerText.innerText = "Showing: All Open Risks (4)";
+      } else {
+        banner.style.display = 'none';
+      }
       renderRisksTable();
     }
 
     function filterAndNavigateRegister(type) {
       switchNav('register');
       activeRegisterFilter = type;
+      document.getElementById('filter-register-status').value = type;
       const banner = document.getElementById('register-filter-banner');
       const bannerText = document.getElementById('register-filter-text');
-      banner.style.display = 'flex';
-      bannerText.innerText = "Showing: Open & Pending Register Items Only";
+      
+      if (type === 'open') {
+        banner.style.display = 'flex';
+        bannerText.innerText = "Showing: Open & Pending Register Items (10)";
+      } else {
+        banner.style.display = 'none';
+      }
       renderRegisterTable();
     }
 
@@ -1210,13 +1246,15 @@
     }
 
     function clearRiskFilters() {
-      activeRiskFilter = null;
+      activeRiskFilter = '';
+      document.getElementById('filter-risk-status').value = '';
       document.getElementById('risk-filter-banner').style.display = 'none';
       renderRisksTable();
     }
 
     function clearRegisterFilters() {
-      activeRegisterFilter = null;
+      activeRegisterFilter = '';
+      document.getElementById('filter-register-status').value = '';
       document.getElementById('register-filter-banner').style.display = 'none';
       renderRegisterTable();
     }
@@ -1231,6 +1269,8 @@
       const openCnt = actions.filter(a => a.status === 'Open').length;
       const progCnt = actions.filter(a => a.status === 'In Progress').length;
       const totalActions = actions.length || 1;
+      
+      // Dynamic Launch Ready % Calculation linked to actual completion
       const pct = Math.round((doneCnt / totalActions) * 100);
 
       const baseline = new Date("2026-08-21T00:00:00");
@@ -1380,11 +1420,14 @@
     }
 
     function renderRisksTable() {
+      const statusFilter = document.getElementById('filter-risk-status').value;
       const filtered = (appData.risks || []).filter(r => {
-        if (activeRiskFilter === 'high') {
+        if (statusFilter === 'high') {
           return r.status === 'Open' && r.impact === 'High';
-        } else if (activeRiskFilter === 'open') {
+        } else if (statusFilter === 'open') {
           return r.status === 'Open';
+        } else if (statusFilter === 'Closed') {
+          return r.status === 'Closed';
         }
         return true;
       });
@@ -1409,9 +1452,12 @@
     }
 
     function renderRegisterTable() {
+      const statusFilter = document.getElementById('filter-register-status').value;
       const filtered = (appData.register || []).filter(reg => {
-        if (activeRegisterFilter === 'open') {
+        if (statusFilter === 'open') {
           return reg.status === 'Open' || reg.status === 'Pending';
+        } else if (statusFilter === 'validated') {
+          return reg.status === 'Validated' || reg.status === 'Closed';
         }
         return true;
       });
@@ -1446,7 +1492,7 @@
       `).join('');
     }
 
-    /* Status Changes */
+    /* Status Mutators */
     async function changeActionStatus(id, st) {
       const target = (appData.actions || []).find(a => a.id === id);
       if (target) { target.status = st; renderAllViews(); await syncPersistedData(appData); }
@@ -1460,7 +1506,7 @@
       if (target) { target.status = st; renderAllViews(); await syncPersistedData(appData); }
     }
 
-    /* Modal Operations */
+    /* Inspector Modal */
     function openInspector(id, category) {
       editingCategory = category;
       const list = appData[category] || [];
