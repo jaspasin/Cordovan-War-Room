@@ -22,6 +22,15 @@
     font-size:16px; line-height:1.55; letter-spacing:-0.005em;}
   .wrap{max-width:var(--maxw); margin:0 auto; padding:clamp(18px,4vw,44px);}
 
+  /* login gate */
+  .login-overlay{position:fixed; inset:0; background:rgba(35,30,46,.97); display:flex; align-items:center; justify-content:center; z-index:100; padding:20px;}
+  .login-box{background:var(--canvas); border-radius:12px; padding:34px 30px; width:100%; max-width:360px; text-align:center; box-shadow:0 20px 50px rgba(0,0,0,.35);}
+  .login-box h2{font-family:"Fraunces",Georgia,serif; color:var(--ink); font-size:1.5rem; margin:0 0 6px; font-weight:600;}
+  .login-box p{color:var(--muted); font-size:.9rem; margin:0 0 16px;}
+  .login-box input{width:100%; padding:11px 13px; border:1px solid var(--line); border-radius:8px; font:inherit; margin-bottom:12px; outline:none; background:#FBFAF7;}
+  .login-box button{width:100%; padding:11px; background:var(--ink); color:#fff; border:none; border-radius:8px; font:inherit; font-weight:700; cursor:pointer;}
+  .login-err{color:var(--p2); font-size:.82rem; margin-top:10px;}
+
   .placard{background:var(--canvas); border:1px solid var(--line); border-radius:4px;
     padding:clamp(22px,4vw,40px);}
   .backlink{display:inline-block; font-size:.85rem; font-weight:600; color:var(--muted); text-decoration:none; margin-bottom:16px;}
@@ -56,27 +65,28 @@
   .btn-primary:hover{filter:brightness(1.15);}
   .btn-ghost{background:var(--canvas); color:var(--ink);}
   .btn-ghost:hover{border-color:var(--muted);}
-  .hint{color:var(--muted); font-size:.8rem; margin-top:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
-  .sync-dot{width:9px; height:9px; border-radius:50%; display:inline-block; background:var(--muted);}
-  .sync-dot.live{background:var(--ok);}
 
   .ws{background:var(--canvas); border:1px solid var(--line); border-left:6px solid var(--pig);
     border-radius:4px; padding:18px clamp(14px,2.5vw,24px) 8px; margin:16px 0;}
-  .ws-top{display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 14px;}
+  .ws-top{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px;}
   .ws-name{font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:1.22rem; color:var(--ink);}
   .ws-phase{font-size:.72rem; font-weight:600; color:var(--pig); border:1px solid currentColor; border-radius:100px; padding:2px 10px;}
   .ws-count{font-size:.78rem; color:var(--muted); margin-left:auto;}
-  .ws-goal{color:var(--body); font-size:.92rem; margin:6px 0 12px; max-width:72ch;}
+  .ws-ctrls{display:flex; gap:4px;}
+  .ws-goal{color:var(--body); font-size:.92rem; margin:8px 0 12px; max-width:72ch;}
 
-  /* inline-editable text affordance */
   .editable{cursor:text; border-radius:3px; transition:background .12s ease;}
   .editable:hover{background:#FBFAF7; box-shadow:0 0 0 1px var(--line);}
   .editable:focus{outline:none; background:#fff; box-shadow:0 0 0 2px rgba(47,69,197,.35);}
 
-  .item{display:grid; grid-template-columns:1fr 140px 88px 138px 30px; gap:10px 14px;
+  .item{display:grid; grid-template-columns:1fr 118px 76px 124px 78px; gap:10px 14px;
     align-items:center; padding:12px 0; border-top:1px solid var(--line); cursor:pointer;}
   .item:hover{background:#FBFAF7;}
   .item .task{color:var(--ink); font-weight:500; font-size:.96rem;}
+  .prio{display:inline-block; font-size:.64rem; font-weight:800; text-transform:uppercase; letter-spacing:.4px; padding:1px 7px; border-radius:100px; margin-right:8px; vertical-align:middle;}
+  .p-high{background:rgba(218,62,30,.14); color:var(--p2);}
+  .p-med{background:rgba(227,154,17,.18); color:#B67608;}
+  .p-low{background:rgba(139,133,152,.16); color:#6c6779;}
   .item .owner{color:var(--body); font-size:.86rem;}
   .item .owner .who{display:inline-block; background:var(--wall); border-radius:100px; padding:2px 10px; font-weight:600; color:#3c3746;}
   .item .owner .who.blank{background:transparent; border:1px dashed #C7C3D0; color:#B4AEC0; font-weight:500; font-size:.8rem;}
@@ -86,8 +96,11 @@
   .st-prog{background:rgba(47,69,197,.13); color:var(--go);}
   .st-todo{background:rgba(139,133,152,.16); color:#6c6779;}
   .st-call{background:rgba(201,118,26,.16); color:var(--call);}
-  .del{background:rgba(218,62,30,.10); color:var(--p2); border:none; width:26px; height:26px; border-radius:50%; font-size:15px; font-weight:700; cursor:pointer; line-height:1;}
-  .del:hover{background:rgba(218,62,30,.22);}
+  .ctrls{display:flex; gap:4px;}
+  .mini{background:var(--wall); border:none; width:24px; height:24px; border-radius:6px; font-size:12px; line-height:1; cursor:pointer; color:var(--body);}
+  .mini:hover{background:#DCD9CF;}
+  .mini.danger{background:rgba(218,62,30,.10); color:var(--p2);}
+  .mini.danger:hover{background:rgba(218,62,30,.22);}
 
   footer{margin-top:30px; padding-top:20px; border-top:1px solid var(--line); color:var(--muted); font-size:.82rem;}
 
@@ -104,18 +117,30 @@
 
   @media(max-width:640px){
     .head-right{width:100%; justify-content:flex-start;}
-    .item{grid-template-columns:1fr auto; gap:6px 10px; grid-template-areas:"task del" "owner owner" "due due" "status status";}
+    .item{grid-template-columns:1fr auto; gap:6px 10px;
+      grid-template-areas:"task ctrls" "owner owner" "due due" "status status";}
     .item .task{grid-area:task;} .item .owner{grid-area:owner;} .item .due{grid-area:due;}
-    .item .status{grid-area:status;} .item .del{grid-area:del; justify-self:end;}
+    .item .status{grid-area:status;} .item .ctrls{grid-area:ctrls; justify-self:end;}
     .item .owner::before{content:"Owner — "; color:var(--muted); font-weight:400;}
     .item .due::before{content:"Due — "; color:var(--muted);}
     .row2{grid-template-columns:1fr;}
   }
-  @media print{ body{background:#fff;} .toolbar,.del,.backlink,.editdate{display:none;} .item{cursor:default;} .editable:hover{background:none; box-shadow:none;} }
+  @media print{ body{background:#fff;} .toolbar,.ctrls,.ws-ctrls,.backlink,.editdate,.login-overlay{display:none;} .item{cursor:default;} .editable:hover{background:none; box-shadow:none;} }
 </style>
 </head>
 <body>
-<div class="wrap">
+
+<div id="login" class="login-overlay">
+  <div class="login-box">
+    <h2>Cordovan Launch Plan</h2>
+    <p>Enter the team passcode</p>
+    <input type="password" id="passcode" placeholder="Passcode" onkeydown="if(event.key==='Enter')checkAuth()">
+    <button onclick="checkAuth()">Enter</button>
+    <p class="login-err" id="auth-err" style="display:none">Incorrect passcode</p>
+  </div>
+</div>
+
+<div class="wrap" id="app-wrap" style="display:none;">
 
   <header class="placard">
     <a class="backlink" href="index.html">← War Room</a>
@@ -136,10 +161,9 @@
     </div>
     <div class="toolbar">
       <button class="btn btn-primary" onclick="openAdd()">+ Add item</button>
+      <button class="btn btn-ghost" onclick="addWorkstream()">+ Add header</button>
       <button class="btn btn-ghost" onclick="window.print()">Print / save PDF</button>
-      <button class="btn btn-ghost" onclick="resetAll()">Reset to default</button>
     </div>
-    <p class="hint"><span class="sync-dot" id="sync-dot"></span><span id="sync-status">Local only</span> · Everything is editable — click a header, goal, item, or the date to change it.</p>
   </header>
 
   <main id="board"></main>
@@ -164,9 +188,11 @@
       <div class="fg"><label>Owner</label><input id="f-owner" placeholder="Leave blank to assign later"></div>
       <div class="fg"><label>Due</label><input id="f-due" placeholder="e.g. Sep 22, Ongoing, —"></div>
     </div>
-    <div class="fg">
-      <label>Status</label>
-      <select id="f-status"></select>
+    <div class="row2">
+      <div class="fg"><label>Status</label><select id="f-status"></select></div>
+      <div class="fg"><label>Priority</label>
+        <select id="f-prio"><option>High</option><option>Medium</option><option>Low</option></select>
+      </div>
     </div>
     <div class="modal-btns">
       <button class="btn btn-ghost" id="modal-del" style="color:var(--p2);border-color:var(--p2);" onclick="delFromModal()">Delete</button>
@@ -189,71 +215,94 @@
   const SYNC_URL = "PASTE_YOUR_FIREBASE_URL_HERE";
   const SYNC_ON  = !SYNC_URL.includes("PASTE_YOUR");
 
-  const STORE_KEY = 'cordovan_launch_plan_v1';
+  /* Same passcode as the War Room. Logging into either page unlocks both
+     for the browser session. */
+  const TEAM_PASSCODE = "Cordovan2026";
+  const AUTH_KEY = 'cordovan_auth';
+
+  const STORE_KEY = 'cordovan_launch_plan_v2';
   const STATUSES = ['Not started','In progress','Done','Decide on call'];
   const STATUS_CLASS = {'Not started':'st-todo','In progress':'st-prog','Done':'st-done','Decide on call':'st-call'};
   const STATUS_DOT   = {'Not started':'var(--wait)','In progress':'var(--go)','Done':'var(--ok)','Decide on call':'var(--call)'};
-
-  // key, colour and phase stay fixed; name + goal are editable and stored in data.ws
-  const WS_DEFAULTS = [
-    {key:'foundations',  pig:'--p1', phase:'Phase 1',           name:'Foundations & alignment',           goal:'One plan, one budget, one registration destination — everyone aligned before a dollar is spent.'},
-    {key:'paid',         pig:'--p2', phase:'Phase 2',           name:'Paid social — Facebook & Instagram', goal:'Reach Spring/Woodlands parents with a clear offer and drive them to register.'},
-    {key:'organic',      pig:'--p3', phase:'Phase 2',           name:'Organic social & community',        goal:'Build a local following for free, and seed the parent networks that convert.'},
-    {key:'school',       pig:'--p4', phase:'Phase 2–3',         name:'School & local outreach',           goal:'Get in front of families where they already are — schools, PTAs, and neighbors.'},
-    {key:'event',        pig:'--p5', phase:'Phase 3–4',         name:'Grand opening event · Oct 31',      goal:'Turn a Halloween opening into a can\u2019t-miss event that signs families up on the day.'},
-    {key:'registration', pig:'--p6', phase:'Ongoing → Phase 4', name:'Registration & conversion',        goal:'Make sure all that awareness actually becomes enrolled students.'}
-  ];
+  const PRIO_CLASS   = {High:'p-high', Medium:'p-med', Low:'p-low'};
+  const WS_PALETTE = ['#2F45C5','#DA3E1E','#6A3AA8','#E39A11','#B4237B','#12876C','#0E7C86','#C2410C','#7C3AED','#0891B2','#BE185D','#4D7C0F'];
 
   const SEED = {
     openingDate: '2026-10-31',
+    workstreams: [
+      {key:'foundations',  color:'#2F45C5', phase:'Phase 1',           name:'Foundations & alignment',           goal:'One plan, one budget, one registration destination — everyone aligned before a dollar is spent.'},
+      {key:'paid',         color:'#DA3E1E', phase:'Phase 2',           name:'Paid social — Facebook & Instagram', goal:'Reach Spring/Woodlands parents with a clear offer and drive them to register.'},
+      {key:'organic',      color:'#6A3AA8', phase:'Phase 2',           name:'Organic social & community',        goal:'Build a local following for free, and seed the parent networks that convert.'},
+      {key:'school',       color:'#E39A11', phase:'Phase 2–3',         name:'School & local outreach',           goal:'Get in front of families where they already are — schools, PTAs, and neighbors.'},
+      {key:'event',        color:'#B4237B', phase:'Phase 3–4',         name:'Grand opening event · Oct 31',      goal:'Turn a Halloween opening into a can\u2019t-miss event that signs families up on the day.'},
+      {key:'registration', color:'#12876C', phase:'Ongoing → Phase 4', name:'Registration & conversion',        goal:'Make sure all that awareness actually becomes enrolled students.'}
+    ],
     items: [
-      {id:'m1', ws:'foundations', task:'Confirm the full pre-launch calendar & channel go-live dates', owner:'', due:'Sep 12', status:'Decide on call'},
-      {id:'m2', ws:'foundations', task:'Lock total marketing budget & split across channels', owner:'', due:'Sep 12', status:'Decide on call'},
-      {id:'m3', ws:'foundations', task:'Confirm Creative Tricycle\u2019s scope & what\u2019s already scheduled', owner:'', due:'Sep 12', status:'Decide on call'},
-      {id:'m4', ws:'foundations', task:'Agree a single registration destination for every link', owner:'', due:'Sep 12', status:'Decide on call'},
-      {id:'m5', ws:'foundations', task:'Set up lead tracking by source, so we know what\u2019s working', owner:'', due:'Sep 19', status:'Not started'},
-      {id:'m6', ws:'foundations', task:'Set the weekly marketing check-in through opening', owner:'', due:'Sep 12', status:'Decide on call'},
+      {id:'m1', ws:'foundations', task:'Confirm the full pre-launch calendar & channel go-live dates', owner:'', due:'Sep 12', status:'Decide on call', priority:'High'},
+      {id:'m2', ws:'foundations', task:'Lock total marketing budget & split across channels', owner:'', due:'Sep 12', status:'Decide on call', priority:'High'},
+      {id:'m3', ws:'foundations', task:'Confirm Creative Tricycle\u2019s scope & what\u2019s already scheduled', owner:'', due:'Sep 12', status:'Decide on call', priority:'High'},
+      {id:'m4', ws:'foundations', task:'Agree a single registration destination for every link', owner:'', due:'Sep 12', status:'Decide on call', priority:'High'},
+      {id:'m5', ws:'foundations', task:'Set up lead tracking by source, so we know what\u2019s working', owner:'', due:'Sep 19', status:'Not started', priority:'Medium'},
+      {id:'m6', ws:'foundations', task:'Set the weekly marketing check-in through opening', owner:'', due:'Sep 12', status:'Decide on call', priority:'Medium'},
 
-      {id:'m7',  ws:'paid', task:'Confirm ad budget & geo-radius around Gosling Rd', owner:'', due:'Sep 19', status:'Decide on call'},
-      {id:'m8',  ws:'paid', task:'Define audience — parents of kids ~5–14, Spring/Woodlands', owner:'', due:'Sep 22', status:'Not started'},
-      {id:'m9',  ws:'paid', task:'Produce creative: launch, free trial, grand opening', owner:'', due:'Sep 26', status:'Not started'},
-      {id:'m10', ws:'paid', task:'Finalize the founding-family / early-bird offer to feature', owner:'', due:'Sep 22', status:'Decide on call'},
-      {id:'m11', ws:'paid', task:'Campaigns live', owner:'', due:'Sep 29', status:'Not started'},
-      {id:'m12', ws:'paid', task:'Mid-flight review & optimize spend', owner:'', due:'Oct 13', status:'Not started'},
+      {id:'m7',  ws:'paid', task:'Confirm ad budget & geo-radius around Gosling Rd', owner:'', due:'Sep 19', status:'Decide on call', priority:'High'},
+      {id:'m8',  ws:'paid', task:'Define audience — parents of kids ~5–14, Spring/Woodlands', owner:'', due:'Sep 22', status:'Not started', priority:'Medium'},
+      {id:'m9',  ws:'paid', task:'Produce creative: launch, free trial, grand opening', owner:'', due:'Sep 26', status:'Not started', priority:'High'},
+      {id:'m10', ws:'paid', task:'Finalize the founding-family / early-bird offer to feature', owner:'', due:'Sep 22', status:'Decide on call', priority:'High'},
+      {id:'m11', ws:'paid', task:'Campaigns live', owner:'', due:'Sep 29', status:'Not started', priority:'High'},
+      {id:'m12', ws:'paid', task:'Mid-flight review & optimize spend', owner:'', due:'Oct 13', status:'Not started', priority:'Medium'},
 
-      {id:'m13', ws:'organic', task:'Content calendar Sep→Oct (build-out, teachers, countdown)', owner:'', due:'Sep 22', status:'Not started'},
-      {id:'m14', ws:'organic', task:'Post 3–4× / week on studio Facebook & Instagram', owner:'', due:'Ongoing', status:'Not started'},
-      {id:'m15', ws:'organic', task:'Seed local parent / mom Facebook groups & Nextdoor', owner:'', due:'Sep 26', status:'Not started'},
-      {id:'m16', ws:'organic', task:'Collect build-out & class photos for content', owner:'', due:'Sep 19', status:'In progress'},
-      {id:'m17', ws:'organic', task:'Verify Google Business Profile & Yelp — live and consistent', owner:'', due:'—', status:'Done'},
+      {id:'m13', ws:'organic', task:'Content calendar Sep→Oct (build-out, teachers, countdown)', owner:'', due:'Sep 22', status:'Not started', priority:'Medium'},
+      {id:'m14', ws:'organic', task:'Post 3–4× / week on studio Facebook & Instagram', owner:'', due:'Ongoing', status:'Not started', priority:'Medium'},
+      {id:'m15', ws:'organic', task:'Seed local parent / mom Facebook groups & Nextdoor', owner:'', due:'Sep 26', status:'Not started', priority:'Medium'},
+      {id:'m16', ws:'organic', task:'Collect build-out & class photos for content', owner:'', due:'Sep 19', status:'In progress', priority:'Medium'},
+      {id:'m17', ws:'organic', task:'Verify Google Business Profile & Yelp — live and consistent', owner:'', due:'—', status:'Done', priority:'Low'},
 
-      {id:'m18', ws:'school', task:'Build target list of nearby schools & PTAs', owner:'', due:'Sep 19', status:'Not started'},
-      {id:'m19', ws:'school', task:'Request HQ\u2019s approved school-outreach / flyer kit', owner:'', due:'Sep 15', status:'Not started'},
-      {id:'m20', ws:'school', task:'Flyer drop + teacher referral cards to schools', owner:'', due:'Sep 29', status:'Not started'},
-      {id:'m21', ws:'school', task:'Line up a spirit-night / PTA partnership', owner:'', due:'Oct 6', status:'Not started'},
-      {id:'m22', ws:'school', task:'Cross-promo with neighboring businesses in the plaza', owner:'', due:'Oct 6', status:'Not started'},
+      {id:'m18', ws:'school', task:'Build target list of nearby schools & PTAs', owner:'', due:'Sep 19', status:'Not started', priority:'Medium'},
+      {id:'m19', ws:'school', task:'Request HQ\u2019s approved school-outreach / flyer kit', owner:'', due:'Sep 15', status:'Not started', priority:'High'},
+      {id:'m20', ws:'school', task:'Flyer drop + teacher referral cards to schools', owner:'', due:'Sep 29', status:'Not started', priority:'Medium'},
+      {id:'m21', ws:'school', task:'Line up a spirit-night / PTA partnership', owner:'', due:'Oct 6', status:'Not started', priority:'Medium'},
+      {id:'m22', ws:'school', task:'Cross-promo with neighboring businesses in the plaza', owner:'', due:'Oct 6', status:'Not started', priority:'Low'},
 
-      {id:'m23', ws:'event', task:'Decide event format — Halloween open house + free trial class', owner:'', due:'Sep 19', status:'Decide on call'},
-      {id:'m24', ws:'event', task:'Confirm ribbon cutting (chamber / HQ)', owner:'', due:'Oct 3', status:'Not started'},
-      {id:'m25', ws:'event', task:'Build the RSVP / event registration mechanism', owner:'', due:'Oct 6', status:'Not started'},
-      {id:'m26', ws:'event', task:'Promote the event across every channel', owner:'', due:'Oct 10', status:'Not started'},
-      {id:'m27', ws:'event', task:'Day-of run sheet: sign-up station, giveaways, kids\u2019 activity', owner:'', due:'Oct 24', status:'Not started'},
+      {id:'m23', ws:'event', task:'Decide event format — Halloween open house + free trial class', owner:'', due:'Sep 19', status:'Decide on call', priority:'High'},
+      {id:'m24', ws:'event', task:'Confirm ribbon cutting (chamber / HQ)', owner:'', due:'Oct 3', status:'Not started', priority:'Medium'},
+      {id:'m25', ws:'event', task:'Build the RSVP / event registration mechanism', owner:'', due:'Oct 6', status:'Not started', priority:'Medium'},
+      {id:'m26', ws:'event', task:'Promote the event across every channel', owner:'', due:'Oct 10', status:'Not started', priority:'High'},
+      {id:'m27', ws:'event', task:'Day-of run sheet: sign-up station, giveaways, kids\u2019 activity', owner:'', due:'Oct 24', status:'Not started', priority:'Medium'},
 
-      {id:'m28', ws:'registration', task:'Test the Jackrabbit registration flow end-to-end', owner:'', due:'Sep 19', status:'In progress'},
-      {id:'m29', ws:'registration', task:'Woodlands–Gosling landing page live & linked everywhere', owner:'', due:'—', status:'Done'},
-      {id:'m30', ws:'registration', task:'Follow-up plan for the 23 existing trial leads', owner:'', due:'Sep 15', status:'In progress'},
-      {id:'m31', ws:'registration', task:'Finalize the trial-class → enrollment offer', owner:'', due:'Sep 22', status:'Decide on call'},
-      {id:'m32', ws:'registration', task:'Weekly registrations report vs. opening-day target', owner:'', due:'Ongoing', status:'Not started'}
+      {id:'m28', ws:'registration', task:'Test the Jackrabbit registration flow end-to-end', owner:'', due:'Sep 19', status:'In progress', priority:'High'},
+      {id:'m29', ws:'registration', task:'Woodlands–Gosling landing page live & linked everywhere', owner:'', due:'—', status:'Done', priority:'Low'},
+      {id:'m30', ws:'registration', task:'Follow-up plan for the 23 existing trial leads', owner:'', due:'Sep 15', status:'In progress', priority:'High'},
+      {id:'m31', ws:'registration', task:'Finalize the trial-class → enrollment offer', owner:'', due:'Sep 22', status:'Decide on call', priority:'High'},
+      {id:'m32', ws:'registration', task:'Weekly registrations report vs. opening-day target', owner:'', due:'Ongoing', status:'Not started', priority:'Medium'}
     ]
   };
 
   let data;
   let editingId = null;
+  let booted = false;
 
-  // make sure editable header/goal text exists for every workstream
-  function ensureWs(){
-    if(!data.ws) data.ws = {};
-    WS_DEFAULTS.forEach(w => { if(!data.ws[w.key]) data.ws[w.key] = {name:w.name, goal:w.goal}; });
+  function ensureData(){
+    if(!data.workstreams || !data.workstreams.length) data.workstreams = JSON.parse(JSON.stringify(SEED.workstreams));
+    if(!data.items) data.items = [];
+    data.items.forEach(i => { if(!i.priority) i.priority = 'Medium'; });
+    if(!data.openingDate) data.openingDate = SEED.openingDate;
+  }
+
+  /* ---------- auth ---------- */
+  function showApp(){
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('app-wrap').style.display = 'block';
+    boot();
+  }
+  function checkAuth(){
+    if(document.getElementById('passcode').value === TEAM_PASSCODE){
+      sessionStorage.setItem(AUTH_KEY, '1');
+      document.getElementById('auth-err').style.display = 'none';
+      showApp();
+    } else {
+      document.getElementById('auth-err').style.display = 'block';
+    }
   }
 
   /* ---------- persistence (shared or local) ---------- */
@@ -263,7 +312,7 @@
         const res = await fetch(SYNC_URL);
         const remote = await res.json();
         if(remote && remote.items){ data = remote; }
-        else { data = JSON.parse(JSON.stringify(SEED)); ensureWs(); await save(); }
+        else { data = JSON.parse(JSON.stringify(SEED)); ensureData(); await save(); }
       }catch(e){
         const raw = localStorage.getItem(STORE_KEY);
         data = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(SEED));
@@ -272,32 +321,24 @@
       try{ const raw = localStorage.getItem(STORE_KEY); data = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(SEED)); }
       catch(e){ data = JSON.parse(JSON.stringify(SEED)); }
     }
-    if(!data.items) data.items = [];
-    if(!data.openingDate) data.openingDate = SEED.openingDate;
-    ensureWs();
+    ensureData();
   }
-
   async function save(){
     try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); }catch(e){}
     if(SYNC_ON){
-      try{ await fetch(SYNC_URL, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)}); }
-      catch(e){}
+      try{ await fetch(SYNC_URL, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)}); }catch(e){}
     }
   }
-
-  // pull the latest shared copy so everyone stays in sync
   async function pullRemote(){
     if(!SYNC_ON) return;
-    if(document.getElementById('modal').style.display === 'flex') return;         // don't clobber an open edit
+    if(document.getElementById('modal').style.display === 'flex') return;
     if(document.activeElement && document.activeElement.tagName === 'SELECT') return;
-    if(document.activeElement && document.activeElement.isContentEditable) return; // or a header/goal being typed
+    if(document.activeElement && document.activeElement.isContentEditable) return;
     try{
       const res = await fetch(SYNC_URL);
       const remote = await res.json();
       if(remote && remote.items && JSON.stringify(remote) !== JSON.stringify(data)){
-        data = remote;
-        if(!data.items) data.items = [];
-        ensureWs();
+        data = remote; ensureData();
         try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); }catch(e){}
         paintDate(); render();
       }
@@ -317,8 +358,7 @@
       `<div><i style="background:${STATUS_DOT[s]}"></i><b>${counts[s]||0}</b> ${s}</div>`).join('');
 
     const board = document.getElementById('board');
-    board.innerHTML = WS_DEFAULTS.map(ws => {
-      const meta = data.ws[ws.key] || {name:ws.name, goal:ws.goal};
+    board.innerHTML = data.workstreams.map(ws => {
       const items = data.items.filter(i => i.ws === ws.key);
       const done = items.filter(i => i.status==='Done').length;
       const rows = items.map(i => {
@@ -326,39 +366,50 @@
           ? `<span class="who">${esc(i.owner)}</span>`
           : `<span class="who blank">assign</span>`;
         const opts = STATUSES.map(s => `<option ${s===i.status?'selected':''}>${s}</option>`).join('');
+        const prio = i.priority || 'Medium';
         return `<div class="item" onclick="openEdit('${i.id}')">
-          <div class="task">${esc(i.task)}</div>
+          <div class="task"><span class="prio ${PRIO_CLASS[prio]||'p-med'}">${prio}</span>${esc(i.task)}</div>
           <div class="owner">${ownerHtml}</div>
           <div class="due">${esc(i.due)||'—'}</div>
           <div class="status" onclick="event.stopPropagation()">
             <select class="pill-select ${STATUS_CLASS[i.status]}" onchange="setStatus('${i.id}',this.value)">${opts}</select>
           </div>
-          <button class="del" title="Delete" onclick="event.stopPropagation();delItem('${i.id}')">×</button>
+          <div class="ctrls" onclick="event.stopPropagation()">
+            <button class="mini" onclick="moveItem('${i.id}',-1)" title="Move up">↑</button>
+            <button class="mini" onclick="moveItem('${i.id}',1)" title="Move down">↓</button>
+            <button class="mini danger" onclick="delItem('${i.id}')" title="Delete">✕</button>
+          </div>
         </div>`;
       }).join('');
-      return `<section class="ws" style="--pig:var(${ws.pig})">
+      return `<section class="ws" style="--pig:${ws.color}">
         <div class="ws-top">
           <span class="ws-name editable" contenteditable="true" spellcheck="false"
             data-key="${ws.key}" data-field="name"
-            onblur="editWs(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">${esc(meta.name)}</span>
-          <span class="ws-phase">${ws.phase}</span>
+            onblur="editWs(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">${esc(ws.name)}</span>
+          <span class="ws-phase editable" contenteditable="true" spellcheck="false"
+            data-key="${ws.key}" data-field="phase"
+            onblur="editWs(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">${esc(ws.phase)}</span>
           <span class="ws-count">${done}/${items.length} done</span>
+          <span class="ws-ctrls">
+            <button class="mini" onclick="moveWs('${ws.key}',-1)" title="Move header up">↑</button>
+            <button class="mini" onclick="moveWs('${ws.key}',1)" title="Move header down">↓</button>
+            <button class="mini danger" onclick="delWorkstream('${ws.key}')" title="Remove header">✕</button>
+          </span>
         </div>
         <p class="ws-goal editable" contenteditable="true" spellcheck="false"
-          data-key="${ws.key}" data-field="goal" onblur="editWs(this)">${esc(meta.goal)}</p>
+          data-key="${ws.key}" data-field="goal" onblur="editWs(this)">${esc(ws.goal)}</p>
         ${rows || '<p class="ws-goal" style="color:var(--muted)">No items yet — use “+ Add item”.</p>'}
       </section>`;
     }).join('');
   }
 
-  // save an edited header name or goal
   function editWs(el){
     const key = el.dataset.key, field = el.dataset.field;
-    if(!data.ws[key]) data.ws[key] = {};
-    const val = el.innerText.replace(/\s+$/,'').trim();
-    if(!val){ el.innerText = data.ws[key][field] || ''; return; }   // don't allow blank
-    if(val === data.ws[key][field]) return;                          // no change
-    data.ws[key][field] = val; save();
+    const w = data.workstreams.find(x => x.key === key); if(!w) return;
+    const val = el.innerText.trim();
+    if(!val){ el.innerText = w[field] || ''; return; }
+    if(val === w[field]) return;
+    w[field] = val; save();
   }
 
   function setStatus(id, val){
@@ -371,32 +422,65 @@
       data.items = data.items.filter(x => x.id!==id); save(); render();
     }
   }
-
-  function fillStatusSelect(){
-    document.getElementById('f-status').innerHTML = STATUSES.map(s => `<option>${s}</option>`).join('');
+  function moveItem(id, dir){
+    const arr = data.items;
+    const it = arr.find(x => x.id===id); if(!it) return;
+    const group = arr.filter(x => x.ws===it.ws);
+    const gi = group.findIndex(x => x.id===id);
+    const ni = gi + dir;
+    if(ni < 0 || ni >= group.length) return;
+    const i1 = arr.findIndex(x => x.id===id);
+    const i2 = arr.findIndex(x => x.id===group[ni].id);
+    [arr[i1], arr[i2]] = [arr[i2], arr[i1]];
+    save(); render();
   }
+
+  function addWorkstream(){
+    const color = WS_PALETTE[data.workstreams.length % WS_PALETTE.length];
+    const key = 'ws' + Date.now().toString(36) + Math.floor(Math.random()*1000);
+    data.workstreams.push({key, name:'New workstream', goal:'Describe the goal of this workstream.', color, phase:'New'});
+    save(); render();
+    const secs = document.querySelectorAll('#board .ws');
+    if(secs.length) secs[secs.length-1].scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  function moveWs(key, dir){
+    const a = data.workstreams;
+    const i = a.findIndex(w => w.key===key);
+    const j = i + dir;
+    if(i < 0 || j < 0 || j >= a.length) return;
+    [a[i], a[j]] = [a[j], a[i]];
+    save(); render();
+  }
+  function delWorkstream(key){
+    const w = data.workstreams.find(x => x.key===key); if(!w) return;
+    const n = data.items.filter(i => i.ws===key).length;
+    const msg = n > 0 ? `Delete the “${w.name}” header and its ${n} item(s)?` : `Delete the “${w.name}” header?`;
+    if(confirm(msg)){
+      data.workstreams = data.workstreams.filter(x => x.key!==key);
+      data.items = data.items.filter(i => i.ws!==key);
+      save(); render();
+    }
+  }
+
+  function fillStatusSelect(){ document.getElementById('f-status').innerHTML = STATUSES.map(s => `<option>${s}</option>`).join(''); }
   function fillWsSelect(){
-    document.getElementById('f-ws').innerHTML = WS_DEFAULTS.map(w => {
-      const nm = (data.ws && data.ws[w.key] && data.ws[w.key].name) ? data.ws[w.key].name : w.name;
-      return `<option value="${w.key}">${esc(nm)}</option>`;
-    }).join('');
+    document.getElementById('f-ws').innerHTML = data.workstreams.map(w => `<option value="${w.key}">${esc(w.name)}</option>`).join('');
   }
   function openAdd(){
-    editingId = null;
-    fillWsSelect();
+    editingId = null; fillWsSelect();
     document.getElementById('modal-title').innerText = 'Add item';
     document.getElementById('modal-del').style.display = 'none';
-    document.getElementById('f-ws').value = WS_DEFAULTS[0].key;
+    document.getElementById('f-ws').value = data.workstreams[0] ? data.workstreams[0].key : '';
     document.getElementById('f-task').value = '';
     document.getElementById('f-owner').value = '';
     document.getElementById('f-due').value = '';
     document.getElementById('f-status').value = 'Not started';
+    document.getElementById('f-prio').value = 'Medium';
     document.getElementById('modal').style.display = 'flex';
   }
   function openEdit(id){
     const it = data.items.find(x => x.id===id); if(!it) return;
-    editingId = id;
-    fillWsSelect();
+    editingId = id; fillWsSelect();
     document.getElementById('modal-title').innerText = 'Edit item';
     document.getElementById('modal-del').style.display = 'inline-block';
     document.getElementById('f-ws').value = it.ws;
@@ -404,6 +488,7 @@
     document.getElementById('f-owner').value = it.owner;
     document.getElementById('f-due').value = it.due;
     document.getElementById('f-status').value = it.status;
+    document.getElementById('f-prio').value = it.priority || 'Medium';
     document.getElementById('modal').style.display = 'flex';
   }
   function closeModal(){ document.getElementById('modal').style.display = 'none'; }
@@ -415,15 +500,11 @@
       task: task,
       owner: document.getElementById('f-owner').value.trim(),
       due: document.getElementById('f-due').value.trim() || '—',
-      status: document.getElementById('f-status').value
+      status: document.getElementById('f-status').value,
+      priority: document.getElementById('f-prio').value
     };
-    if(editingId){
-      const it = data.items.find(x => x.id===editingId);
-      Object.assign(it, rec);
-    } else {
-      rec.id = 'm' + Date.now().toString(36) + Math.floor(Math.random()*1000);
-      data.items.push(rec);
-    }
+    if(editingId){ Object.assign(data.items.find(x => x.id===editingId), rec); }
+    else { rec.id = 'm' + Date.now().toString(36) + Math.floor(Math.random()*1000); data.items.push(rec); }
     save(); render(); closeModal();
   }
   function delFromModal(){ if(editingId){ const id = editingId; closeModal(); delItem(id); } }
@@ -444,30 +525,20 @@
     else el.innerHTML = '· <span>Open</span> — now growing';
   }
 
-  function resetAll(){
-    if(confirm('Reset the whole plan back to the original items and headers? This clears everyone\u2019s changes.')){
-      data = JSON.parse(JSON.stringify(SEED)); ensureWs(); save(); paintDate(); render();
-    }
-  }
-
-  function paintSyncStatus(){
-    const dot = document.getElementById('sync-dot');
-    const txt = document.getElementById('sync-status');
-    if(SYNC_ON){ dot.classList.add('live'); txt.innerText = 'Synced live — the whole team shares one copy'; }
-    else { dot.classList.remove('live'); txt.innerText = 'Local only — add your Firebase URL to share'; }
-  }
-
   document.getElementById('modal').addEventListener('click', e => { if(e.target.id==='modal') closeModal(); });
 
-  /* ---------- init ---------- */
-  (async function(){
+  /* ---------- boot (after auth) ---------- */
+  async function boot(){
+    if(booted) return; booted = true;
     fillStatusSelect();
-    paintSyncStatus();
     await load();
     paintDate();
     render();
     if(SYNC_ON) setInterval(pullRemote, 8000);
-  })();
+  }
+
+  // if already signed in this session (here or in the War Room), skip the gate
+  if(sessionStorage.getItem(AUTH_KEY) === '1'){ showApp(); }
 </script>
 </body>
 </html>
