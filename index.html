@@ -1231,6 +1231,7 @@
     function checkAuth() {
       const val = document.getElementById('passcode').value;
       if (val === TEAM_PASSCODE) {
+        sessionStorage.setItem('cordovan_auth', '1');
         document.getElementById('login-overlay').style.display = 'none';
         document.getElementById('app').style.display = 'block';
         initApp();
@@ -1936,6 +1937,11 @@
       const ownerSelect = document.getElementById('filter-action-owner');
       ownerSelect.innerHTML = '<option value="">All Owners</option>' + 
         owners.map(o => `<option value="${o}">${o}</option>`).join('');
+    }
+        if (sessionStorage.getItem('cordovan_auth') === '1') {
+      document.getElementById('login-overlay').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      initApp();
     }
   </script>
 </body>
