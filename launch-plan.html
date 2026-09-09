@@ -56,7 +56,9 @@
   .btn-primary:hover{filter:brightness(1.15);}
   .btn-ghost{background:var(--canvas); color:var(--ink);}
   .btn-ghost:hover{border-color:var(--muted);}
-  .hint{color:var(--muted); font-size:.8rem; margin-top:12px;}
+  .hint{color:var(--muted); font-size:.8rem; margin-top:12px; display:flex; align-items:center; gap:8px; flex-wrap:wrap;}
+  .sync-dot{width:9px; height:9px; border-radius:50%; display:inline-block; background:var(--muted);}
+  .sync-dot.live{background:var(--ok);}
 
   .ws{background:var(--canvas); border:1px solid var(--line); border-left:6px solid var(--pig);
     border-radius:4px; padding:18px clamp(14px,2.5vw,24px) 8px; margin:16px 0;}
@@ -65,6 +67,11 @@
   .ws-phase{font-size:.72rem; font-weight:600; color:var(--pig); border:1px solid currentColor; border-radius:100px; padding:2px 10px;}
   .ws-count{font-size:.78rem; color:var(--muted); margin-left:auto;}
   .ws-goal{color:var(--body); font-size:.92rem; margin:6px 0 12px; max-width:72ch;}
+
+  /* inline-editable text affordance */
+  .editable{cursor:text; border-radius:3px; transition:background .12s ease;}
+  .editable:hover{background:#FBFAF7; box-shadow:0 0 0 1px var(--line);}
+  .editable:focus{outline:none; background:#fff; box-shadow:0 0 0 2px rgba(47,69,197,.35);}
 
   .item{display:grid; grid-template-columns:1fr 140px 88px 138px 30px; gap:10px 14px;
     align-items:center; padding:12px 0; border-top:1px solid var(--line); cursor:pointer;}
@@ -104,7 +111,7 @@
     .item .due::before{content:"Due — "; color:var(--muted);}
     .row2{grid-template-columns:1fr;}
   }
-  @media print{ body{background:#fff;} .toolbar,.del,.backlink,.editdate{display:none;} .item{cursor:default;} }
+  @media print{ body{background:#fff;} .toolbar,.del,.backlink,.editdate{display:none;} .item{cursor:default;} .editable:hover{background:none; box-shadow:none;} }
 </style>
 </head>
 <body>
@@ -132,13 +139,13 @@
       <button class="btn btn-ghost" onclick="window.print()">Print / save PDF</button>
       <button class="btn btn-ghost" onclick="resetAll()">Reset to default</button>
     </div>
-    <p class="hint">Everything is editable — click any item to change it, use the status pill to mark progress, or add your own. Changes save automatically in this browser.</p>
+    <p class="hint"><span class="sync-dot" id="sync-dot"></span><span id="sync-status">Local only</span> · Everything is editable — click a header, goal, item, or the date to change it.</p>
   </header>
 
   <main id="board"></main>
 
   <footer>
-    Cordovan Art School — Woodlands–Gosling Rd · Prospera Experience Group LLC. Progress is stored per browser on this device.
+    Cordovan Art School — Woodlands–Gosling Rd · Prospera Experience Group LLC.
   </footer>
 </div>
 
@@ -172,18 +179,29 @@
 </div>
 
 <script>
+  /* ============================================================
+     SHARED SYNC SETUP
+     Paste your Firebase Realtime Database node URL below, ending
+     in .json  — e.g.
+     "https://cordovan-xxxx-default-rtdb.firebasedatabase.app/launchplan.json"
+     Until you do, the plan saves locally in this browser only.
+     ============================================================ */
+  const SYNC_URL = "PASTE_YOUR_FIREBASE_URL_HERE";
+  const SYNC_ON  = !SYNC_URL.includes("PASTE_YOUR");
+
   const STORE_KEY = 'cordovan_launch_plan_v1';
   const STATUSES = ['Not started','In progress','Done','Decide on call'];
   const STATUS_CLASS = {'Not started':'st-todo','In progress':'st-prog','Done':'st-done','Decide on call':'st-call'};
   const STATUS_DOT   = {'Not started':'var(--wait)','In progress':'var(--go)','Done':'var(--ok)','Decide on call':'var(--call)'};
 
-  const WORKSTREAMS = [
-    {key:'foundations',  name:'Foundations & alignment',           pig:'--p1', phase:'Phase 1',           goal:'One plan, one budget, one registration destination — everyone aligned before a dollar is spent.'},
-    {key:'paid',         name:'Paid social — Facebook & Instagram', pig:'--p2', phase:'Phase 2',           goal:'Reach Spring/Woodlands parents with a clear offer and drive them to register.'},
-    {key:'organic',      name:'Organic social & community',        pig:'--p3', phase:'Phase 2',           goal:'Build a local following for free, and seed the parent networks that convert.'},
-    {key:'school',       name:'School & local outreach',           pig:'--p4', phase:'Phase 2–3',         goal:'Get in front of families where they already are — schools, PTAs, and neighbors.'},
-    {key:'event',        name:'Grand opening event · Oct 31',      pig:'--p5', phase:'Phase 3–4',         goal:'Turn a Halloween opening into a can\u2019t-miss event that signs families up on the day.'},
-    {key:'registration', name:'Registration & conversion',        pig:'--p6', phase:'Ongoing → Phase 4', goal:'Make sure all that awareness actually becomes enrolled students.'}
+  // key, colour and phase stay fixed; name + goal are editable and stored in data.ws
+  const WS_DEFAULTS = [
+    {key:'foundations',  pig:'--p1', phase:'Phase 1',           name:'Foundations & alignment',           goal:'One plan, one budget, one registration destination — everyone aligned before a dollar is spent.'},
+    {key:'paid',         pig:'--p2', phase:'Phase 2',           name:'Paid social — Facebook & Instagram', goal:'Reach Spring/Woodlands parents with a clear offer and drive them to register.'},
+    {key:'organic',      pig:'--p3', phase:'Phase 2',           name:'Organic social & community',        goal:'Build a local following for free, and seed the parent networks that convert.'},
+    {key:'school',       pig:'--p4', phase:'Phase 2–3',         name:'School & local outreach',           goal:'Get in front of families where they already are — schools, PTAs, and neighbors.'},
+    {key:'event',        pig:'--p5', phase:'Phase 3–4',         name:'Grand opening event · Oct 31',      goal:'Turn a Halloween opening into a can\u2019t-miss event that signs families up on the day.'},
+    {key:'registration', pig:'--p6', phase:'Ongoing → Phase 4', name:'Registration & conversion',        goal:'Make sure all that awareness actually becomes enrolled students.'}
   ];
 
   const SEED = {
@@ -232,13 +250,59 @@
   let data;
   let editingId = null;
 
-  function load(){
-    try{ const raw = localStorage.getItem(STORE_KEY); data = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(SEED)); }
-    catch(e){ data = JSON.parse(JSON.stringify(SEED)); }
+  // make sure editable header/goal text exists for every workstream
+  function ensureWs(){
+    if(!data.ws) data.ws = {};
+    WS_DEFAULTS.forEach(w => { if(!data.ws[w.key]) data.ws[w.key] = {name:w.name, goal:w.goal}; });
+  }
+
+  /* ---------- persistence (shared or local) ---------- */
+  async function load(){
+    if(SYNC_ON){
+      try{
+        const res = await fetch(SYNC_URL);
+        const remote = await res.json();
+        if(remote && remote.items){ data = remote; }
+        else { data = JSON.parse(JSON.stringify(SEED)); ensureWs(); await save(); }
+      }catch(e){
+        const raw = localStorage.getItem(STORE_KEY);
+        data = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(SEED));
+      }
+    } else {
+      try{ const raw = localStorage.getItem(STORE_KEY); data = raw ? JSON.parse(raw) : JSON.parse(JSON.stringify(SEED)); }
+      catch(e){ data = JSON.parse(JSON.stringify(SEED)); }
+    }
     if(!data.items) data.items = [];
     if(!data.openingDate) data.openingDate = SEED.openingDate;
+    ensureWs();
   }
-  function save(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); }catch(e){} }
+
+  async function save(){
+    try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); }catch(e){}
+    if(SYNC_ON){
+      try{ await fetch(SYNC_URL, {method:'PUT', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)}); }
+      catch(e){}
+    }
+  }
+
+  // pull the latest shared copy so everyone stays in sync
+  async function pullRemote(){
+    if(!SYNC_ON) return;
+    if(document.getElementById('modal').style.display === 'flex') return;         // don't clobber an open edit
+    if(document.activeElement && document.activeElement.tagName === 'SELECT') return;
+    if(document.activeElement && document.activeElement.isContentEditable) return; // or a header/goal being typed
+    try{
+      const res = await fetch(SYNC_URL);
+      const remote = await res.json();
+      if(remote && remote.items && JSON.stringify(remote) !== JSON.stringify(data)){
+        data = remote;
+        if(!data.items) data.items = [];
+        ensureWs();
+        try{ localStorage.setItem(STORE_KEY, JSON.stringify(data)); }catch(e){}
+        paintDate(); render();
+      }
+    }catch(e){}
+  }
 
   function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
@@ -253,7 +317,8 @@
       `<div><i style="background:${STATUS_DOT[s]}"></i><b>${counts[s]||0}</b> ${s}</div>`).join('');
 
     const board = document.getElementById('board');
-    board.innerHTML = WORKSTREAMS.map(ws => {
+    board.innerHTML = WS_DEFAULTS.map(ws => {
+      const meta = data.ws[ws.key] || {name:ws.name, goal:ws.goal};
       const items = data.items.filter(i => i.ws === ws.key);
       const done = items.filter(i => i.status==='Done').length;
       const rows = items.map(i => {
@@ -273,14 +338,27 @@
       }).join('');
       return `<section class="ws" style="--pig:var(${ws.pig})">
         <div class="ws-top">
-          <span class="ws-name">${ws.name}</span>
+          <span class="ws-name editable" contenteditable="true" spellcheck="false"
+            data-key="${ws.key}" data-field="name"
+            onblur="editWs(this)" onkeydown="if(event.key==='Enter'){event.preventDefault();this.blur();}">${esc(meta.name)}</span>
           <span class="ws-phase">${ws.phase}</span>
           <span class="ws-count">${done}/${items.length} done</span>
         </div>
-        <p class="ws-goal">${ws.goal}</p>
+        <p class="ws-goal editable" contenteditable="true" spellcheck="false"
+          data-key="${ws.key}" data-field="goal" onblur="editWs(this)">${esc(meta.goal)}</p>
         ${rows || '<p class="ws-goal" style="color:var(--muted)">No items yet — use “+ Add item”.</p>'}
       </section>`;
     }).join('');
+  }
+
+  // save an edited header name or goal
+  function editWs(el){
+    const key = el.dataset.key, field = el.dataset.field;
+    if(!data.ws[key]) data.ws[key] = {};
+    const val = el.innerText.replace(/\s+$/,'').trim();
+    if(!val){ el.innerText = data.ws[key][field] || ''; return; }   // don't allow blank
+    if(val === data.ws[key][field]) return;                          // no change
+    data.ws[key][field] = val; save();
   }
 
   function setStatus(id, val){
@@ -294,15 +372,21 @@
     }
   }
 
-  function fillSelects(){
-    document.getElementById('f-ws').innerHTML = WORKSTREAMS.map(w => `<option value="${w.key}">${w.name}</option>`).join('');
+  function fillStatusSelect(){
     document.getElementById('f-status').innerHTML = STATUSES.map(s => `<option>${s}</option>`).join('');
+  }
+  function fillWsSelect(){
+    document.getElementById('f-ws').innerHTML = WS_DEFAULTS.map(w => {
+      const nm = (data.ws && data.ws[w.key] && data.ws[w.key].name) ? data.ws[w.key].name : w.name;
+      return `<option value="${w.key}">${esc(nm)}</option>`;
+    }).join('');
   }
   function openAdd(){
     editingId = null;
+    fillWsSelect();
     document.getElementById('modal-title').innerText = 'Add item';
     document.getElementById('modal-del').style.display = 'none';
-    document.getElementById('f-ws').value = WORKSTREAMS[0].key;
+    document.getElementById('f-ws').value = WS_DEFAULTS[0].key;
     document.getElementById('f-task').value = '';
     document.getElementById('f-owner').value = '';
     document.getElementById('f-due').value = '';
@@ -312,6 +396,7 @@
   function openEdit(id){
     const it = data.items.find(x => x.id===id); if(!it) return;
     editingId = id;
+    fillWsSelect();
     document.getElementById('modal-title').innerText = 'Edit item';
     document.getElementById('modal-del').style.display = 'inline-block';
     document.getElementById('f-ws').value = it.ws;
@@ -360,14 +445,29 @@
   }
 
   function resetAll(){
-    if(confirm('Reset the whole plan back to the original items? This clears your changes on this device.')){
-      data = JSON.parse(JSON.stringify(SEED)); save(); paintDate(); render();
+    if(confirm('Reset the whole plan back to the original items and headers? This clears everyone\u2019s changes.')){
+      data = JSON.parse(JSON.stringify(SEED)); ensureWs(); save(); paintDate(); render();
     }
+  }
+
+  function paintSyncStatus(){
+    const dot = document.getElementById('sync-dot');
+    const txt = document.getElementById('sync-status');
+    if(SYNC_ON){ dot.classList.add('live'); txt.innerText = 'Synced live — the whole team shares one copy'; }
+    else { dot.classList.remove('live'); txt.innerText = 'Local only — add your Firebase URL to share'; }
   }
 
   document.getElementById('modal').addEventListener('click', e => { if(e.target.id==='modal') closeModal(); });
 
-  load(); fillSelects(); paintDate(); render();
+  /* ---------- init ---------- */
+  (async function(){
+    fillStatusSelect();
+    paintSyncStatus();
+    await load();
+    paintDate();
+    render();
+    if(SYNC_ON) setInterval(pullRemote, 8000);
+  })();
 </script>
 </body>
 </html>
