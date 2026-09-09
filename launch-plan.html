@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cordovan Gosling Rd — Launch Marketing Plan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,900&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --wall:#E9E7DE;        /* plaster gallery wall */
+    --canvas:#FFFFFF;      /* white canvas panels */
+    --ink:#231E2E;         /* deep aubergine ink */
+    --body:#4C4756;
+    --muted:#8B8598;
+    --line:#DBD8CE;
+
+    /* the six pigments — one per workstream */
+    --p1:#2F45C5;  /* ultramarine  — foundations   */
+    --p2:#DA3E1E;  /* vermilion    — paid social    */
+    --p3:#6A3AA8;  /* violet       — organic/community */
+    --p4:#E39A11;  /* cadmium ochre— school outreach */
+    --p5:#B4237B;  /* magenta      — grand opening  */
+    --p6:#12876C;  /* viridian     — registration   */
+
+    --ok:#12876C; --go:#2F45C5; --wait:#8B8598; --call:#C9761A;
+    --maxw:1040px;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0; background:var(--wall); color:var(--body);
+    font-family:"Figtree",system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    font-size:16px; line-height:1.55; letter-spacing:-0.005em;
+  }
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:clamp(20px,4vw,48px);}
+
+  /* ---------- hero placard ---------- */
+  .placard{
+    background:var(--canvas); border:1px solid var(--line);
+    border-radius:4px; padding:clamp(24px,4vw,44px);
+    box-shadow:0 1px 0 rgba(0,0,0,.02);
+  }
+  .backlink{display:inline-block; font-size:.85rem; font-weight:600; color:var(--muted); text-decoration:none; margin-bottom:16px;}
+  .backlink:hover{color:var(--ink);}
+  .stamp{
+    display:inline-block; font-size:.82rem; font-weight:600; color:var(--muted);
+    border:1px solid var(--line); border-radius:100px; padding:5px 14px; margin-bottom:22px;
+  }
+  h1{
+    font-family:"Fraunces",Georgia,serif; font-weight:900;
+    font-size:clamp(2.2rem,6vw,3.9rem); line-height:1.02; color:var(--ink);
+    margin:0 0 .35em; letter-spacing:-0.02em;
+  }
+  .subline{
+    display:flex; flex-wrap:wrap; align-items:baseline; gap:10px 22px;
+    font-size:1.05rem; color:var(--body); margin-bottom:26px;
+  }
+  .subline b{color:var(--ink); font-weight:600;}
+  .count{
+    font-family:"Fraunces",Georgia,serif; font-weight:600; color:var(--p2);
+    font-size:1.05rem;
+  }
+  .count span{font-size:1.5rem; font-weight:900;}
+
+  /* the signature paint-swatch row = the six workstreams */
+  .swatches{display:flex; flex-wrap:wrap; gap:0; border-radius:3px; overflow:hidden; margin:26px 0 4px; border:1px solid var(--line);}
+  .swatches a{flex:1 1 90px; min-width:90px; text-decoration:none; padding:12px 12px 14px; color:#fff;
+    font-size:.8rem; font-weight:600; line-height:1.2; display:flex; align-items:flex-end; min-height:66px;
+    transition:filter .15s ease;}
+  .swatches a:hover{filter:brightness(1.07);}
+  .intro{color:var(--muted); font-size:.92rem; margin-top:14px;}
+
+  /* ---------- section scaffolding ---------- */
+  .sec{margin-top:clamp(34px,5vw,56px);}
+  .sec-h{font-family:"Fraunces",Georgia,serif; font-weight:600; color:var(--ink);
+    font-size:1.5rem; margin:0 0 4px; letter-spacing:-0.01em;}
+  .sec-sub{color:var(--muted); font-size:.92rem; margin:0 0 20px;}
+
+  /* ---------- timeline (a real sequence → numbered) ---------- */
+  .phases{display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+  .phase{background:var(--canvas); border:1px solid var(--line); border-radius:4px; padding:16px 16px 18px; position:relative;}
+  .phase .n{font-family:"Fraunces",Georgia,serif; font-weight:900; font-size:1.15rem; color:var(--ink);}
+  .phase .d{font-size:.8rem; color:var(--muted); margin:2px 0 8px;}
+  .phase .t{font-weight:600; color:var(--ink); font-size:.98rem; line-height:1.3;}
+  .phase .bar{height:4px; border-radius:100px; margin-top:14px;}
+
+  /* ---------- workstreams ---------- */
+  .ws{background:var(--canvas); border:1px solid var(--line); border-left:6px solid var(--pig);
+    border-radius:4px; padding:20px clamp(16px,2.5vw,26px) 8px; margin-bottom:18px;}
+  .ws-top{display:flex; flex-wrap:wrap; align-items:baseline; gap:8px 14px; margin-bottom:4px;}
+  .ws-name{font-family:"Fraunces",Georgia,serif; font-weight:600; font-size:1.28rem; color:var(--ink); letter-spacing:-0.01em;}
+  .ws-phase{font-size:.72rem; font-weight:600; color:var(--pig); border:1px solid currentColor; border-radius:100px; padding:2px 10px;}
+  .ws-goal{color:var(--body); font-size:.94rem; margin:0 0 14px; max-width:70ch;}
+
+  .item{display:grid; grid-template-columns:1fr 150px 92px 128px; gap:10px 16px;
+    align-items:center; padding:13px 0; border-top:1px solid var(--line);}
+  .item .task{color:var(--ink); font-weight:500; font-size:.97rem;}
+  .item .owner{color:var(--body); font-size:.88rem;}
+  .item .owner .who{display:inline-block; background:var(--wall); border-radius:100px; padding:2px 10px; font-weight:600; color:#3c3746;}
+  .item .owner .who.blank{background:transparent; border:1px dashed #C7C3D0; min-width:96px; min-height:1.35em; padding:2px 10px;}
+  .item .owner .who.blank::after{content:"assign on call"; color:#B4AEC0; font-weight:500; font-size:.8rem;}
+  .item .due{color:var(--body); font-size:.86rem; font-variant-numeric:tabular-nums;}
+  .pill{display:inline-block; font-size:.74rem; font-weight:700; padding:3px 11px; border-radius:100px; white-space:nowrap;}
+  .pill.done{background:rgba(18,135,108,.12); color:var(--ok);}
+  .pill.prog{background:rgba(47,69,197,.12); color:var(--go);}
+  .pill.todo{background:rgba(139,133,152,.15); color:#6c6779;}
+  .pill.call{background:rgba(201,118,26,.15); color:var(--call);}
+
+  /* ---------- decisions ---------- */
+  .decide{background:var(--ink); color:#EDEAF2; border-radius:6px; padding:clamp(22px,3.5vw,34px);}
+  .decide h2{font-family:"Fraunces",Georgia,serif; font-weight:600; color:#fff; font-size:1.5rem; margin:0 0 4px;}
+  .decide .sec-sub{color:#B4AEC2;}
+  .dlist{list-style:none; margin:16px 0 0; padding:0; display:grid; grid-template-columns:repeat(2,1fr); gap:12px 26px;}
+  .dlist li{display:flex; gap:12px; align-items:flex-start; font-size:.98rem;}
+  .dlist .mk{color:var(--p4); font-family:"Fraunces",Georgia,serif; font-weight:900; line-height:1.2;}
+  .target{margin-top:22px; padding-top:18px; border-top:1px solid rgba(255,255,255,.15); color:#D6D1E2; font-size:.95rem;}
+  .target b{color:#fff;}
+
+  /* ---------- footer ---------- */
+  footer{margin-top:40px; padding-top:22px; border-top:1px solid var(--line); color:var(--muted); font-size:.85rem;}
+  .legend{display:flex; flex-wrap:wrap; gap:8px 18px; margin-bottom:12px;}
+  .legend span{display:flex; align-items:center; gap:7px;}
+  .legend i{width:11px; height:11px; border-radius:3px; display:inline-block;}
+  .noprint button{font:inherit; font-weight:600; color:var(--ink); background:var(--canvas);
+    border:1px solid var(--line); border-radius:100px; padding:8px 18px; cursor:pointer;}
+  .noprint button:hover{border-color:var(--muted);}
+
+  /* ---------- responsive ---------- */
+  @media(max-width:820px){ .phases{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:640px){
+    .dlist{grid-template-columns:1fr;}
+    .item{grid-template-columns:1fr; gap:6px; padding:14px 0;}
+    .item .owner::before{content:"Owner — "; color:var(--muted); font-weight:400;}
+    .item .due::before{content:"Due — "; color:var(--muted);}
+  }
+  @media print{
+    body{background:#fff;} .noprint{display:none;}
+    .placard,.ws,.phase{box-shadow:none;} .swatches a:hover{filter:none;}
+  }
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="placard">
+    <a class="backlink" href="index.html">← War Room</a>
+    <span class="stamp">Cordovan Art School · Woodlands–Gosling Rd</span>
+    <h1>Launch Marketing Plan</h1>
+    <div class="subline">
+      <span>Grand opening <b>Saturday, Oct 31, 2026</b></span>
+      <span class="count" id="count">—</span>
+    </div>
+
+    <nav class="swatches" aria-label="Workstreams">
+      <a href="#ws1" style="background:var(--p1)">Foundations &amp; alignment</a>
+      <a href="#ws2" style="background:var(--p2)">Paid social — FB &amp; Insta</a>
+      <a href="#ws3" style="background:var(--p3)">Organic &amp; community</a>
+      <a href="#ws4" style="background:var(--p4)">School &amp; local outreach</a>
+      <a href="#ws5" style="background:var(--p5)">Grand opening event</a>
+      <a href="#ws6" style="background:var(--p6)">Registration &amp; conversion</a>
+    </nav>
+    <p class="intro">Six workstreams, one destination: awareness that turns into enrolled students. Owners get assigned on today's call; dates below are a proposed starting point to confirm. Each item shows owner · due date · status.</p>
+  </header>
+
+  <!-- TIMELINE -->
+  <section class="sec">
+    <h2 class="sec-h">The runway</h2>
+    <p class="sec-sub">Everything works back from Oct 31. Four phases, roughly two weeks each.</p>
+    <div class="phases">
+      <div class="phase"><div class="n">1</div><div class="d">Sep 9 – 19</div><div class="t">Set the foundation</div><div class="bar" style="background:var(--p1)"></div></div>
+      <div class="phase"><div class="n">2</div><div class="d">Sep 20 – Oct 3</div><div class="t">Launch the channels</div><div class="bar" style="background:var(--p2)"></div></div>
+      <div class="phase"><div class="n">3</div><div class="d">Oct 4 – 24</div><div class="t">Drive &amp; amplify</div><div class="bar" style="background:var(--p5)"></div></div>
+      <div class="phase"><div class="n">4</div><div class="d">Oct 25 – 31</div><div class="t">Convert &amp; open</div><div class="bar" style="background:var(--p6)"></div></div>
+    </div>
+  </section>
+
+  <!-- WORKSTREAMS -->
+  <section class="sec">
+    <h2 class="sec-h">The plan</h2>
+    <p class="sec-sub">Who owns what, and when it's due.</p>
+
+    <div class="ws" id="ws1" style="--pig:var(--p1)">
+      <div class="ws-top"><span class="ws-name">Foundations &amp; alignment</span><span class="ws-phase">Phase 1</span></div>
+      <p class="ws-goal">One plan, one budget, one registration destination — everyone aligned before a dollar is spent.</p>
+      <div class="item"><div class="task">Confirm the full pre-launch calendar &amp; channel go-live dates</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 12</div><div class="status"><span class="pill call">Decide on call</span></div></div>
+      <div class="item"><div class="task">Lock total marketing budget &amp; split across channels</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 12</div><div class="status"><span class="pill call">Decide on call</span></div></div>
+      <div class="item"><div class="task">Confirm Creative Tricycle's scope &amp; what's already scheduled</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 12</div><div class="status"><span class="pill call">Decide on call</span></div></div>
+      <div class="item"><div class="task">Agree a single registration destination for every link</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 12</div><div class="status"><span class="pill call">Decide on call</span></div></div>
+      <div class="item"><div class="task">Set up lead tracking by source, so we know what's working</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 19</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Set the weekly marketing check-in through opening</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 12</div><div class="status"><span class="pill call">Decide on call</span></div></div>
+    </div>
+
+    <div class="ws" id="ws2" style="--pig:var(--p2)">
+      <div class="ws-top"><span class="ws-name">Paid social — Facebook &amp; Instagram</span><span class="ws-phase">Phase 2</span></div>
+      <p class="ws-goal">Reach Spring/Woodlands parents with a clear offer and drive them to register.</p>
+      <div class="item"><div class="task">Confirm ad budget &amp; geo-radius around Gosling Rd</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 19</div><div class="status"><span class="pill call">Decide on call</span></div></div>
+      <div class="item"><div class="task">Define audience — parents of kids ~5–14, Spring/Woodlands</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 22</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Produce creative: launch, free trial, grand opening</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 26</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Finalize the founding-family / early-bird offer to feature</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 22</div><div class="status"><span class="pill call">Decide on call</span></div></div>
+      <div class="item"><div class="task">Campaigns live</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 29</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Mid-flight review &amp; optimize spend</div><div class="owner"><span class="who blank"></span></div><div class="due">Oct 13</div><div class="status"><span class="pill todo">Not started</span></div></div>
+    </div>
+
+    <div class="ws" id="ws3" style="--pig:var(--p3)">
+      <div class="ws-top"><span class="ws-name">Organic social &amp; community</span><span class="ws-phase">Phase 2</span></div>
+      <p class="ws-goal">Build a local following for free, and seed the parent networks that actually convert.</p>
+      <div class="item"><div class="task">Content calendar Sep→Oct (build-out, teachers, countdown)</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 22</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Post 3–4× / week on studio Facebook &amp; Instagram</div><div class="owner"><span class="who blank"></span></div><div class="due">Ongoing</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Seed local parent / mom Facebook groups &amp; Nextdoor</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 26</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Collect build-out &amp; class photos for content</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 19</div><div class="status"><span class="pill prog">In progress</span></div></div>
+      <div class="item"><div class="task">Verify Google Business Profile &amp; Yelp — live and consistent</div><div class="owner"><span class="who blank"></span></div><div class="due">Done</div><div class="status"><span class="pill done">Done</span></div></div>
+    </div>
+
+    <div class="ws" id="ws4" style="--pig:var(--p4)">
+      <div class="ws-top"><span class="ws-name">School &amp; local outreach</span><span class="ws-phase">Phase 2–3</span></div>
+      <p class="ws-goal">Get in front of families where they already are — schools, PTAs, and neighbors on Gosling.</p>
+      <div class="item"><div class="task">Build target list of nearby schools &amp; PTAs</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 19</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Request HQ's approved school-outreach / flyer kit</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 15</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Flyer drop + teacher referral cards to schools</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 29</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Line up a spirit-night / PTA partnership</div><div class="owner"><span class="who blank"></span></div><div class="due">Oct 6</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Cross-promo with neighboring businesses in the plaza</div><div class="owner"><span class="who blank"></span></div><div class="due">Oct 6</div><div class="status"><span class="pill todo">Not started</span></div></div>
+    </div>
+
+    <div class="ws" id="ws5" style="--pig:var(--p5)">
+      <div class="ws-top"><span class="ws-name">Grand opening event · Oct 31</span><span class="ws-phase">Phase 3–4</span></div>
+      <p class="ws-goal">Turn a Halloween opening into a can't-miss event that signs families up on the day.</p>
+      <div class="item"><div class="task">Decide event format — Halloween open house + free trial class</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 19</div><div class="status"><span class="pill call">Decide on call</span></div></div>
+      <div class="item"><div class="task">Confirm ribbon cutting (chamber / HQ)</div><div class="owner"><span class="who blank"></span></div><div class="due">Oct 3</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Build the RSVP / event registration mechanism</div><div class="owner"><span class="who blank"></span></div><div class="due">Oct 6</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Promote the event across every channel</div><div class="owner"><span class="who blank"></span></div><div class="due">Oct 10</div><div class="status"><span class="pill todo">Not started</span></div></div>
+      <div class="item"><div class="task">Day-of run sheet: sign-up station, giveaways, kids' activity</div><div class="owner"><span class="who blank"></span></div><div class="due">Oct 24</div><div class="status"><span class="pill todo">Not started</span></div></div>
+    </div>
+
+    <div class="ws" id="ws6" style="--pig:var(--p6)">
+      <div class="ws-top"><span class="ws-name">Registration &amp; conversion</span><span class="ws-phase">Ongoing → Phase 4</span></div>
+      <p class="ws-goal">Make sure all that awareness actually becomes enrolled students.</p>
+      <div class="item"><div class="task">Test the Jackrabbit registration flow end-to-end</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 19</div><div class="status"><span class="pill prog">In progress</span></div></div>
+      <div class="item"><div class="task">Woodlands–Gosling landing page live &amp; linked everywhere</div><div class="owner"><span class="who blank"></span></div><div class="due">Done</div><div class="status"><span class="pill done">Done</span></div></div>
+      <div class="item"><div class="task">Follow-up plan for the 23 existing trial leads</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 15</div><div class="status"><span class="pill prog">In progress</span></div></div>
+      <div class="item"><div class="task">Finalize the trial-class → enrollment offer</div><div class="owner"><span class="who blank"></span></div><div class="due">Sep 22</div><div class="status"><span class="pill call">Decide on call</span></div></div>
+      <div class="item"><div class="task">Weekly registrations report vs. opening-day target</div><div class="owner"><span class="who blank"></span></div><div class="due">Ongoing</div><div class="status"><span class="pill todo">Not started</span></div></div>
+    </div>
+  </section>
+
+  <!-- DECISIONS -->
+  <section class="sec">
+    <div class="decide">
+      <h2>Lock these on today's call</h2>
+      <p class="sec-sub">Six decisions that unblock everything else. Leave the call with an answer to each.</p>
+      <ul class="dlist">
+        <li><span class="mk">01</span><span>Total budget and how it splits across channels</span></li>
+        <li><span class="mk">02</span><span>The one registration destination every link points to</span></li>
+        <li><span class="mk">03</span><span>The founding-family / early-bird offer</span></li>
+        <li><span class="mk">04</span><span>Grand-opening event format (Halloween open house?)</span></li>
+        <li><span class="mk">05</span><span>Creative Tricycle's scope vs. what we run ourselves</span></li>
+        <li><span class="mk">06</span><span>Firm channel go-live dates on the calendar</span></li>
+      </ul>
+      <p class="target"><b>Set an opening-day registration target on the call</b> — a real number gives every channel something to aim at and makes the weekly report meaningful.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="legend">
+      <span><i style="background:var(--ok)"></i>Done</span>
+      <span><i style="background:var(--go)"></i>In progress</span>
+      <span><i style="background:var(--wait)"></i>Not started</span>
+      <span><i style="background:var(--call)"></i>Decide on call</span>
+    </div>
+    <p class="noprint"><button onclick="window.print()">Print or save as PDF</button></p>
+    <p>Cordovan Art School — Woodlands–Gosling Rd · Prospera Experience Group LLC. Owners and dates are the working plan to confirm on the call.</p>
+  </footer>
+
+</div>
+<script>
+  (function(){
+    var open = new Date(2026,9,31); // Oct 31 2026
+    var now = new Date(); now.setHours(0,0,0,0);
+    var days = Math.round((open - now)/86400000);
+    var el = document.getElementById('count');
+    if(days > 0) el.innerHTML = '<span>'+days+'</span> days to opening';
+    else if(days === 0) el.innerHTML = '<span>Opening day</span>';
+    else el.innerHTML = '<span>Open</span> — now growing';
+  })();
+</script>
+</body>
+</html>
